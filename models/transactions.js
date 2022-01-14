@@ -1,17 +1,17 @@
-const { Schema, model } = require('mongoose')
-const Joi = require('joi')
+// const { Schema, model } = require('mongoose')
+// const Joi = require('joi')
 
-const transactionsSchema = Schema(
+// const transactionsSchema = Schema(
  
-);
+// );
 
-const joiSchema = Joi.object({
+// const joiSchema = Joi.object({
 
-})
+// })
 
-const Transaction = model('contact', transactionsSchema);
+// const Transaction = model('contact', transactionsSchema);
 
-module.exports = {
-  Transaction,
-  joiSchema,
-};
+// module.exports = {
+//   Transaction,
+//   joiSchema,
+// };
