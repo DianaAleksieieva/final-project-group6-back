@@ -6,7 +6,6 @@ const userSchema = Schema(
   {
     name: {
       type: String,
-      required: true,
     },
     email: {
       type: String,
@@ -25,6 +24,12 @@ const userSchema = Schema(
     avatarURL: {
       type: String,
       required: true,
+    },
+    currentBalance: {
+      type: String,
+    },
+    startBalance: {
+      type: String,
     },
     verify: {
       type: Boolean,
