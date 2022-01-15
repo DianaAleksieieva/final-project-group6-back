@@ -3,35 +3,54 @@ const { Schema } = mongoose;
 
 const transactionSchema = Schema(
   {
-    name: {
-      type: String,
+    owner: {
+      type: Schema.Types.ObjectId,
+      ref: 'user',
       required: true,
     },
-    email: {
+    type: {
       type: String,
-      required: true,
-      unique: true,
-    },
-    password: {
-      type: String,
-      required: true,
-      minlenght: 6,
-    },
-    token: {
-      type: String,
-      default: null,
-    },
-    avatarURL: {
-      type: String,
+      enum: ['income', 'expense'],
       required: true,
     },
-    verify: {
-      type: Boolean,
-      default: false,
+    date: {
+      type: Date,
+      required: true,
     },
-    verificationToken: {
+    description: {
       type: String,
-      required: [true, 'Verify token is required'],
+      default: '',
+    },
+    category: {
+      type: String,
+      enum: [
+        'transport',
+        'goods',
+        'health',
+        'alco',
+        'fun',
+        'house',
+        'tech',
+        'utilities',
+        'sport',
+        'education',
+        'other',
+        'salary',
+        'freelance',
+      ],
+      required: true,
+    },
+    amount: {
+      type: Number,
+      required: true,
+    },
+    month: {
+      type: Number,
+      required: true,
+    },
+    year: {
+      type: Number,
+      required: true,
     },
   },
   { versionKey: false, timestamps: true },

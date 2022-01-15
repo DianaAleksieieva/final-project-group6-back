@@ -3,6 +3,7 @@ import { transactions as controller } from '../../controllers/index.js';
 import {
   authMware,
   validationMware,
+  paramsValidationMware,
   ctrlWrapperMware,
 } from '../../middlewares/index.js';
 import { transactions as joiSchema } from '../../schemas/joi/index.js';
@@ -11,12 +12,15 @@ const {
   addTransactionJoiSchema,
   categoryTransactionJoiSchema,
   typeTransactionJoiSchema,
+  monthYearParamsJoiSchema,
+  yearTypeParamsJoiSchema,
+  idParamsJoiSchema,
 } = joiSchema;
 const {
   balanceUpdate,
   addTransaction,
   removeTransaction,
-  getYearlyTransactionsByType,
+  getYearlyByTypeController,
   getAllMonthlyTransactions,
   getAllMonthlyByCategoryTransactions,
   getAllMonthlyByTypeTransactions,
@@ -37,29 +41,37 @@ router.post(
   ctrlWrapperMware(addTransaction),
 );
 
-router.delete('/:id', authMware, ctrlWrapperMware(removeTransaction));
-
+router.delete(
+  '/:id',
+  authMware,
+  paramsValidationMware(idParamsJoiSchema),
+  ctrlWrapperMware(removeTransaction),
+);
 router.get(
   '/year/:year/:type',
   authMware,
-  ctrlWrapperMware(getYearlyTransactionsByType),
+  paramsValidationMware(yearTypeParamsJoiSchema),
+  ctrlWrapperMware(getYearlyByTypeController),
 );
 
 router.get(
   '/month/:month/:year',
   authMware,
+  paramsValidationMware(monthYearParamsJoiSchema),
   ctrlWrapperMware(getAllMonthlyTransactions),
 );
 
 router.get(
   '/category/:month/:year',
   authMware,
+  paramsValidationMware(monthYearParamsJoiSchema),
   validationMware(categoryTransactionJoiSchema),
   ctrlWrapperMware(getAllMonthlyByCategoryTransactions),
 );
 router.get(
   '/type/:month/:year',
   authMware,
+  paramsValidationMware(monthYearParamsJoiSchema),
   validationMware(typeTransactionJoiSchema),
   ctrlWrapperMware(getAllMonthlyByTypeTransactions),
 );
