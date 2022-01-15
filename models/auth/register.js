@@ -8,17 +8,17 @@ async function register({ email, password, name, verificationToken }) {
     throw new httpError.Conflict('Email in use');
   }
   const avatarURL = gravatar.url(email);
-  const newUser = await User.create({
-    email,
-    password,
-    avatarURL,
-    name,
-    verificationToken,
-  });
+  const newUser = new User({ email, name, avatarURL, verificationToken });
+  newUser.setPassword(password);
+  await newUser.save();
 
   return {
-    user: { email: newUser.email, subscription: newUser.subscription },
-    token: newUser.token,
+    user: {
+      email,
+      subscription: newUser.subscription,
+      avatarURL,
+      verificationToken,
+    },
   };
 }
 
