@@ -6,6 +6,8 @@ const userSchema = Schema(
   {
     name: {
       type: String,
+      required: true,
+      default: 'Unnamed',
     },
     email: {
       type: String,
@@ -25,6 +27,7 @@ const userSchema = Schema(
       type: String,
       required: true,
     },
+
     currentBalance: {
       type: String,
     },
@@ -35,10 +38,10 @@ const userSchema = Schema(
       type: Boolean,
       default: false,
     },
-    verificationToken: {
-      type: String,
-      required: [true, 'Verify token is required'],
-    },
+    // verificationToken: {
+    //   type: String,
+    //   required: [true, 'Verify token is required'],
+    // },
   },
   { versionKey: false, timestamps: true },
 );
