@@ -51,9 +51,26 @@ const typeTransactionJoiSchema = Joi.object({
   type: Joi.string().required().valid('income', 'expense'),
 });
 
+const monthYearParamsJoiSchema = Joi.object({
+  month: Joi.number().required(),
+  year: Joi.number().required(),
+});
+
+const yearTypeParamsJoiSchema = Joi.object({
+  year: Joi.number().required(),
+  type: Joi.string().required().valid('income', 'expense'),
+});
+
+const idParamsJoiSchema = Joi.object({
+  id: Joi.string().required(),
+});
+
 export default {
   currentBallanseJoiSchema,
   addTransactionJoiSchema,
   categoryTransactionJoiSchema,
   typeTransactionJoiSchema,
+  monthYearParamsJoiSchema,
+  yearTypeParamsJoiSchema,
+  idParamsJoiSchema,
 };
