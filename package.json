@@ -8,9 +8,11 @@
     "lint": "eslint **/*.js",
     "lint:fix": "eslint --fix **/*.js"
   },
+  "type": "module",
   "dependencies": {
     "@sendgrid/mail": "^7.6.0",
     "bcryptjs": "^2.4.3",
+    "chalk": "^5.0.0",
     "cors": "2.8.5",
     "cross-env": "7.0.3",
     "dotenv": "^10.0.0",
@@ -32,6 +34,6 @@
     "eslint-plugin-import": "^2.22.1",
     "eslint-plugin-node": "^11.1.0",
     "eslint-plugin-promise": "^4.2.1",
-    "nodemon": "2.0.7"
+    "nodemon": "^2.0.7"
   }
 }

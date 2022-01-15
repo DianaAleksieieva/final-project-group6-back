@@ -1,12 +1,14 @@
-const express = require("express");
+import express from 'express';
 
-const { auth, upload, ctrlWrapper } = require("../../middlewares");
-const { users: ctrl } = require("../../controllers");
-
+import {
+  authMiddleware,
+  ctrlWrapperMiddleware,
+} from '../../middlewares/index.js';
+import { users } from '../../controllers/index.js';
+const { getCurrent, verifyEmail, resendingEmail } = users;
 const router = express.Router();
 
-router.get("/current", auth, ctrlWrapper(ctrl.getCurrent));
-// router.patch("/avatars", auth, upload.single("avatar"), ctrlWrapper(ctrl.updateAvatar));
-router.get("/verify/:verificationToken", ctrlWrapper(ctrl.verifyEmail));
-router.get("/verify", ctrlWrapper(ctrl.resendingEmail));
-module.exports = router;
+router.get('/current', authMiddleware, ctrlWrapperMiddleware(getCurrent));
+router.get('/verify/:verificationToken', ctrlWrapperMiddleware(verifyEmail));
+router.get('/verify', ctrlWrapperMiddleware(resendingEmail));
+export default router;

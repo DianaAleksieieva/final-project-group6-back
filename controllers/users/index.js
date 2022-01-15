@@ -1,11 +1,6 @@
-const getCurrent = require("./getCurrent");
-const updateAvatar = require("./updateAvatar")
-const verifyEmail = require("./verifyEmail");
-const resendingEmail = require("./resendingEmail")
+import getCurrent from './getCurrent.js';
+import updateAvatar from './updateAvatar.js';
+import verifyEmail from './verifyEmail.js';
+import resendingEmail from './resendingEmail.js';
 
-module.exports = {
-  getCurrent,
-  updateAvatar,
-  verifyEmail,
-  resendingEmail,
-};
+export default { getCurrent, updateAvatar, verifyEmail, resendingEmail };

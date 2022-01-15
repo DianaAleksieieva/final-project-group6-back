@@ -1,6 +1,7 @@
-const { Schema, model } = require("mongoose");
-const Joi = require("joi");
-const bcrypt = require("bcryptjs");
+import mongoose from 'mongoose';
+const { Schema } = mongoose;
+import Joi from 'joi';
+import bcrypt from 'bcryptjs';
 
 const userSchema = Schema(
   {
@@ -32,10 +33,10 @@ const userSchema = Schema(
     },
     verificationToken: {
       type: String,
-      required: [true, "Verify token is required"],
+      required: [true, 'Verify token is required'],
     },
   },
-  { versionKey: false, timestamps: true }
+  { versionKey: false, timestamps: true },
 );
 
 userSchema.methods.setPassword = function (password) {
@@ -46,21 +47,15 @@ userSchema.methods.comparePassword = function (password) {
   return bcrypt.compareSync(password, this.password);
 };
 
-const joiSignUpSchema = Joi.object({
+export const joiSignUpSchema = Joi.object({
   name: Joi.string().required(),
   email: Joi.string().required(),
   password: Joi.string().min(6).required(),
 });
 
-const joiSignInSchema = Joi.object({
+export const joiSignInSchema = Joi.object({
   email: Joi.string().required(),
   password: Joi.string().required(),
 });
 
-const User = model("user", userSchema);
-
-module.exports = {
-  User,
-  joiSignUpSchema,
-  joiSignInSchema,
-};
+export const User = mongoose.model('user', userSchema);

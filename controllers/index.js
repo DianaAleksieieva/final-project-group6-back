@@ -1,9 +1,3 @@
-const auth = require('./auth')
-// const transactions = require('./transactions');
-const users = require("./users");
-
-module.exports = {
-  auth,
-  // transactions,
-  users,
-};
+export { default as auth } from './auth/index.js';
+export { default as users } from './users/index.js';
+// export { default as transactions } from './transactions/index.js';

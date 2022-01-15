@@ -1,15 +1,28 @@
-const express = require('express')
+import express from 'express';
 
-const { auth, validation, ctrlWrapper } = require('../../middlewares')
-const { auth: ctrl } = require('../../controllers')
-const { joiSignUpSchema, joiSignInSchema } = require("../../models/user");
+import {
+  authMiddleware,
+  validationMiddleware,
+  ctrlWrapperMiddleware,
+} from '../../middlewares/index.js';
+import { auth } from '../../controllers/index.js';
 
-const router = express.Router()
+import { joiSignUpSchema, joiSignInSchema } from '../../models/user.js';
+const { signup, signin, signout } = auth;
+const router = express.Router();
 
-router.post('/signup', validation(joiSignUpSchema), ctrlWrapper(ctrl.signup))
+router.post(
+  '/signup',
+  validationMiddleware(joiSignUpSchema),
+  ctrlWrapperMiddleware(signup),
+);
 
-router.post('/signin', validation(joiSignInSchema), ctrlWrapper(ctrl.signin));
+router.post(
+  '/signin',
+  validationMiddleware(joiSignInSchema),
+  ctrlWrapperMiddleware(signin),
+);
 
-router.post("/signout", auth, ctrlWrapper(ctrl.signout));
+router.post('/signout', authMiddleware, ctrlWrapperMiddleware(signout));
 
-module.exports = router
+export default router;

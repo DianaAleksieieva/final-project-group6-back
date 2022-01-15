@@ -1,16 +1,19 @@
-const { User } = require("../../models");
-const { NotFound } = require("http-errors");
+import { User } from '../../models/index.js';
+import httpError from 'http-errors';
 
 const verifyEmail = async (req, res) => {
-    const { varificationToken } = req.params;
-    const user = await User.findOne({ varificationToken });
-    if (!user) {
-         throw NotFound()
-    }
-    await User.findOneAndUpdate(user._id, { verify: true, varificationToken:null });
+  const { varificationToken } = req.params;
+  const user = await User.findOne({ varificationToken });
+  if (!user) {
+    throw httpError.NotFound();
+  }
+  await User.findOneAndUpdate(user._id, {
+    verify: true,
+    varificationToken: null,
+  });
   res.json({
-    message: "success",
-    });
+    message: 'success',
+  });
 };
 
-module.exports = verifyEmail;
+export default verifyEmail;

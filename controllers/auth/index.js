@@ -1,9 +1,5 @@
-const signup = require('./signup')
-const signin = require("./signin");
-const signout = require("./signout");
+import signup from './signup.js';
+import signin from './signin.js';
+import signout from './signout.js';
 
-module.exports = {
-  signup,
-  signin,
-  signout
-};
+export default { signup, signin, signout };

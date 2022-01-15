@@ -1,5 +1,5 @@
-const getAll = require('./getAll')
+// import getAll from './getAll.js';
 
-module.exports = {
-  getAll
-};
+// export default {
+//   getAll,
+// };

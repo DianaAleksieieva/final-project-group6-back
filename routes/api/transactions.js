@@ -1,24 +1,25 @@
-// const express = require('express')
-// const { contacts: contactsCtrl } = require('../../controllers')
-// const { auth, validation, ctrlWrapper } = require('../../middlewares')
-// const { joiSchema, isFavoriteJoiSchema } = require('../../models/contact')
+// import express from 'express';
+// import { contacts } from '../../controllers/index.js';
+// import { authMiddleware, validationMiddleware, ctrlWrapperMiddleware } from '../../middlewares/index.js';
+// import { joiSchema, isFavoriteJoiSchema } from '../../models/contact.js';
+// const { getAll, getById, add, deletebyId, updateById, updateIsFavorite } =
+//   contacts.contactsCtrl;
+// const router = express.Router();
 
-// const router = express.Router()
+// router.get('/', authMiddleware, ctrlWrapperMiddleware(getAll));
 
-// router.get('/', auth, ctrlWrapper(contactsCtrl.getAll))
+// router.get('/:id', ctrlWrapperMiddleware(getById));
 
-// router.get("/:id", ctrlWrapper(contactsCtrl.getById));
+// router.post('/', authMiddleware, validationMiddleware(joiSchema), ctrlWrapperMiddleware(add));
 
-// router.post("/", auth, validation(joiSchema), ctrlWrapper(contactsCtrl.add));
+// router.delete('/:contactId', ctrlWrapperMiddleware(deletebyId));
 
-// router.delete('/:contactId', ctrlWrapper(contactsCtrl.deletebyId))
-
-// router.put('/:contactId', validation(joiSchema), ctrlWrapper(contactsCtrl.updateById))
+// router.put('/:contactId', validationMiddleware(joiSchema), ctrlWrapperMiddleware(updateById));
 
 // router.patch(
 //   '/:contactId/favorite',
-//   validation(isFavoriteJoiSchema),
-//   ctrlWrapper(contactsCtrl.updateIsFavorite)
-// )
+//   validationMiddleware(isFavoriteJoiSchema),
+//   ctrlWrapper(updateIsFavorite),
+// );
 
-// module.exports = router
+// export default router;

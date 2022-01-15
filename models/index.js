@@ -1,7 +1,2 @@
-// const { Transaction } = require('./transactions');
-const { User } = require("./user");
-
-module.exports = {
-  // Transaction,
-  User,
-};
+export { User, joiSignInSchema, joiSignUpSchema } from './user.js';
+// export { default as Transaction } from './transactions.js';

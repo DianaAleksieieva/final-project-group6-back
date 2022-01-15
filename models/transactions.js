@@ -1,8 +1,8 @@
-// const { Schema, model } = require('mongoose')
-// const Joi = require('joi')
+// import { Schema, model } from 'mongoose'
+// import Joi from 'joi'
 
 // const transactionsSchema = Schema(
- 
+
 // );
 
 // const joiSchema = Joi.object({
@@ -11,7 +11,7 @@
 
 // const Transaction = model('contact', transactionsSchema);
 
-// module.exports = {
+// export default  {
 //   Transaction,
 //   joiSchema,
 // };
