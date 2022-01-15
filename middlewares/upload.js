@@ -1,5 +1,5 @@
-// const multer = require("multer")
-// const path = require("path")
+// import multer from "multer"
+// import path from "path"
 
 // const tempDir = path.join(__dirname, "../", "temp")
 
@@ -17,6 +17,6 @@
 
 // const upload = multer({
 //   storage: multerConfig,
-// }); 
+// });
 
-// module.exports = upload;
+// export default  upload;

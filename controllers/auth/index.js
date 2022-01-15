@@ -1,9 +1,5 @@
-const signup = require('./signup')
-const signin = require("./signin");
-const signout = require("./signout");
+import registerController from './registerController.js';
+import loginController from './loginController.js';
+import logoutController from './logoutController.js';
 
-module.exports = {
-  signup,
-  signin,
-  signout
-};
+export default { registerController, loginController, logoutController };

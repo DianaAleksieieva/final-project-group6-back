@@ -1,9 +1,2 @@
-const auth = require('./auth')
-const contacts = require('./contacts')
-const users = require("./users");
-
-module.exports = {
-  auth,
-  contacts,
-  users,
-};
+export { default as auth } from './auth/index.js';
+export { default as transactions } from './transactions/index.js';
