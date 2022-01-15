@@ -1,5 +1,5 @@
-import signup from './signup.js';
-import signin from './signin.js';
-import signout from './signout.js';
+import registerController from './registerController.js';
+import loginController from './loginController.js';
+import logoutController from './logoutController.js';
 
-export default { signup, signin, signout };
+export default { registerController, loginController, logoutController };

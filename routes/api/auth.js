@@ -1,28 +1,26 @@
 import express from 'express';
 
 import {
-  authMiddleware,
-  validationMiddleware,
-  ctrlWrapperMiddleware,
+  authMware,
+  validationMware,
+  ctrlWrapperMware,
 } from '../../middlewares/index.js';
 import { auth } from '../../controllers/index.js';
-
-import { joiSignUpSchema, joiSignInSchema } from '../../models/user.js';
-const { signup, signin, signout } = auth;
+import { users } from '../../schemas/joi/index.js';
 const router = express.Router();
 
 router.post(
-  '/signup',
-  validationMiddleware(joiSignUpSchema),
-  ctrlWrapperMiddleware(signup),
+  '/register',
+  validationMware(users.joiRegisterSchema),
+  ctrlWrapperMware(auth.registerController),
 );
 
 router.post(
-  '/signin',
-  validationMiddleware(joiSignInSchema),
-  ctrlWrapperMiddleware(signin),
+  '/login',
+  validationMware(users.joiLoginSchema),
+  ctrlWrapperMware(auth.loginController),
 );
 
-router.post('/signout', authMiddleware, ctrlWrapperMiddleware(signout));
+router.post('/signout', authMware, ctrlWrapperMware(auth.signout));
 
 export default router;

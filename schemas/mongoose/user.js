@@ -1,6 +1,5 @@
 import mongoose from 'mongoose';
 const { Schema } = mongoose;
-import Joi from 'joi';
 import bcrypt from 'bcryptjs';
 
 const userSchema = Schema(
@@ -47,15 +46,6 @@ userSchema.methods.comparePassword = function (password) {
   return bcrypt.compareSync(password, this.password);
 };
 
-export const joiSignUpSchema = Joi.object({
-  name: Joi.string().required(),
-  email: Joi.string().required(),
-  password: Joi.string().min(6).required(),
-});
+const User = mongoose.model('user', userSchema);
 
-export const joiSignInSchema = Joi.object({
-  email: Joi.string().required(),
-  password: Joi.string().required(),
-});
-
-export const User = mongoose.model('user', userSchema);
+export default User;

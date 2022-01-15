@@ -1,30 +1,24 @@
 import httpError from 'http-errors';
 import jwt from 'jsonwebtoken';
 
-import { User } from '../../models/index.js';
+import { User } from '../../schemas/mongoose/index.js';
 
 const { SECRET_KEY } = process.env;
 
-const signin = async (req, res) => {
-  const { email, password } = req.body;
+const login = async ({ email, password }) => {
   const user = await User.findOne({ email });
   if (!user || !user.verify || !user.comparePassword(password)) {
     throw new httpError.Unauthorized(
       'Email or password is wrong or not verify',
     );
   }
-  const payload = {
-    id: user._id,
-  };
-  const token = jwt.sign(payload, SECRET_KEY, { expiresIn: '1h' });
+  const token = jwt.sign({ id: user._id }, SECRET_KEY, { expiresIn: '1h' });
   await User.findByIdAndUpdate(user._id, { token });
-  res.json({
-    status: 'success',
-    code: 200,
+  return {
     data: {
       token,
     },
-  });
+  };
 };
 
-export default signin;
+export default login;

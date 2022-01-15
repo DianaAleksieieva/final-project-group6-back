@@ -1,7 +1,7 @@
 import httpError from 'http-errors';
 import jwt from 'jsonwebtoken';
 
-import { User } from '../models/index.js';
+import { User } from '../schemas/mongoose/index.js';
 
 const { SECRET_KEY } = process.env;
 

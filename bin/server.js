@@ -9,12 +9,9 @@ const { DB_HOST, PORT = 3000 } = process.env;
 mongoose
   .connect(DB_HOST)
   .then(() => {
-    console.log(chalk.green('mongoose DB connection successful'));
+    console.log(chalk.blue('mongoose DB connection successful'));
     app.listen(PORT, () => {
-      console.log(
-        `Server running. Use our API on port: ${PORT}`,
-        'Database connection successful',
-      );
+      console.log('Server running. Use our API on port: ' + chalk.blue(PORT));
     });
   })
   .catch(error => {
