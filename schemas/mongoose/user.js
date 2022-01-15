@@ -27,9 +27,12 @@ const userSchema = Schema(
       type: String,
       required: true,
     },
-    balance: {
-      type: Number,
-      default: 0,
+
+    currentBalance: {
+      type: String,
+    },
+    startBalance: {
+      type: String,
     },
     verify: {
       type: Boolean,
