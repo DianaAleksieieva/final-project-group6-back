@@ -28,7 +28,7 @@ const addTransactionJoiSchema = Joi.object({
 });
 
 const categoryTransactionJoiSchema = Joi.object({
-  category: Joi.array().items(
+  categories: Joi.array().items(
     Joi.string().valid(
       'transport',
       'goods',

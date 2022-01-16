@@ -22,7 +22,7 @@ const {
   removeTransaction,
   getYearlyByTypeController,
   getAllMonthlyTransactions,
-  getAllMonthlyByCategoryTransactions,
+  getAllMonthlyByCategoryController,
   getAllMonthlyByTypeTransactions,
 } = controller;
 const router = express.Router();
@@ -66,7 +66,7 @@ router.get(
   authMware,
   paramsValidationMware(monthYearParamsJoiSchema),
   validationMware(categoryTransactionJoiSchema),
-  ctrlWrapperMware(getAllMonthlyByCategoryTransactions),
+  ctrlWrapperMware(getAllMonthlyByCategoryController),
 );
 router.get(
   '/type/:month/:year',
