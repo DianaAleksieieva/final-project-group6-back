@@ -3,7 +3,7 @@ import addTransaction from './addTransaction.js';
 import removeTransaction from './removeTransaction.js';
 import getYearlyByTypeController from './getYearlyByTypeController.js';
 import getAllMonthlyTransactions from './getAllMonthlyTransactions.js';
-import getAllMonthlyByCategoryTransactions from './getAllMonthlyByCategoryTransactions.js';
+import getAllMonthlyByCategoryController from './getAllMonthlyByCategoryController.js';
 import getAllMonthlyByTypeTransactions from './getAllMonthlyByTypeTransactions.js';
 
 export default {
@@ -12,6 +12,6 @@ export default {
   removeTransaction,
   getYearlyByTypeController,
   getAllMonthlyTransactions,
-  getAllMonthlyByCategoryTransactions,
+  getAllMonthlyByCategoryController,
   getAllMonthlyByTypeTransactions,
 };
