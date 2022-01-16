@@ -1,24 +1,79 @@
-// const express = require('express')
-// const { contacts: contactsCtrl } = require('../../controllers')
-// const { auth, validation, ctrlWrapper } = require('../../middlewares')
-// const { joiSchema, isFavoriteJoiSchema } = require('../../models/contact')
+import express from 'express';
+import { transactions as controller } from '../../controllers/index.js';
+import {
+  authMware,
+  validationMware,
+  paramsValidationMware,
+  ctrlWrapperMware,
+} from '../../middlewares/index.js';
+import { transactions as joiSchema } from '../../schemas/joi/index.js';
+const {
+  currentBallanseJoiSchema,
+  addTransactionJoiSchema,
+  categoryTransactionJoiSchema,
+  typeTransactionJoiSchema,
+  monthYearParamsJoiSchema,
+  yearTypeParamsJoiSchema,
+  idParamsJoiSchema,
+} = joiSchema;
+const {
+  balanceUpdate,
+  addTransaction,
+  removeTransaction,
+  getYearlyByTypeController,
+  getAllMonthlyTransactions,
+  getAllMonthlyByCategoryController,
+  getAllMonthlyByTypeTransactions,
+} = controller;
+const router = express.Router();
 
-// const router = express.Router()
+router.post(
+  '/balance',
+  authMware,
+  validationMware(currentBallanseJoiSchema),
+  ctrlWrapperMware(balanceUpdate),
+);
 
-// router.get('/', auth, ctrlWrapper(contactsCtrl.getAll))
+router.post(
+  '/add',
+  authMware,
+  validationMware(addTransactionJoiSchema),
+  ctrlWrapperMware(addTransaction),
+);
 
-// router.get("/:id", ctrlWrapper(contactsCtrl.getById));
+router.delete(
+  '/:id',
+  authMware,
+  paramsValidationMware(idParamsJoiSchema),
+  ctrlWrapperMware(removeTransaction),
+);
+router.get(
+  '/year/:year/:type',
+  authMware,
+  paramsValidationMware(yearTypeParamsJoiSchema),
+  ctrlWrapperMware(getYearlyByTypeController),
+);
 
-// router.post("/", auth, validation(joiSchema), ctrlWrapper(contactsCtrl.add));
+router.get(
+  '/month/:month/:year',
+  authMware,
+  paramsValidationMware(monthYearParamsJoiSchema),
+  ctrlWrapperMware(getAllMonthlyTransactions),
+);
 
-// router.delete('/:contactId', ctrlWrapper(contactsCtrl.deletebyId))
+router.get(
+  '/category/:month/:year',
+  authMware,
+  paramsValidationMware(monthYearParamsJoiSchema),
+  validationMware(categoryTransactionJoiSchema),
+  ctrlWrapperMware(getAllMonthlyByCategoryController),
+);
+router.get(
+  '/type/:month/:year',
+  authMware,
+  paramsValidationMware(monthYearParamsJoiSchema),
+  validationMware(typeTransactionJoiSchema),
+  ctrlWrapperMware(getAllMonthlyByTypeTransactions),
+);
 
-// router.put('/:contactId', validation(joiSchema), ctrlWrapper(contactsCtrl.updateById))
-
-// router.patch(
-//   '/:contactId/favorite',
-//   validation(isFavoriteJoiSchema),
-//   ctrlWrapper(contactsCtrl.updateIsFavorite)
-// )
-
-// module.exports = router
+export default router;

@@ -1,9 +1,4 @@
-const validation = require('./validation')
-const ctrlWrapper = require('./ctrlWrapper')
-const auth = require("./auth");
-
-module.exports = {
-  validation,
-  ctrlWrapper,
-  auth,
-};
+export { default as validationMware } from './validation.js';
+export { default as paramsValidationMware } from './paramsValidation.js';
+export { default as ctrlWrapperMware } from './ctrlWrapper.js';
+export { default as authMware } from './auth.js';
