@@ -15,22 +15,3 @@ const getYearlyByTypeController = async (req, res) => {
 };
 
 export default getYearlyByTypeController;
-
-// ResponseBody: {
-//   "type" : 'income',
-//   "year" : 2019,
-//   "sum" : 8330,
-//   "result": {
-//     1: 2533,
-//     2: 334,
-//     3: 5463,
-//     4: null,
-//     5: null,
-//     6: null,
-//     7: null,
-//     8: null,
-//     9: null,
-//     10: null,
-//     11: null,
-//     12: null,
-//   },
