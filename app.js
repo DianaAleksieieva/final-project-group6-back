@@ -1,6 +1,7 @@
 import express from 'express';
 import logger from 'morgan';
 import cors from 'cors';
+import chalk from 'chalk';
 
 import { authRouter, transactionsRouter } from './routes/api/index.js';
 import dotenv from 'dotenv';
@@ -23,7 +24,9 @@ app.use((req, res) => {
 });
 
 app.use((err, req, res, next) => {
-  res.status(500).json({ message: err.message });
+  const { status = 500, message = 'Server error' } = err;
+  console.log(chalk.red('Catch error'), chalk.yellow(status, message));
+  res.status(status).json({ message });
 });
 
 export default app;
