@@ -30,9 +30,11 @@ const userSchema = Schema(
 
     currentBalance: {
       type: String,
+      default: 0,
     },
     startBalance: {
       type: String,
+      default: null,
     },
     verify: {
       type: Boolean,
