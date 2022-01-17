@@ -27,7 +27,7 @@ const {
 } = controller;
 const router = express.Router();
 
-router.post(
+router.put(
   '/balance',
   authMware,
   validationMware(currentBallanseJoiSchema),
