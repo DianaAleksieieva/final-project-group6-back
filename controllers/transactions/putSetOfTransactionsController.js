@@ -60,6 +60,7 @@ const putSetOfTransactionsController = async (req, res) => {
         const minute = getRandom(1, 60);
         if (Math.random() > 0.7) {
           const transaction = await putSetOfTransactionsModel(
+            user._id,
             type,
             category,
             description,
@@ -82,6 +83,7 @@ const putSetOfTransactionsController = async (req, res) => {
     const minute = getRandom(1, 60);
 
     const transaction = await putSetOfTransactionsModel(
+      user._id,
       'income',
       'salary',
       categoryIncomes.salary[0],
@@ -108,6 +110,7 @@ const putSetOfTransactionsController = async (req, res) => {
       const minute = getRandom(1, 60);
       if (Math.random() > 0.7) {
         const transaction = await putSetOfTransactionsModel(
+          user._id,
           type,
           category,
           description,

@@ -1,11 +1,13 @@
 const description = {
-  login: 'Логин пользователя',
+  emailToken: 'Токен для верификации email',
+  bodyRegistration: 'Тело запроса на регистрацию пользователя',
   password: 'Пароль пользователя',
   currentBalance: 'Текущий баланс',
   type: 'Тип транзакции доход(income) или расход(expense)',
   date: 'Дата транзакции',
   category: 'Категория транзакции',
   amount: 'Значение транзакции',
+  id: 'id',
   request200: 'ОК - [Запрос соответствует всем критериями]',
   request201: 'Created - [Запрос соответствует всем критериями]',
   request400: 'Bad Request - [Поисковый запрос содержит неверные даные]',
@@ -22,7 +24,7 @@ const examples = {
     $oid: '61e45142008a3b98cdbfd355',
   },
   token:
-    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYxZTQzNTg4MGU1MTY3YzVkNjJhMzdlNCIsImlhdCI6MTY0MjM0NTg2OSwiZXhwIjoxNjQyMzQ5NDY5fQ.kZLpCKFCp8rdrp9FetFM0QQOTpuVkhnqpTB0_2NqiX4',
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYxZTZkM2U3NmNhY2MwMTVkNzYyODQyMyIsImlhdCI6MTY0MjUxNzQ3OX0.poPWJlV3qZHa1NMLDkSLfxfaI9bEqk_yWfZzowgJBgU',
   email: 'test@email.com',
   userName: 'Иванов Иван Иванович',
   type: 'income',
@@ -74,21 +76,35 @@ const examples = {
 };
 
 const params = {
-  email: {
-    name: 'email',
-    description: description.login,
-    in: 'formData',
+  emailToken: {
+    name: 'emailToken',
+    description: description.emailToken,
+    in: 'path',
     required: true,
     type: 'string',
+    schema: {
+      type: 'string',
+      examples: 'loC--iEY_hm3AmzoeBZpt',
+    },
   },
+
   password: {
+    in: 'body',
+    // in: 'body',
     name: 'password',
     description: description.password,
-    in: 'formData',
     required: true,
     type: 'string',
   },
   currentBalance: {
+    name: 'currentBalance',
+    description: description.currentBalance,
+    in: 'formData',
+    required: true,
+    type: 'number',
+  },
+  currentBalanceInBody: {
+    in: 'body',
     name: 'currentBalance',
     description: description.currentBalance,
     in: 'formData',
@@ -103,14 +119,25 @@ const params = {
     type: 'string',
     enum: ['income', 'expense'],
   },
-  date: {
+  typeInBody: {
+    in: 'body',
+    name: 'type',
+    description: description.type,
+    in: 'formData',
+    required: true,
+    type: 'string',
+    enum: ['income', 'expense'],
+  },
+  dateInBody: {
+    in: 'body',
     name: 'date',
     description: description.date,
     in: 'formData',
     required: true,
     type: 'date',
   },
-  category: {
+  categoryInBody: {
+    in: 'body',
     name: 'category',
     description: description.category,
     in: 'formData',
@@ -133,11 +160,73 @@ const params = {
     ],
   },
   amount: {
+    in: 'body',
     name: 'amount',
     description: description.amount,
     in: 'formData',
     required: true,
     type: 'number',
+  },
+  id: {
+    name: 'id',
+    description: description.id,
+    in: 'formData',
+    required: true,
+    type: 'string',
+  },
+
+  idInBody: {
+    in: 'body',
+    name: 'id',
+    description: description.id,
+    in: 'formData',
+    required: true,
+    type: 'string',
+  },
+};
+
+const reqBodys = {
+  mailPasswordNameBody: {
+    content: {
+      'application/json': {
+        schema: {
+          type: 'object',
+          properties: {
+            email: {
+              type: 'string',
+              example: '@mail.com',
+            },
+            password: {
+              type: 'string',
+              example: '',
+            },
+            userName: {
+              type: 'string',
+              example: '',
+            },
+          },
+        },
+      },
+    },
+  },
+  mailPasswordBody: {
+    content: {
+      'application/json': {
+        schema: {
+          type: 'object',
+          properties: {
+            email: {
+              type: 'string',
+              example: '@mail.com',
+            },
+            password: {
+              type: 'string',
+              example: '',
+            },
+          },
+        },
+      },
+    },
   },
 };
 
@@ -155,7 +244,7 @@ const swagger = {
           description: 'Регистрация нового пользователя',
           tags: ['Auth'],
           produces: ['application/json'],
-          parameters: [params.email, params.password],
+          requestBody: reqBodys.mailPasswordNameBody,
           responses: {
             201: {
               description: description.request201,
@@ -220,7 +309,7 @@ const swagger = {
           description: 'Авторизация нового пользователя',
           tags: ['Auth'],
           produces: ['application/json'],
-          parameters: [params.email, params.password],
+          requestBody: reqBodys.mailPasswordBody,
           responses: {
             200: {
               description: description.request200,
@@ -294,11 +383,13 @@ const swagger = {
           },
         },
       },
-      '/api/auth/verify/:emailToken': {
+      '/api/auth/verify/{emailToken}': {
+        //
         get: {
           description: 'Верификация нового логина',
           tags: ['Auth'],
           produces: ['application/json'],
+          parameters: [params.emailToken],
           responses: {
             200: {
               description: description.request200,
@@ -666,6 +757,7 @@ const swagger = {
           description: 'Удаление транзакции',
           tags: ['Transactions'],
           security: { bearerAuth: [] },
+          parameters: [params.id],
           produces: ['application/json'],
           responses: {
             200: {

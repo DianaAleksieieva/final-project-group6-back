@@ -4,6 +4,7 @@ function toStringNumber(number) {
 }
 
 async function putSetOfTransactionsModel(
+  owner,
   type,
   category,
   description,
@@ -17,7 +18,7 @@ async function putSetOfTransactionsModel(
   return await Transaction.create(
     [
       {
-        owner: '61e09dc909927ca3105b32b4',
+        owner,
         type,
         description,
         category,

@@ -11,4 +11,8 @@ const joiLoginSchema = Joi.object({
   password: Joi.string().required(),
 });
 
-export default { joiLoginSchema, joiRegisterSchema };
+const emailTokenJoiSchema = Joi.object({
+  emailToken: Joi.string().required(),
+});
+
+export default { joiLoginSchema, joiRegisterSchema, emailTokenJoiSchema };
