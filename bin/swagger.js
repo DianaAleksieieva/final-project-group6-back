@@ -41,9 +41,6 @@ const examples = {
   response200VerificationSend: {
     message: 'Verification email sent',
   },
-  response200currentBalance: {
-    currentBalance: 1000,
-  },
   response200transactionDeleted: {
     message: 'Transaction deleted',
   },
@@ -77,106 +74,6 @@ const examples = {
 };
 
 const params = {
-  emailToken: {
-    name: 'emailToken',
-    description: description.emailToken,
-    in: 'path',
-    required: true,
-    type: 'string',
-    schema: {
-      type: 'string',
-      examples: 'loC--iEY_hm3AmzoeBZpt',
-    },
-  },
-
-  authorization: {
-    name: 'authorization',
-    description: description.authorization,
-    in: 'header',
-    required: true,
-    type: 'http',
-    schema: 'bearer',
-    bearerFormat: 'JWT',
-  },
-  password: {
-    in: 'body',
-    // in: 'body',
-    name: 'password',
-    description: description.password,
-    required: true,
-    type: 'string',
-  },
-  currentBalance: {
-    name: 'currentBalance',
-    description: description.currentBalance,
-    in: 'formData',
-    required: true,
-    type: 'number',
-  },
-  currentBalanceInBody: {
-    in: 'body',
-    name: 'currentBalance',
-    description: description.currentBalance,
-    in: 'formData',
-    required: true,
-    type: 'number',
-  },
-  type: {
-    name: 'type',
-    description: description.type,
-    in: 'formData',
-    required: true,
-    type: 'string',
-    enum: ['income', 'expense'],
-  },
-  typeInBody: {
-    in: 'body',
-    name: 'type',
-    description: description.type,
-    in: 'formData',
-    required: true,
-    type: 'string',
-    enum: ['income', 'expense'],
-  },
-  dateInBody: {
-    in: 'body',
-    name: 'date',
-    description: description.date,
-    in: 'formData',
-    required: true,
-    type: 'date',
-  },
-  categoryInBody: {
-    in: 'body',
-    name: 'category',
-    description: description.category,
-    in: 'formData',
-    required: true,
-    type: String,
-    enum: [
-      'transport',
-      'goods',
-      'health',
-      'alco',
-      'fun',
-      'house',
-      'tech',
-      'utilities',
-      'sport',
-      'education',
-      'other',
-      'salary',
-      'freelance',
-    ],
-  },
-  amount: {
-    in: 'body',
-    name: 'amount',
-    description: description.amount,
-    in: 'formData',
-    required: true,
-    type: 'number',
-  },
   id: {
     name: 'id',
     description: description.id,
@@ -453,12 +350,11 @@ const swagger = {
           },
         },
       },
-      '/api/auth/current': {
+      '/api/user/current': {
         get: {
-          summary: 'Выход пользователя',
-          tags: ['Auth'],
-          security: { bearerAuth: [] },
-          produces: ['application/json'],
+          summary: 'Получение информации о текушем пользователе',
+          tags: ['User'],
+          security: [{ Bearer: [] }],
           responses: {
             200: {
               description: description.request200,
@@ -466,29 +362,7 @@ const swagger = {
                 'application/json': {
                   schema: {
                     type: 'object',
-                    properties: {
-                      user: {
-                        type: 'object',
-                        properties: {
-                          _id: {
-                            type: 'object',
-                            example: examples.userID,
-                          },
-                          email: {
-                            type: 'string',
-                            example: examples.email,
-                          },
-                          userName: {
-                            type: 'string',
-                            example: examples.userName,
-                          },
-                        },
-                      },
-                      token: {
-                        type: 'string',
-                        example: examples.token,
-                      },
-                    },
+                    $ref: '#/components/schemes/СurrentUser/Response200',
                   },
                 },
               },
@@ -499,7 +373,7 @@ const swagger = {
                 'application/json': {
                   schema: {
                     type: 'object',
-                    example: examples.response401unautorized,
+                    $ref: '#/components/schemes/Response401unautorized',
                   },
                 },
               },
@@ -507,13 +381,15 @@ const swagger = {
           },
         },
       },
-      '/api/auth/avatar': {
+      '/api/user/avatar': {
         patch: {
           summary: 'Отправка новой картинки для смены Аватара',
-          tags: ['Auth'],
-          security: { bearerAuth: [] },
+          tags: ['User'],
+          security: [{ Bearer: [] }],
           produces: ['multipart/form-data'],
           requestBody: {
+            description: 'Тело отправки картинки',
+            required: true,
             content: {
               'image/png': {
                 schema: {
@@ -536,7 +412,7 @@ const swagger = {
                 'application/json': {
                   schema: {
                     type: 'object',
-                    example: examples.response200avatarSuccess,
+                    $ref: '#/components/schemes/UserAvatar/Response200',
                   },
                 },
               },
@@ -547,7 +423,7 @@ const swagger = {
                 'application/json': {
                   schema: {
                     type: 'object',
-                    example: examples.response401unautorized,
+                    $ref: '#/components/schemes/Response401unautorized',
                   },
                 },
               },
@@ -555,13 +431,23 @@ const swagger = {
           },
         },
       },
-      '/api/transactions/balance': {
+      '/api/user/balance': {
         put: {
           summary: 'Обновление значения баланса',
-          tags: ['Transactions'],
-          security: { bearerAuth: [] },
-          parameters: [params.currentBalance],
-          produces: ['application/json'],
+          tags: ['User'],
+          security: [{ Bearer: [] }],
+          requestBody: {
+            description: 'Тело запроса обновления баланса пользователя',
+            required: true,
+            content: {
+              'application/json': {
+                schema: {
+                  type: 'object',
+                  $ref: '#/components/schemes/UserBalance/Request',
+                },
+              },
+            },
+          },
           responses: {
             200: {
               description: description.request200,
@@ -569,18 +455,7 @@ const swagger = {
                 'application/json': {
                   schema: {
                     type: 'object',
-                    example: examples.response200currentBalance,
-                  },
-                },
-              },
-            },
-            401: {
-              description: description.request401,
-              content: {
-                'application/json': {
-                  schema: {
-                    type: 'object',
-                    example: examples.response401unautorized,
+                    $ref: '#/components/schemes/UserBalance/Response200',
                   },
                 },
               },
@@ -591,7 +466,18 @@ const swagger = {
                 'application/json': {
                   schema: {
                     type: 'object',
-                    example: examples.response400validator,
+                    $ref: '#/components/schemes/Response400Joi',
+                  },
+                },
+              },
+            },
+            401: {
+              description: description.request401,
+              content: {
+                'application/json': {
+                  schema: {
+                    type: 'object',
+                    $ref: '#/components/schemes/Response401unautorized',
                   },
                 },
               },
@@ -603,14 +489,19 @@ const swagger = {
         post: {
           summary: 'Добавление транзакции доход или расход',
           tags: ['Transactions'],
-          security: { bearerAuth: [] },
-          parameters: [
-            params.type,
-            params.date,
-            params.category,
-            params.amount,
-          ],
-          produces: ['application/json'],
+          security: [{ Bearer: [] }],
+          requestBody: {
+            description: 'Тело запроса обновления баланса пользователя',
+            required: true,
+            content: {
+              'application/json': {
+                schema: {
+                  type: 'object',
+                  $ref: '#/components/schemes/AddTransaction/Request',
+                },
+              },
+            },
+          },
           responses: {
             200: {
               description: description.request200,
@@ -618,69 +509,7 @@ const swagger = {
                 'application/json': {
                   schema: {
                     type: 'object',
-                    properties: {
-                      transaction: {
-                        type: 'object',
-                        properties: {
-                          _id: {
-                            type: 'object',
-                            example: examples.transactionID,
-                          },
-                          owner: {
-                            type: 'object',
-                            properties: {
-                              _id: {
-                                type: 'object',
-                                example: examples.userID,
-                              },
-                              email: {
-                                type: 'string',
-                                example: examples.email,
-                              },
-                              userName: {
-                                type: 'string',
-                                example: examples.userName,
-                              },
-                            },
-                          },
-                          type: {
-                            type: 'string',
-                            example: examples.type,
-                          },
-                          date: {
-                            type: 'date',
-                            example: examples.date,
-                          },
-                          category: {
-                            type: 'string',
-                            example: examples.category,
-                          },
-                          amount: {
-                            type: 'number',
-                            example: examples.amount,
-                          },
-                          month: {
-                            type: 'number',
-                            example: examples.month,
-                          },
-                          year: {
-                            type: 'number',
-                            example: examples.year,
-                          },
-                        },
-                      },
-                    },
-                  },
-                },
-              },
-            },
-            401: {
-              description: description.request401,
-              content: {
-                'application/json': {
-                  schema: {
-                    type: 'object',
-                    example: examples.response401unautorized,
+                    $ref: '#/components/schemes/AddTransaction/Response200',
                   },
                 },
               },
@@ -691,7 +520,18 @@ const swagger = {
                 'application/json': {
                   schema: {
                     type: 'object',
-                    example: examples.response400validator,
+                    $ref: '#/components/schemes/Response400Joi',
+                  },
+                },
+              },
+            },
+            401: {
+              description: description.request401,
+              content: {
+                'application/json': {
+                  schema: {
+                    type: 'object',
+                    $ref: '#/components/schemes/Response401unautorized',
                   },
                 },
               },
@@ -703,7 +543,7 @@ const swagger = {
         delete: {
           summary: 'Удаление транзакции',
           tags: ['Transactions'],
-          security: { bearerAuth: [] },
+          security: [{ Bearer: [] }],
           parameters: [params.id],
           produces: ['application/json'],
           responses: {
@@ -759,7 +599,7 @@ const swagger = {
           summary:
             'DEV:) Совершает {count} циклов добавления транзакций за {month} месяц {year} года',
           tags: ['Transactions'],
-          security: { bearerAuth: [] },
+          security: [{ Bearer: [] }],
           produces: ['application/json'],
           responses: {
             200: {
@@ -807,7 +647,7 @@ const swagger = {
         get: {
           summary: 'Сбор информации за год по транзакциях доходов или расходов',
           tags: ['Transactions'],
-          security: { bearerAuth: [] },
+          security: [{ Bearer: [] }],
           parameters: [params.type],
           produces: ['application/json'],
           responses: {
@@ -929,7 +769,7 @@ const swagger = {
           summary:
             'Сбор информации за месяц по транзакциях доходов или расходов',
           tags: ['Transactions'],
-          security: { bearerAuth: [] },
+          security: [{ Bearer: [] }],
           parameters: [params.type],
           produces: ['application/json'],
           responses: {
@@ -1145,7 +985,7 @@ const swagger = {
         get: {
           summary: 'Сбор информации за месяц по категориях',
           tags: ['Transactions'],
-          security: { bearerAuth: [] },
+          security: [{ Bearer: [] }],
           parameters: [params.category],
           produces: ['application/json'],
           responses: {
@@ -1422,6 +1262,139 @@ const swagger = {
             },
           },
         },
+        СurrentUser: {
+          Response200: {
+            type: 'object',
+            properties: {
+              user: {
+                type: 'object',
+                properties: {
+                  _id: {
+                    type: 'object',
+                    example: examples.userID,
+                  },
+                  email: {
+                    type: 'string',
+                    example: examples.email,
+                  },
+                  userName: {
+                    type: 'string',
+                    example: examples.userName,
+                  },
+                },
+              },
+              token: {
+                type: 'string',
+                example: examples.token,
+              },
+            },
+          },
+        },
+        UserAvatar: {
+          Response200: {
+            type: 'object',
+            properties: {
+              message: {
+                type: 'string',
+                avatarURL: 'тут будет ссылка на изображение',
+              },
+            },
+          },
+        },
+        UserBalance: {
+          Request: {
+            type: 'object',
+            properties: {
+              currentBalance: {
+                type: 'number',
+                example: '1000',
+              },
+            },
+          },
+          Response200: {
+            type: 'object',
+            properties: {
+              currentBalance: {
+                type: 'number',
+                example: 1000,
+              },
+            },
+          },
+        },
+        AddTransaction: {
+          Request: {
+            type: 'object',
+            properties: {
+              type: {
+                type: 'string',
+                example: 'expense',
+              },
+              category: {
+                type: 'string',
+                example: 'tech',
+              },
+              date: {
+                type: 'date',
+                example: '2021-05-12T08:35:00.000Z',
+              },
+              amount: {
+                type: 'number',
+                example: '35000',
+              },
+              description: {
+                type: 'string',
+                example: 'Покупка компьютера',
+              },
+            },
+          },
+          Response200: {
+            type: 'object',
+            properties: {
+              transaction: {
+                type: 'object',
+                properties: {
+                  _id: {
+                    type: 'object',
+                    example: examples.transactionID,
+                  },
+                  owner: {
+                    type: 'string',
+                    example: '61e09dc909927ca3105b32b4',
+                  },
+                  type: {
+                    type: 'string',
+                    example: 'expense',
+                  },
+                  date: {
+                    type: 'date',
+                    example: '2021-05-12T08:35:00.000Z',
+                  },
+                  description: {
+                    type: 'string',
+                    example: 'Покупка компьютера',
+                  },
+                  category: {
+                    type: 'string',
+                    example: 'tech',
+                  },
+                  amount: {
+                    type: 'number',
+                    example: 35000,
+                  },
+                },
+              },
+              oldBalance: {
+                type: 'number',
+                example: 100000,
+              },
+              currentBalance: {
+                type: 'number',
+                example: 65000,
+              },
+            },
+          },
+        },
+
         Response400Joi: {
           type: 'object',
           properties: {

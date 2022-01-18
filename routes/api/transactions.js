@@ -19,8 +19,8 @@ const {
 } = joiSchema;
 const {
   balanceUpdate,
-  addTransaction,
-  removeTransaction,
+  addTransactionController,
+  removeTransactionController,
   getYearlyByTypeController,
   getMonthlyByTypeController,
   getAllMonthlyByCategoryController,
@@ -40,14 +40,14 @@ router.post(
   '/add',
   authMware,
   validationMware(addTransactionJoiSchema),
-  ctrlWrapperMware(addTransaction),
+  ctrlWrapperMware(addTransactionController),
 );
 
 router.delete(
   '/:id',
   authMware,
   paramsValidationMware(idParamsJoiSchema),
-  ctrlWrapperMware(removeTransaction),
+  ctrlWrapperMware(removeTransactionController),
 );
 
 router.put(

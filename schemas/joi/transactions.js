@@ -25,6 +25,7 @@ const addTransactionJoiSchema = Joi.object({
       'freelance',
     ),
   amount: Joi.number().min(1).required(),
+  description: Joi.string(),
 });
 
 const categoryTransactionJoiSchema = Joi.object({
