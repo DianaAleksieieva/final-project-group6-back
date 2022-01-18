@@ -5,6 +5,7 @@ import getYearlyByTypeController from './getYearlyByTypeController.js';
 import getAllMonthlyTransactions from './getAllMonthlyTransactions.js';
 import getAllMonthlyByCategoryController from './getAllMonthlyByCategoryController.js';
 import getAllMonthlyByTypeTransactions from './getAllMonthlyByTypeTransactions.js';
+import putSetOfTransactionsController from './putSetOfTransactionsController.js';
 
 export default {
   balanceUpdate,
@@ -14,4 +15,5 @@ export default {
   getAllMonthlyTransactions,
   getAllMonthlyByCategoryController,
   getAllMonthlyByTypeTransactions,
+  putSetOfTransactionsController,
 };

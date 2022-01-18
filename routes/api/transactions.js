@@ -24,6 +24,7 @@ const {
   getAllMonthlyTransactions,
   getAllMonthlyByCategoryController,
   getAllMonthlyByTypeTransactions,
+  putSetOfTransactionsController,
 } = controller;
 const router = express.Router();
 
@@ -46,6 +47,11 @@ router.delete(
   authMware,
   paramsValidationMware(idParamsJoiSchema),
   ctrlWrapperMware(removeTransaction),
+);
+router.put(
+  '/set/:year/:month/:count',
+  authMware,
+  ctrlWrapperMware(putSetOfTransactionsController),
 );
 router.get(
   '/year/:year/:type',

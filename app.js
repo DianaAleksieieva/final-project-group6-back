@@ -2,20 +2,24 @@ import express from 'express';
 import logger from 'morgan';
 import cors from 'cors';
 import chalk from 'chalk';
+import swaggerUi from 'swagger-ui-express';
+import swaggerJSDoc from 'swagger-jsdoc';
+import swagger from './bin/swagger.js';
 
 import { authRouter, transactionsRouter } from './routes/api/index.js';
 import dotenv from 'dotenv';
+const document = swaggerJSDoc(swagger);
 dotenv.config();
 
 const app = express();
 
 const formatsLogger = app.get('env') === 'development' ? 'dev' : 'short';
-
 app.use(logger(formatsLogger));
 app.use(cors());
 app.use(express.json());
 app.use(express.static('public'));
 
+app.use('/api/docs', swaggerUi.serve, swaggerUi.setup(document));
 app.use('/api/auth', authRouter);
 app.use('/api/transactions', transactionsRouter);
 

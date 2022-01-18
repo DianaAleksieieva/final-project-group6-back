@@ -4,7 +4,7 @@ const { Schema } = mongoose;
 const transactionSchema = Schema(
   {
     owner: {
-      type: Schema.Types.ObjectId,
+      type: Object,
       ref: 'user',
       required: true,
     },

@@ -1,6 +1,11 @@
 const description = {
   login: 'Логин пользователя',
   password: 'Пароль пользователя',
+  currentBalance: 'Текущий баланс',
+  type: 'Тип транзакции доход(income) или расход(expense)',
+  date: 'Дата транзакции',
+  category: 'Категория транзакции',
+  amount: 'Значение транзакции',
   request200: 'ОК - [Запрос соответствует всем критериями]',
   request201: 'Created - [Запрос соответствует всем критериями]',
   request400: 'Bad Request - [Поисковый запрос содержит неверные даные]',
@@ -13,15 +18,30 @@ const examples = {
   userID: {
     $oid: '61e09dc909927ca3105b32b4',
   },
+  transactionID: {
+    $oid: '61e45142008a3b98cdbfd355',
+  },
   token:
     'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYxZTQzNTg4MGU1MTY3YzVkNjJhMzdlNCIsImlhdCI6MTY0MjM0NTg2OSwiZXhwIjoxNjQyMzQ5NDY5fQ.kZLpCKFCp8rdrp9FetFM0QQOTpuVkhnqpTB0_2NqiX4',
   email: 'test@email.com',
   userName: 'Иванов Иван Иванович',
+  type: 'income',
+  date: '21.09.2019',
+  category: 'summary',
+  amount: 25000,
+  month: 9,
+  year: 2019,
   response200VerificationSuccessful: {
     message: 'Verification successful',
   },
   response200VerificationSend: {
     message: 'Verification email sent',
+  },
+  response200currentBalance: {
+    currentBalance: 1000,
+  },
+  response200transactionDeleted: {
+    message: 'Transaction deleted',
   },
   response400validator: {
     message: '<Ошибка от Joi или другой библиотеки валидации>',
@@ -34,6 +54,9 @@ const examples = {
   },
   response404UserNotFound: {
     message: 'User not found',
+  },
+  response404TransactionNotFound: {
+    message: 'Transaction not found',
   },
   response409EmailInUse: {
     message: 'Email in use',
@@ -61,6 +84,57 @@ const params = {
     required: true,
     type: 'string',
   },
+  currentBalance: {
+    name: 'currentBalance',
+    description: description.currentBalance,
+    in: 'formData',
+    required: true,
+    type: 'number',
+  },
+  type: {
+    name: 'type',
+    description: description.type,
+    in: 'formData',
+    required: true,
+    type: 'string',
+    enum: ['income', 'expense'],
+  },
+  date: {
+    name: 'date',
+    description: description.date,
+    in: 'formData',
+    required: true,
+    type: 'date',
+  },
+  category: {
+    name: 'category',
+    description: description.category,
+    in: 'formData',
+    required: true,
+    type: String,
+    enum: [
+      'transport',
+      'goods',
+      'health',
+      'alco',
+      'fun',
+      'house',
+      'tech',
+      'utilities',
+      'sport',
+      'education',
+      'other',
+      'salary',
+      'freelance',
+    ],
+  },
+  amount: {
+    name: 'amount',
+    description: description.amount,
+    in: 'formData',
+    required: true,
+    type: 'number',
+  },
 };
 
 const swagger = {
@@ -69,11 +143,11 @@ const swagger = {
     info: {
       title: 'Kapusta-API',
       version: '1.0.0',
-      description: 'A sample API',
+      description: 'https://final-project-group6-back.herokuapp.com/',
     },
     paths: {
       '/api/auth/register': {
-        get: {
+        post: {
           description: 'Регистрация нового пользователя',
           tags: ['Auth'],
           produces: ['application/json'],
@@ -432,6 +506,204 @@ const swagger = {
                   schema: {
                     type: 'object',
                     example: examples.response401unautorized,
+                  },
+                },
+              },
+            },
+          },
+        },
+      },
+      '/api/transactions/balance': {
+        put: {
+          description: 'Обновление значения баланса',
+          tags: ['Transactions'],
+          security: { bearerAuth: [] },
+          parameters: [params.currentBalance],
+          produces: ['application/json'],
+          responses: {
+            200: {
+              description: description.request200,
+              content: {
+                'application/json': {
+                  schema: {
+                    type: 'object',
+                    example: examples.response200currentBalance,
+                  },
+                },
+              },
+            },
+            401: {
+              description: description.request401,
+              content: {
+                'application/json': {
+                  schema: {
+                    type: 'object',
+                    example: examples.response401unautorized,
+                  },
+                },
+              },
+            },
+            400: {
+              description: description.request400,
+              content: {
+                'application/json': {
+                  schema: {
+                    type: 'object',
+                    example: examples.response400validator,
+                  },
+                },
+              },
+            },
+          },
+        },
+      },
+      '/api/transactions/add': {
+        post: {
+          description: 'Добавление транзакции доход или расход',
+          tags: ['Transactions'],
+          security: { bearerAuth: [] },
+          parameters: [
+            params.type,
+            params.date,
+            params.category,
+            params.amount,
+          ],
+          produces: ['application/json'],
+          responses: {
+            200: {
+              description: description.request200,
+              content: {
+                'application/json': {
+                  schema: {
+                    type: 'object',
+                    properties: {
+                      transaction: {
+                        type: 'object',
+                        properties: {
+                          _id: {
+                            type: 'object',
+                            example: examples.transactionID,
+                          },
+                          owner: {
+                            type: 'object',
+                            properties: {
+                              _id: {
+                                type: 'object',
+                                example: examples.userID,
+                              },
+                              email: {
+                                type: 'string',
+                                example: examples.email,
+                              },
+                              userName: {
+                                type: 'string',
+                                example: examples.userName,
+                              },
+                            },
+                          },
+                          type: {
+                            type: 'string',
+                            example: examples.type,
+                          },
+                          date: {
+                            type: 'date',
+                            example: examples.date,
+                          },
+                          category: {
+                            type: 'string',
+                            example: examples.category,
+                          },
+                          amount: {
+                            type: 'number',
+                            example: examples.amount,
+                          },
+                          month: {
+                            type: 'number',
+                            example: examples.month,
+                          },
+                          year: {
+                            type: 'number',
+                            example: examples.year,
+                          },
+                        },
+                      },
+                    },
+                  },
+                },
+              },
+            },
+            401: {
+              description: description.request401,
+              content: {
+                'application/json': {
+                  schema: {
+                    type: 'object',
+                    example: examples.response401unautorized,
+                  },
+                },
+              },
+            },
+            400: {
+              description: description.request400,
+              content: {
+                'application/json': {
+                  schema: {
+                    type: 'object',
+                    example: examples.response400validator,
+                  },
+                },
+              },
+            },
+          },
+        },
+      },
+      '/api/transactions/:id': {
+        delete: {
+          description: 'Удаление транзакции',
+          tags: ['Transactions'],
+          security: { bearerAuth: [] },
+          produces: ['application/json'],
+          responses: {
+            200: {
+              description: description.request200,
+              content: {
+                'application/json': {
+                  schema: {
+                    type: 'object',
+                    example: examples.response200transactionDeleted,
+                  },
+                },
+              },
+            },
+            400: {
+              description: description.request400,
+              content: {
+                'application/json': {
+                  schema: {
+                    type: 'object',
+                    example: examples.response400validator,
+                  },
+                },
+              },
+            },
+            401: {
+              description: description.request401,
+              content: {
+                'application/json': {
+                  schema: {
+                    type: 'object',
+                    example: examples.response401unautorized,
+                  },
+                },
+              },
+            },
+            404: {
+              description: description.request404,
+              content: {
+                'application/json': {
+                  schema: {
+                    type: 'object',
+                    example: examples.response404TransactionNotFound,
                   },
                 },
               },
