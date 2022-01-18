@@ -1,22 +1,25 @@
 import getAllMonthlyByCategoryModel from '../../models/transactions/getAllMonthlyByCategoryModel.js';
-// import httpError from 'http-errors';
+import httpError from 'http-errors';
 import getAllMonthlyByCategoryHelper from '../../helpers/getAllMonthlyByCategoryHelper.js';
 
 const getAllMonthlyByCategoryController = async (req, res) => {
   const { params, user, body } = req;
-  const { categories } = body;
+  const { category } = body;
+
   const month = parseInt(params.month);
   const year = parseInt(params.year);
   const transactions = await getAllMonthlyByCategoryModel(
     month,
     year,
-    categories,
+    category,
     user,
   );
-  // if (!transactions.length) throw new httpError.NotFound('Not found');
-  const { total, sum } = getAllMonthlyByCategoryHelper(transactions);
+  if (!transactions.length) throw new httpError.NotFound('Not found');
+  const { total, sum, description } =
+    getAllMonthlyByCategoryHelper(transactions);
   res
     .status(200)
-    .send({ total, month, year, sum, categories, result: transactions });
+    .send({ year, month, total, sum, category, description, transactions });
+
 };
 export default getAllMonthlyByCategoryController;

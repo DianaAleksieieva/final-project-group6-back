@@ -3,8 +3,8 @@ import httpError from 'http-errors';
 import countYearlyByTypeHelper from '../../helpers/countYearlyByTypeHelper.js';
 
 const getYearlyByTypeController = async (req, res) => {
-  const { params, user } = req;
-  const type = params.type;
+  const { params, user, body } = req;
+  const type = body.type;
   const year = parseInt(params.year);
 
   const transactions = await getYearlyByTypeModel(type, year, user);

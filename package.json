@@ -25,6 +25,8 @@
     "morgan": "1.10.0",
     "multer": "^1.4.4",
     "nanoid": "^3.1.30",
+    "swagger-jsdoc": "^6.1.0",
+    "swagger-ui-express": "^4.3.0",
     "uuid": "^8.3.2",
     "ws": "^8.3.0"
   },

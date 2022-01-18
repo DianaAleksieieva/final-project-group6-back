@@ -4,7 +4,7 @@ import bcrypt from 'bcryptjs';
 
 const userSchema = Schema(
   {
-    name: {
+    userName: {
       type: String,
       required: true,
       default: 'Unnamed',
