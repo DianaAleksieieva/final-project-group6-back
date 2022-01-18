@@ -1,5 +1,5 @@
 import getAllMonthlyByCategoryModel from '../../models/transactions/getAllMonthlyByCategoryModel.js';
-// import httpError from 'http-errors';
+import httpError from 'http-errors';
 import getAllMonthlyByCategoryHelper from '../../helpers/getAllMonthlyByCategoryHelper.js';
 
 const getAllMonthlyByCategoryController = async (req, res) => {
@@ -13,7 +13,7 @@ const getAllMonthlyByCategoryController = async (req, res) => {
     categories,
     user,
   );
-  // if (!transactions.length) throw new httpError.NotFound('Not found');
+  if (!transactions.length) throw new httpError.NotFound('Not found');
   const { total, sum } = getAllMonthlyByCategoryHelper(transactions);
   res
     .status(200)

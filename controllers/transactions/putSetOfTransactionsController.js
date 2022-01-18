@@ -15,7 +15,7 @@ const putSetOfTransactionsController = async (req, res) => {
 
   let transactionCounter = 0;
   const categoryExpenses = {
-    transport: ['Проезд а траллейбусе', 'Такси', 'Метро'],
+    transport: ['Троллейбус', 'Такси', 'Метро'],
     goods: [
       'Свинина',
       'Хлеб',
@@ -30,7 +30,7 @@ const putSetOfTransactionsController = async (req, res) => {
       'Выпечка',
       'Салаты',
     ],
-    health: ['БАДы', 'Лекарства'],
+    health: ['Уколы', 'Лекарства'],
     alco: ['Пиво', 'Водка', 'Пиво с водкой'],
     fun: ['Кинотеатр', 'Библиотека', 'Пивариум'],
     house: ['Ремонт', 'Сантехника', 'Клининг'],
@@ -38,11 +38,16 @@ const putSetOfTransactionsController = async (req, res) => {
     utilities: ['Свет', 'Вода', 'Газ'],
     sport: ['Спортзал', 'Теннис', 'Шахматы'],
     education: ['Курсы'],
-    other: ['ломбард'],
+    other: ['Возврат кредита', 'Выкуп с ломбарда', 'Кража'],
   };
   const categoryIncomes = {
     salary: ['Моя з/п'],
-    freelance: ['Подработка таксистом', 'Сдача в аренду болгарки'],
+    freelance: [
+      'Подработка таксистом',
+      'Сдача в аренду болгарки',
+      'Реппетиторство',
+      'Сдача в аренду комнаты',
+    ],
   };
 
   for (let counter = 0; counter < count; counter++) {
@@ -53,7 +58,7 @@ const putSetOfTransactionsController = async (req, res) => {
         const day = month === 2 ? getRandom(1, 29) : getRandom(1, 31);
         const hour = getRandom(8, 21);
         const minute = getRandom(1, 60);
-        if (Math.random() > 0.6) {
+        if (Math.random() > 0.7) {
           const transaction = await putSetOfTransactionsModel(
             type,
             category,
@@ -101,20 +106,22 @@ const putSetOfTransactionsController = async (req, res) => {
       const day = month === 2 ? getRandom(1, 29) : getRandom(1, 31);
       const hour = getRandom(8, 21);
       const minute = getRandom(1, 60);
-      const transaction = await putSetOfTransactionsModel(
-        type,
-        category,
-        description,
-        amount,
-        year,
-        month,
-        day,
-        hour,
-        minute,
-      );
-      console.log(transaction);
-      if (transaction.length) transactionCounter++;
-      console.log(transactionCounter);
+      if (Math.random() > 0.7) {
+        const transaction = await putSetOfTransactionsModel(
+          type,
+          category,
+          description,
+          amount,
+          year,
+          month,
+          day,
+          hour,
+          minute,
+        );
+        console.log(transaction);
+        if (transaction.length) transactionCounter++;
+        console.log(transactionCounter);
+      }
     });
   }
 

@@ -13,7 +13,7 @@ const {
   categoryTransactionJoiSchema,
   typeTransactionJoiSchema,
   monthYearParamsJoiSchema,
-  yearTypeParamsJoiSchema,
+  yearParamsJoiSchema,
   idParamsJoiSchema,
 } = joiSchema;
 const {
@@ -21,7 +21,7 @@ const {
   addTransaction,
   removeTransaction,
   getYearlyByTypeController,
-  getAllMonthlyTransactions,
+  getMonthlyByTypeController,
   getAllMonthlyByCategoryController,
   getAllMonthlyByTypeTransactions,
   putSetOfTransactionsController,
@@ -54,17 +54,19 @@ router.put(
   ctrlWrapperMware(putSetOfTransactionsController),
 );
 router.get(
-  '/year/:year/:type',
+  '/get/:year',
   authMware,
-  paramsValidationMware(yearTypeParamsJoiSchema),
+  paramsValidationMware(yearParamsJoiSchema),
+  validationMware(typeTransactionJoiSchema),
   ctrlWrapperMware(getYearlyByTypeController),
 );
 
 router.get(
-  '/month/:month/:year',
+  '/get/:year/:month',
   authMware,
+  validationMware(typeTransactionJoiSchema),
   paramsValidationMware(monthYearParamsJoiSchema),
-  ctrlWrapperMware(getAllMonthlyTransactions),
+  ctrlWrapperMware(getMonthlyByTypeController),
 );
 
 router.get(

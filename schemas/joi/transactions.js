@@ -48,7 +48,7 @@ const categoryTransactionJoiSchema = Joi.object({
 });
 
 const typeTransactionJoiSchema = Joi.object({
-  type: Joi.string().required().valid('income', 'expense'),
+  type: Joi.string().required().valid('income', 'expense', 'all'),
 });
 
 const monthYearParamsJoiSchema = Joi.object({
@@ -59,6 +59,9 @@ const monthYearParamsJoiSchema = Joi.object({
 const yearTypeParamsJoiSchema = Joi.object({
   year: Joi.number().required(),
   type: Joi.string().required().valid('income', 'expense'),
+});
+const yearParamsJoiSchema = Joi.object({
+  year: Joi.number().required(),
 });
 
 const idParamsJoiSchema = Joi.object({
@@ -72,5 +75,6 @@ export default {
   typeTransactionJoiSchema,
   monthYearParamsJoiSchema,
   yearTypeParamsJoiSchema,
+  yearParamsJoiSchema,
   idParamsJoiSchema,
 };

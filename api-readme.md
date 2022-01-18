@@ -2,11 +2,12 @@
 
 ### getYearlyTransactionsByType request
 
-//type: 'income' or 'expense'
-
 ```
-GET /api/transactions/year/:year/:type
+GET /api/transactions/year/:year
 Authorization: "Bearer {{token}}"
+RequestBody: {
+  "type": 'income' //or 'expense' or 'all'
+}
 ```
 
 ### getYearlyTransactionsByType error
@@ -68,8 +69,11 @@ ResponseBody: {
 ### getAllMonthlyTransactions request
 
 ```
-GET /api/transactions/month/:month/:year
+GET /api/transactions/get/:year/:month
 Authorization: "Bearer {{token}}"
+RequestBody: {
+  "type": 'income' //or 'expense'
+}
 ```
 
 ### getAllMonthlyTransactions error
