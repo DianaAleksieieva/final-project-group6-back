@@ -1,5 +1,4 @@
 import express from 'express';
-
 import {
   authMware,
   validationMware,
@@ -21,6 +20,6 @@ router.post(
   ctrlWrapperMware(auth.loginController),
 );
 
-router.post('/signout', authMware, ctrlWrapperMware(auth.signout));
+router.get('/logout', authMware, ctrlWrapperMware(auth.logoutController));
 
 export default router;
