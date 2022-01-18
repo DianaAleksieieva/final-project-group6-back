@@ -1,7 +1,7 @@
 import mongoose from 'mongoose';
 const { Schema } = mongoose;
 import bcrypt from 'bcryptjs';
-
+import jwt from 'jsonwebtoken';
 const userSchema = Schema(
   {
     userName: {
@@ -21,7 +21,9 @@ const userSchema = Schema(
     },
     token: {
       type: String,
-      default: null,
+      default: ({ _id }) => {
+        return jwt.sign({ id: _id }, process.env.SECRET_KEY);
+      },
     },
     avatarURL: {
       type: String,
@@ -40,16 +42,18 @@ const userSchema = Schema(
       type: Boolean,
       default: false,
     },
-    // verificationToken: {
-    //   type: String,
-    //   required: [true, 'Verify token is required'],
-    // },
+    verificationToken: {
+      type: String,
+      required: [true, 'Verify token is required'],
+    },
   },
   { versionKey: false, timestamps: true },
 );
 
 userSchema.methods.setPassword = function (password) {
   this.password = bcrypt.hashSync(password, bcrypt.genSaltSync(10));
+  console.log('this.password', this.password);
+  console.log('password', password);
 };
 
 userSchema.methods.comparePassword = function (password) {
