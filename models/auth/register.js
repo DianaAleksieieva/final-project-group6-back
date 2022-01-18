@@ -3,7 +3,7 @@ import { User } from '../../schemas/mongoose/index.js';
 import gravatar from 'gravatar';
 
 async function register({ email, password, name, verificationToken }) {
-  const user = await User.findOne({ email });
+  const userName = await User.findOne({ email });
   if (user) {
     throw new httpError.Conflict('Email in use');
   }
