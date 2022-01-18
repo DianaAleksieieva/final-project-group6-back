@@ -1,5 +1,6 @@
 const description = {
   emailToken: 'Токен для верификации email',
+  authorization: 'JWT Токен для авторизации',
   bodyRegistration: 'Тело запроса на регистрацию пользователя',
   password: 'Пароль пользователя',
   currentBalance: 'Текущий баланс',
@@ -88,6 +89,15 @@ const params = {
     },
   },
 
+  authorization: {
+    name: 'authorization',
+    description: description.authorization,
+    in: 'header',
+    required: true,
+    type: 'http',
+    schema: 'bearer',
+    bearerFormat: 'JWT',
+  },
   password: {
     in: 'body',
     // in: 'body',
@@ -186,29 +196,6 @@ const params = {
 };
 
 const reqBodys = {
-  mailPasswordNameBody: {
-    content: {
-      'application/json': {
-        schema: {
-          type: 'object',
-          properties: {
-            email: {
-              type: 'string',
-              example: '@mail.com',
-            },
-            password: {
-              type: 'string',
-              example: '',
-            },
-            userName: {
-              type: 'string',
-              example: '',
-            },
-          },
-        },
-      },
-    },
-  },
   mailPasswordBody: {
     content: {
       'application/json': {
@@ -235,16 +222,58 @@ const swagger = {
     openapi: '3.0.0',
     info: {
       title: 'Kapusta-API',
-      version: '1.0.0',
-      description: 'https://final-project-group6-back.herokuapp.com/',
+      version: '2.0.1',
+      description: 'https://pedantic-engelbart-4b98e1.netlify.app/',
+    },
+    consumes: ['application/json', 'multipart/form-data'],
+    produsces: ['application/json'],
+    servers: [
+      { url: 'http://localhost:4321' },
+      { url: 'https://final-project-group6-back.herokuapp.com/' },
+    ],
+    tags: [
+      {
+        name: 'Auth',
+        description:
+          'API ПОЛЬЗОВАТЕЛЯ. Отвечает за вход, выход, регистрацию и авторизацию пользователя',
+      },
+      {
+        name: 'User',
+        description:
+          'API ТРАНЗАКЦИЙ. Отвечает за все запросы связаные с пользователем',
+      },
+      {
+        name: 'Transactions',
+        description:
+          'API ТРАНЗАКЦИЙ. Отвечает за все запросы связаные с транзакциями',
+      },
+    ],
+    host: 'final-project-group6-back.herokuapp.com',
+    schemes: ['http', 'https'],
+    securityDefinitions: {
+      Bearer: {
+        type: 'apiKey',
+        name: 'Authorization',
+        in: 'header',
+      },
     },
     paths: {
       '/api/auth/register': {
         post: {
-          description: 'Регистрация нового пользователя',
+          summary: 'Регистрация нового пользователя',
           tags: ['Auth'],
-          produces: ['application/json'],
-          requestBody: reqBodys.mailPasswordNameBody,
+          requestBody: {
+            description: 'Тело запроса регистрации',
+            required: true,
+            content: {
+              'application/json': {
+                schema: {
+                  type: 'object',
+                  $ref: '#/components/schemes/Register/Request',
+                },
+              },
+            },
+          },
           responses: {
             201: {
               description: description.request201,
@@ -252,29 +281,7 @@ const swagger = {
                 'application/json': {
                   schema: {
                     type: 'object',
-                    properties: {
-                      token: {
-                        type: 'string',
-                        example: examples.token,
-                      },
-                      user: {
-                        type: 'object',
-                        properties: {
-                          _id: {
-                            type: 'object',
-                            example: examples.userID,
-                          },
-                          email: {
-                            type: 'string',
-                            example: examples.email,
-                          },
-                          userName: {
-                            type: 'string',
-                            example: examples.userName,
-                          },
-                        },
-                      },
-                    },
+                    $ref: '#/components/schemes/Register/Response201',
                   },
                 },
               },
@@ -285,7 +292,7 @@ const swagger = {
                 'application/json': {
                   schema: {
                     type: 'object',
-                    example: examples.response400validator,
+                    $ref: '#/components/schemes/Response400Joi',
                   },
                 },
               },
@@ -296,7 +303,7 @@ const swagger = {
                 'application/json': {
                   schema: {
                     type: 'object',
-                    example: examples.response409EmailInUse,
+                    $ref: '#/components/schemes/Response409EmailInUse',
                   },
                 },
               },
@@ -306,10 +313,20 @@ const swagger = {
       },
       '/api/auth/login': {
         post: {
-          description: 'Авторизация нового пользователя',
+          summary: 'Авторизация нового пользователя',
           tags: ['Auth'],
-          produces: ['application/json'],
-          requestBody: reqBodys.mailPasswordBody,
+          requestBody: {
+            description: 'Тело запроса авторизации',
+            required: true,
+            content: {
+              'application/json': {
+                schema: {
+                  type: 'object',
+                  $ref: '#/components/schemes/Login/Request',
+                },
+              },
+            },
+          },
           responses: {
             200: {
               description: description.request200,
@@ -317,29 +334,7 @@ const swagger = {
                 'application/json': {
                   schema: {
                     type: 'object',
-                    properties: {
-                      user: {
-                        type: 'object',
-                        properties: {
-                          _id: {
-                            type: 'object',
-                            example: examples.userID,
-                          },
-                          email: {
-                            type: 'string',
-                            example: examples.email,
-                          },
-                          userName: {
-                            type: 'string',
-                            example: examples.userName,
-                          },
-                        },
-                      },
-                      token: {
-                        type: 'string',
-                        example: examples.token,
-                      },
-                    },
+                    $ref: '#/components/schemes/Login/Response200',
                   },
                 },
               },
@@ -350,7 +345,7 @@ const swagger = {
                 'application/json': {
                   schema: {
                     type: 'object',
-                    example: examples.response400validator,
+                    $ref: '#/components/schemes/Response400Joi',
                   },
                 },
               },
@@ -361,7 +356,7 @@ const swagger = {
                 'application/json': {
                   schema: {
                     type: 'object',
-                    example: examples.response401wrongLoginPassword,
+                    $ref: '#/components/schemes/Response401wrongLoginPassword',
                   },
                 },
               },
@@ -373,9 +368,7 @@ const swagger = {
                 'application/json': {
                   schema: {
                     type: 'object',
-                    example: {
-                      message: 'Email in use',
-                    },
+                    $ref: '#/components/schemes/Response409EmailInUse',
                   },
                 },
               },
@@ -384,12 +377,21 @@ const swagger = {
         },
       },
       '/api/auth/verify/{emailToken}': {
-        //
         get: {
-          description: 'Верификация нового логина',
+          summary: 'Верификация нового email',
           tags: ['Auth'],
-          produces: ['application/json'],
-          parameters: [params.emailToken],
+          parameters: [
+            {
+              name: 'emailToken',
+              description: description.emailToken,
+              in: 'path',
+              required: true,
+              type: 'string',
+              schema: {
+                type: 'string',
+              },
+            },
+          ],
           responses: {
             200: {
               description: description.request200,
@@ -397,7 +399,7 @@ const swagger = {
                 'application/json': {
                   schema: {
                     type: 'object',
-                    example: examples.response200VerificationSuccessful,
+                    $ref: '#/components/schemes/EmailToken/Response200',
                   },
                 },
               },
@@ -408,7 +410,7 @@ const swagger = {
                 'application/json': {
                   schema: {
                     type: 'object',
-                    example: examples.response400validator,
+                    $ref: '#/components/schemes/Response400Joi',
                   },
                 },
               },
@@ -419,61 +421,7 @@ const swagger = {
                 'application/json': {
                   schema: {
                     type: 'object',
-                    example: examples.response404UserNotFound,
-                  },
-                },
-              },
-            },
-          },
-        },
-      },
-      '/api/auth/resend': {
-        get: {
-          description: 'Повторная отправка письма верификации на почту',
-          tags: ['Auth'],
-          produces: ['application/json'],
-          parameters: [params.email],
-          responses: {
-            200: {
-              description: description.request200,
-              content: {
-                'application/json': {
-                  schema: {
-                    type: 'object',
-                    example: examples.response200VerificationSend,
-                  },
-                },
-              },
-            },
-            400: {
-              description: description.request400,
-              content: {
-                'application/json': {
-                  schema: {
-                    type: 'object',
-                    example: examples.response400validator,
-                  },
-                },
-              },
-            },
-            409: {
-              description: description.request409,
-              content: {
-                'application/json': {
-                  schema: {
-                    type: 'object',
-                    example: examples.response409VerificationPassed,
-                  },
-                },
-              },
-            },
-            404: {
-              description: description.request404,
-              content: {
-                'application/json': {
-                  schema: {
-                    type: 'object',
-                    example: examples.response404UserNotFound,
+                    $ref: '#/components/schemes/Response404UserNotFound',
                   },
                 },
               },
@@ -483,14 +431,13 @@ const swagger = {
       },
       '/api/auth/logout': {
         post: {
-          description: 'Выход пользователя',
+          summary: 'Выход пользователя',
           tags: ['Auth'],
-          security: { bearerAuth: [] },
-          produces: ['application/json'],
+          security: [{ Bearer: [] }],
           responses: {
             204: {
               description: description.request200,
-              content: null,
+              content: {},
             },
             401: {
               description: description.request401,
@@ -498,7 +445,7 @@ const swagger = {
                 'application/json': {
                   schema: {
                     type: 'object',
-                    example: examples.response401unautorized,
+                    $ref: '#/components/schemes/Response401unautorized',
                   },
                 },
               },
@@ -508,7 +455,7 @@ const swagger = {
       },
       '/api/auth/current': {
         get: {
-          description: 'Выход пользователя',
+          summary: 'Выход пользователя',
           tags: ['Auth'],
           security: { bearerAuth: [] },
           produces: ['application/json'],
@@ -562,7 +509,7 @@ const swagger = {
       },
       '/api/auth/avatar': {
         patch: {
-          description: 'Отправка новой картинки для смены Аватара',
+          summary: 'Отправка новой картинки для смены Аватара',
           tags: ['Auth'],
           security: { bearerAuth: [] },
           produces: ['multipart/form-data'],
@@ -610,7 +557,7 @@ const swagger = {
       },
       '/api/transactions/balance': {
         put: {
-          description: 'Обновление значения баланса',
+          summary: 'Обновление значения баланса',
           tags: ['Transactions'],
           security: { bearerAuth: [] },
           parameters: [params.currentBalance],
@@ -654,7 +601,7 @@ const swagger = {
       },
       '/api/transactions/add': {
         post: {
-          description: 'Добавление транзакции доход или расход',
+          summary: 'Добавление транзакции доход или расход',
           tags: ['Transactions'],
           security: { bearerAuth: [] },
           parameters: [
@@ -752,9 +699,9 @@ const swagger = {
           },
         },
       },
-      '/api/transactions/:id': {
+      '/api/transactions/{id}': {
         delete: {
-          description: 'Удаление транзакции',
+          summary: 'Удаление транзакции',
           tags: ['Transactions'],
           security: { bearerAuth: [] },
           parameters: [params.id],
@@ -807,10 +754,10 @@ const swagger = {
           },
         },
       },
-      '/api/transactions/set/:year/:month/:count': {
+      '/api/transactions/set/{year}/{month}/{count}': {
         put: {
-          description:
-            'DEV:) Совершает :COUNT циклов добавления транзакций за :MONTH месяц :YEAR года',
+          summary:
+            'DEV:) Совершает {count} циклов добавления транзакций за {month} месяц {year} года',
           tags: ['Transactions'],
           security: { bearerAuth: [] },
           produces: ['application/json'],
@@ -856,10 +803,9 @@ const swagger = {
           },
         },
       },
-      '/api/transactions/get/:year': {
+      '/api/transactions/get/{year}': {
         get: {
-          description:
-            'Сбор информации за год по транзакциях доходов или расходов',
+          summary: 'Сбор информации за год по транзакциях доходов или расходов',
           tags: ['Transactions'],
           security: { bearerAuth: [] },
           parameters: [params.type],
@@ -978,9 +924,9 @@ const swagger = {
           },
         },
       },
-      '/api/transactions/get/:year/:month': {
+      '/api/transactions/get/{year}/{month}': {
         get: {
-          description:
+          summary:
             'Сбор информации за месяц по транзакциях доходов или расходов',
           tags: ['Transactions'],
           security: { bearerAuth: [] },
@@ -1152,356 +1098,6 @@ const swagger = {
                             category: 'goods',
                             amount: 112,
                           },
-                          {
-                            _id: '61e618a9a4fd75592726384c',
-                            date: '2021-09-09T15:03:00.000Z',
-                            description: 'Уколы',
-                            category: 'health',
-                            amount: 455,
-                          },
-                          {
-                            _id: '61e618a9a4fd755927263851',
-                            date: '2021-09-23T19:20:00.000Z',
-                            description: 'Сантехника',
-                            category: 'house',
-                            amount: 120,
-                          },
-                          {
-                            _id: '61e618a9a4fd75592726384e',
-                            date: '2021-09-02T13:50:00.000Z',
-                            description: 'Водка',
-                            category: 'alco',
-                            amount: 48,
-                          },
-                          {
-                            _id: '61e618a9a4fd755927263853',
-                            date: '2021-09-19T15:46:00.000Z',
-                            description: 'Вода',
-                            category: 'utilities',
-                            amount: 444,
-                          },
-                          {
-                            _id: '61e618a9a4fd755927263852',
-                            date: '2021-09-27T12:40:00.000Z',
-                            description: 'Клининг',
-                            category: 'house',
-                            amount: 418,
-                          },
-                          {
-                            _id: '61e618a9a4fd75592726384f',
-                            date: '2021-09-12T11:36:00.000Z',
-                            description: 'Пиво с водкой',
-                            category: 'alco',
-                            amount: 466,
-                          },
-                          {
-                            _id: '61e618a9a4fd755927263850',
-                            date: '2021-09-09T18:42:00.000Z',
-                            description: 'Пивариум',
-                            category: 'fun',
-                            amount: 43,
-                          },
-                          {
-                            _id: '61e618a9a4fd755927263854',
-                            date: '2021-09-07T16:30:00.000Z',
-                            description: 'Шахматы',
-                            category: 'sport',
-                            amount: 133,
-                          },
-                          {
-                            _id: '61e618a9a4fd755927263855',
-                            date: '2021-09-03T14:13:00.000Z',
-                            description: 'Курсы',
-                            category: 'education',
-                            amount: 580,
-                          },
-                          {
-                            _id: '61e618a9a4fd755927263856',
-                            date: '2021-09-30T15:54:00.000Z',
-                            description: 'Выкуп с ломбарда',
-                            category: 'other',
-                            amount: 24,
-                          },
-                          {
-                            _id: '61e618a9a4fd75592726385a',
-                            date: '2021-09-01T08:41:00.000Z',
-                            description: 'Выпечка',
-                            category: 'goods',
-                            amount: 324,
-                          },
-                          {
-                            _id: '61e618a9a4fd755927263857',
-                            date: '2021-09-07T12:17:00.000Z',
-                            description: 'Кража',
-                            category: 'other',
-                            amount: 24,
-                          },
-                          {
-                            _id: '61e618a9a4fd755927263859',
-                            date: '2021-09-24T16:09:00.000Z',
-                            description: 'Овощи',
-                            category: 'goods',
-                            amount: 431,
-                          },
-                          {
-                            _id: '61e618a9a4fd755927263858',
-                            date: '2021-09-16T08:26:00.000Z',
-                            description: 'Пельмени',
-                            category: 'goods',
-                            amount: 406,
-                          },
-                          {
-                            _id: '61e618a9a4fd75592726385d',
-                            date: '2021-09-16T16:39:00.000Z',
-                            description: 'Библиотека',
-                            category: 'fun',
-                            amount: 77,
-                          },
-                          {
-                            _id: '61e618a9a4fd75592726385e',
-                            date: '2021-09-02T18:07:00.000Z',
-                            description: 'Клининг',
-                            category: 'house',
-                            amount: 480,
-                          },
-                          {
-                            _id: '61e618a9a4fd75592726385c',
-                            date: '2021-09-05T11:54:00.000Z',
-                            description: 'Лекарства',
-                            category: 'health',
-                            amount: 233,
-                          },
-                          {
-                            _id: '61e618a9a4fd75592726385f',
-                            date: '2021-09-25T12:21:00.000Z',
-                            description: 'Свет',
-                            category: 'utilities',
-                            amount: 390,
-                          },
-                          {
-                            _id: '61e618a9a4fd75592726385b',
-                            date: '2021-09-23T13:08:00.000Z',
-                            description: 'Салаты',
-                            category: 'goods',
-                            amount: 136,
-                          },
-                          {
-                            _id: '61e618a9a4fd755927263863',
-                            date: '2021-09-05T13:39:00.000Z',
-                            description: 'Крупы',
-                            category: 'goods',
-                            amount: 294,
-                          },
-                          {
-                            _id: '61e618a9a4fd755927263862',
-                            date: '2021-09-29T14:35:00.000Z',
-                            description: 'Возврат кредита',
-                            category: 'other',
-                            amount: 80,
-                          },
-                          {
-                            _id: '61e618a9a4fd755927263865',
-                            date: '2021-09-05T13:40:00.000Z',
-                            description: 'Лекарства',
-                            category: 'health',
-                            amount: 221,
-                          },
-                          {
-                            _id: '61e618a9a4fd755927263860',
-                            date: '2021-09-23T18:02:00.000Z',
-                            description: 'Газ',
-                            category: 'utilities',
-                            amount: 327,
-                          },
-                          {
-                            _id: '61e618a9a4fd755927263861',
-                            date: '2021-09-16T12:12:00.000Z',
-                            description: 'Теннис',
-                            category: 'sport',
-                            amount: 172,
-                          },
-                          {
-                            _id: '61e618a9a4fd755927263864',
-                            date: '2021-09-24T16:59:00.000Z',
-                            description: 'Салаты',
-                            category: 'goods',
-                            amount: 281,
-                          },
-                          {
-                            _id: '61e618a9a4fd755927263869',
-                            date: '2021-09-26T09:12:00.000Z',
-                            description: 'Телефон',
-                            category: 'tech',
-                            amount: 40,
-                          },
-                          {
-                            _id: '61e618a9a4fd75592726386b',
-                            date: '2021-09-05T10:08:00.000Z',
-                            description: 'Такси',
-                            category: 'transport',
-                            amount: 96,
-                          },
-                          {
-                            _id: '61e618a9a4fd755927263868',
-                            date: '2021-09-10T08:56:00.000Z',
-                            description: 'Болгарка',
-                            category: 'tech',
-                            amount: 514,
-                          },
-                          {
-                            _id: '61e618a9a4fd75592726386d',
-                            date: '2021-09-09T20:01:00.000Z',
-                            description: 'Сыр',
-                            category: 'goods',
-                            amount: 240,
-                          },
-                          {
-                            _id: '61e618a9a4fd755927263867',
-                            date: '2021-09-20T16:26:00.000Z',
-                            description: 'Пивариум',
-                            category: 'fun',
-                            amount: 182,
-                          },
-                          {
-                            _id: '61e618a9a4fd75592726386e',
-                            date: '2021-09-26T17:57:00.000Z',
-                            description: 'Молоко',
-                            category: 'goods',
-                            amount: 138,
-                          },
-                          {
-                            _id: '61e618a9a4fd75592726386f',
-                            date: '2021-09-08T18:14:00.000Z',
-                            description: 'Зелень',
-                            category: 'goods',
-                            amount: 458,
-                          },
-                          {
-                            _id: '61e618a9a4fd75592726386a',
-                            date: '2021-09-05T20:20:00.000Z',
-                            description: 'Велосипед',
-                            category: 'tech',
-                            amount: 323,
-                          },
-                          {
-                            _id: '61e618a9a4fd755927263870',
-                            date: '2021-09-30T12:19:00.000Z',
-                            description: 'Криветки',
-                            category: 'goods',
-                            amount: 466,
-                          },
-                          {
-                            _id: '61e618a9a4fd75592726386c',
-                            date: '2021-09-26T20:33:00.000Z',
-                            description: 'Хлеб',
-                            category: 'goods',
-                            amount: 594,
-                          },
-                          {
-                            _id: '61e618a9a4fd755927263872',
-                            date: '2021-09-20T10:36:00.000Z',
-                            description: 'Пиво',
-                            category: 'alco',
-                            amount: 228,
-                          },
-                          {
-                            _id: '61e618a9a4fd755927263871',
-                            date: '2021-09-08T19:58:00.000Z',
-                            description: 'Выпечка',
-                            category: 'goods',
-                            amount: 109,
-                          },
-                          {
-                            _id: '61e618a9a4fd755927263875',
-                            date: '2021-09-10T16:46:00.000Z',
-                            description: 'Свет',
-                            category: 'utilities',
-                            amount: 276,
-                          },
-                          {
-                            _id: '61e618a9a4fd755927263874',
-                            date: '2021-09-13T10:31:00.000Z',
-                            description: 'Телефон',
-                            category: 'tech',
-                            amount: 186,
-                          },
-                          {
-                            _id: '61e618a9a4fd755927263873',
-                            date: '2021-09-08T09:21:00.000Z',
-                            description: 'Ремонт',
-                            category: 'house',
-                            amount: 534,
-                          },
-                          {
-                            _id: '61e618a9a4fd755927263876',
-                            date: '2021-09-23T20:21:00.000Z',
-                            description: 'Макароны',
-                            category: 'goods',
-                            amount: 586,
-                          },
-                          {
-                            _id: '61e618a9a4fd755927263877',
-                            date: '2021-09-12T08:48:00.000Z',
-                            description: 'Уколы',
-                            category: 'health',
-                            amount: 312,
-                          },
-                          {
-                            _id: '61e618a9a4fd755927263879',
-                            date: '2021-09-09T12:11:00.000Z',
-                            description: 'Ремонт',
-                            category: 'house',
-                            amount: 533,
-                          },
-                          {
-                            _id: '61e618a9a4fd755927263878',
-                            date: '2021-09-14T16:14:00.000Z',
-                            description: 'Пиво с водкой',
-                            category: 'alco',
-                            amount: 527,
-                          },
-                          {
-                            _id: '61e618a9a4fd75592726387a',
-                            date: '2021-09-10T14:03:00.000Z',
-                            description: 'Болгарка',
-                            category: 'tech',
-                            amount: 117,
-                          },
-                          {
-                            _id: '61e618a9a4fd75592726387d',
-                            date: '2021-09-16T09:15:00.000Z',
-                            description: 'Курсы',
-                            category: 'education',
-                            amount: 564,
-                          },
-                          {
-                            _id: '61e618a9a4fd75592726387e',
-                            date: '2021-09-20T11:46:00.000Z',
-                            description: 'Выкуп с ломбарда',
-                            category: 'other',
-                            amount: 182,
-                          },
-                          {
-                            _id: '61e618a9a4fd755927263866',
-                            date: '2021-09-23T20:12:00.000Z',
-                            description: 'Кинотеатр',
-                            category: 'fun',
-                            amount: 72,
-                          },
-                          {
-                            _id: '61e618a9a4fd75592726387b',
-                            date: '2021-09-26T08:47:00.000Z',
-                            description: 'Свет',
-                            category: 'utilities',
-                            amount: 340,
-                          },
-                          {
-                            _id: '61e618a9a4fd75592726387c',
-                            date: '2021-09-11T08:08:00.000Z',
-                            description: 'Теннис',
-                            category: 'sport',
-                            amount: 492,
-                          },
                         ],
                       },
                     },
@@ -1545,9 +1141,9 @@ const swagger = {
           },
         },
       },
-      '/api/transactions/category/:year/:month': {
+      '/api/transactions/category/{year}/{month}': {
         get: {
-          description: 'Сбор информации за месяц по категориях',
+          summary: 'Сбор информации за месяц по категориях',
           tags: ['Transactions'],
           security: { bearerAuth: [] },
           parameters: [params.category],
@@ -1676,94 +1272,6 @@ const swagger = {
                             category: 'goods',
                             amount: 431,
                           },
-                          {
-                            _id: '61e618a9a4fd755927263858',
-                            type: 'expense',
-                            date: '2021-09-16T08:26:00.000Z',
-                            description: 'Пельмени',
-                            category: 'goods',
-                            amount: 406,
-                          },
-                          {
-                            _id: '61e618a9a4fd75592726385b',
-                            type: 'expense',
-                            date: '2021-09-23T13:08:00.000Z',
-                            description: 'Салаты',
-                            category: 'goods',
-                            amount: 136,
-                          },
-                          {
-                            _id: '61e618a9a4fd755927263863',
-                            type: 'expense',
-                            date: '2021-09-05T13:39:00.000Z',
-                            description: 'Крупы',
-                            category: 'goods',
-                            amount: 294,
-                          },
-                          {
-                            _id: '61e618a9a4fd755927263864',
-                            type: 'expense',
-                            date: '2021-09-24T16:59:00.000Z',
-                            description: 'Салаты',
-                            category: 'goods',
-                            amount: 281,
-                          },
-                          {
-                            _id: '61e618a9a4fd75592726386d',
-                            type: 'expense',
-                            date: '2021-09-09T20:01:00.000Z',
-                            description: 'Сыр',
-                            category: 'goods',
-                            amount: 240,
-                          },
-                          {
-                            _id: '61e618a9a4fd75592726386e',
-                            type: 'expense',
-                            date: '2021-09-26T17:57:00.000Z',
-                            description: 'Молоко',
-                            category: 'goods',
-                            amount: 138,
-                          },
-                          {
-                            _id: '61e618a9a4fd75592726386f',
-                            type: 'expense',
-                            date: '2021-09-08T18:14:00.000Z',
-                            description: 'Зелень',
-                            category: 'goods',
-                            amount: 458,
-                          },
-                          {
-                            _id: '61e618a9a4fd755927263870',
-                            type: 'expense',
-                            date: '2021-09-30T12:19:00.000Z',
-                            description: 'Криветки',
-                            category: 'goods',
-                            amount: 466,
-                          },
-                          {
-                            _id: '61e618a9a4fd75592726386c',
-                            type: 'expense',
-                            date: '2021-09-26T20:33:00.000Z',
-                            description: 'Хлеб',
-                            category: 'goods',
-                            amount: 594,
-                          },
-                          {
-                            _id: '61e618a9a4fd755927263871',
-                            type: 'expense',
-                            date: '2021-09-08T19:58:00.000Z',
-                            description: 'Выпечка',
-                            category: 'goods',
-                            amount: 109,
-                          },
-                          {
-                            _id: '61e618a9a4fd755927263876',
-                            type: 'expense',
-                            date: '2021-09-23T20:21:00.000Z',
-                            description: 'Макароны',
-                            category: 'goods',
-                            amount: 586,
-                          },
                         ],
                       },
                     },
@@ -1810,14 +1318,111 @@ const swagger = {
     },
     components: {
       securitySchemes: {
-        bearerAuth: {
+        Bearer: {
           type: 'http',
           scheme: 'bearer',
           bearerFormat: 'JWT',
         },
       },
-      shemas: {
-        BadRequest: {
+      schemes: {
+        Register: {
+          Request: {
+            type: 'object',
+            properties: {
+              email: {
+                type: 'string',
+                example: '@mail.com',
+              },
+              password: {
+                type: 'string',
+                example: '',
+              },
+              userName: {
+                type: 'string',
+                example: '',
+              },
+            },
+          },
+          Response201: {
+            type: 'object',
+            properties: {
+              token: {
+                type: 'string',
+                example: examples.token,
+              },
+              user: {
+                type: 'object',
+                properties: {
+                  _id: {
+                    type: 'object',
+                    example: examples.userID,
+                  },
+                  email: {
+                    type: 'string',
+                    example: examples.email,
+                  },
+                  userName: {
+                    type: 'string',
+                    example: examples.userName,
+                  },
+                },
+              },
+            },
+          },
+        },
+        Login: {
+          Request: {
+            type: 'object',
+            properties: {
+              email: {
+                type: 'string',
+                example: '@mail.com',
+              },
+              password: {
+                type: 'string',
+                example: '',
+              },
+            },
+          },
+          Response200: {
+            type: 'object',
+            properties: {
+              token: {
+                type: 'string',
+                example: examples.token,
+              },
+              user: {
+                type: 'object',
+                properties: {
+                  _id: {
+                    type: 'object',
+                    example: examples.userID,
+                  },
+                  email: {
+                    type: 'string',
+                    example: examples.email,
+                  },
+                  userName: {
+                    type: 'string',
+                    example: examples.userName,
+                  },
+                },
+              },
+            },
+          },
+        },
+        EmailToken: {
+          Response200: {
+            type: 'object',
+            properties: {
+              message: {
+                type: 'string',
+                example: 'Verification successful',
+              },
+            },
+          },
+        },
+        Response400Joi: {
           type: 'object',
           properties: {
             message: {
@@ -1826,20 +1431,53 @@ const swagger = {
             },
           },
         },
+        Response401wrongLoginPassword: {
+          type: 'object',
+          properties: {
+            message: {
+              type: 'string',
+              example: 'Email or password is wrong',
+            },
+          },
+        },
+        Response401unautorized: {
+          type: 'object',
+          properties: {
+            message: {
+              type: 'string',
+              example: 'Not authorized',
+            },
+          },
+        },
+        Response404UserNotFound: {
+          type: 'object',
+          properties: {
+            message: {
+              type: 'string',
+              example: 'User not found',
+            },
+          },
+        },
+        Response404NotFound: {
+          type: 'object',
+          properties: {
+            message: {
+              type: 'string',
+              example: 'Not found',
+            },
+          },
+        },
+        Response409EmailInUse: {
+          type: 'object',
+          properties: {
+            message: {
+              type: 'string',
+              example: 'Email in use',
+            },
+          },
+        },
       },
     },
-    tags: [
-      {
-        name: 'Auth',
-        description:
-          'API ПОЛЬЗОВАТЕЛЯ. Отвечает за вход, выход, регистрацию и авторизацию пользователя',
-      },
-      {
-        name: 'Transactions',
-        description:
-          'API ТРАНЗАКЦИЙ. Отвечает за все запросы связаные с транзакциями',
-      },
-    ],
   },
   apis: ['./src/routes*.js'], // files containing annotations as above
 };

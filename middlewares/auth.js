@@ -6,6 +6,7 @@ import { User } from '../schemas/mongoose/index.js';
 const authMiddleware = async (req, res, next) => {
   const { authorization = '' } = req.headers;
   const [bearer, token] = authorization.split(' ');
+  console.log('req.headers', req.headers);
   try {
     if (bearer !== 'Bearer') {
       throw new httpError.Unauthorized('No authorized');
