@@ -2,7 +2,7 @@ import httpError from 'http-errors';
 import { User } from '../../schemas/mongoose/index.js';
 import gravatar from 'gravatar';
 
-async function register({ email, password, userName, verificationToken }) {
+async function register({ email, password, userName }, verificationToken) {
   const user = await User.findOne({ email });
   if (user) {
     throw new httpError.Conflict('Email in use');
@@ -13,11 +13,11 @@ async function register({ email, password, userName, verificationToken }) {
   await newUser.save();
 
   return {
+    token: newUser.token,
     user: {
+      _id: newUser._id,
       email,
-      subscription: newUser.subscription,
-      avatarURL,
-      verificationToken,
+      userName,
     },
   };
 }
