@@ -17,9 +17,7 @@ async function putSetOfTransactionsModel(
   return await Transaction.create(
     [
       {
-        owner: {
-          $oid: '61e09dc909927ca3105b32b4',
-        },
+        owner: '61e09dc909927ca3105b32b4',
         type,
         description,
         category,

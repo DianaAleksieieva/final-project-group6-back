@@ -53,7 +53,7 @@ const putSetOfTransactionsController = async (req, res) => {
         const day = month === 2 ? getRandom(1, 29) : getRandom(1, 31);
         const hour = getRandom(8, 21);
         const minute = getRandom(1, 60);
-        if (Math.random() > 0.5) {
+        if (Math.random() > 0.6) {
           const transaction = await putSetOfTransactionsModel(
             type,
             category,
