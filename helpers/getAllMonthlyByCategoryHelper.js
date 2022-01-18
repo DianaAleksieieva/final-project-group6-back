@@ -9,6 +9,7 @@ const getAllMonthlyByCategoryHelper = transactions => {
     sum += amount;
   });
   return { total, sum, description: desc };
+
 };
 
 export default getAllMonthlyByCategoryHelper;

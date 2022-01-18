@@ -11,12 +11,12 @@ const userSchema = Schema(
     },
     email: {
       type: String,
-      required: true,
+      required: [true, 'Email is required'],
       unique: true,
     },
     password: {
       type: String,
-      required: true,
+      required: [true, 'Password  is required'],
       minlenght: 6,
     },
     token: {
@@ -30,9 +30,11 @@ const userSchema = Schema(
 
     currentBalance: {
       type: String,
+      default: 0,
     },
     startBalance: {
       type: String,
+      default: null,
     },
     verify: {
       type: Boolean,

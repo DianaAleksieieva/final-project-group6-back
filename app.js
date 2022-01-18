@@ -2,9 +2,11 @@ import express from 'express';
 import logger from 'morgan';
 import cors from 'cors';
 import chalk from 'chalk';
+
 import swaggerUi from 'swagger-ui-express';
 import swaggerJSDoc from 'swagger-jsdoc';
 import swagger from './bin/swagger.js';
+
 
 import { authRouter, transactionsRouter } from './routes/api/index.js';
 import dotenv from 'dotenv';

@@ -5,6 +5,7 @@ import getAllMonthlyByCategoryHelper from '../../helpers/getAllMonthlyByCategory
 const getAllMonthlyByCategoryController = async (req, res) => {
   const { params, user, body } = req;
   const { category } = body;
+
   const month = parseInt(params.month);
   const year = parseInt(params.year);
   const transactions = await getAllMonthlyByCategoryModel(
@@ -19,5 +20,6 @@ const getAllMonthlyByCategoryController = async (req, res) => {
   res
     .status(200)
     .send({ year, month, total, sum, category, description, transactions });
+
 };
 export default getAllMonthlyByCategoryController;
