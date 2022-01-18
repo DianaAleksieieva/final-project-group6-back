@@ -3,6 +3,7 @@ import {
   authMware,
   validationMware,
   ctrlWrapperMware,
+  paramsValidationMware,
 } from '../../middlewares/index.js';
 import { auth } from '../../controllers/index.js';
 import { users } from '../../schemas/joi/index.js';
@@ -18,6 +19,12 @@ router.post(
   '/login',
   validationMware(users.joiLoginSchema),
   ctrlWrapperMware(auth.loginController),
+);
+
+router.get(
+  '/verify/:emailToken',
+  paramsValidationMware(users.emailTokenJoiSchema),
+  ctrlWrapperMware(auth.verifyEmailTokenController),
 );
 
 router.get('/logout', authMware, ctrlWrapperMware(auth.logoutController));

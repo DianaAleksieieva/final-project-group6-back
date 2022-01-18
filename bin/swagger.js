@@ -1,4 +1,5 @@
 const description = {
+  emailToken: 'Токен для верификации email',
   bodyRegistration: 'Тело запроса на регистрацию пользователя',
   password: 'Пароль пользователя',
   currentBalance: 'Текущий баланс',
@@ -75,20 +76,18 @@ const examples = {
 };
 
 const params = {
-  bodyRegistration: {
-    in: 'body',
-    name: 'body',
-    description: description.bodyRegistration,
+  emailToken: {
+    name: 'emailToken',
+    description: description.emailToken,
+    in: 'path',
     required: true,
     type: 'string',
-    example: {
-      body: {
-        email: '',
-        password: '',
-        userName: '',
-      },
+    schema: {
+      type: 'string',
+      examples: 'loC--iEY_hm3AmzoeBZpt',
     },
   },
+
   password: {
     in: 'body',
     // in: 'body',
@@ -175,6 +174,7 @@ const params = {
     required: true,
     type: 'string',
   },
+
   idInBody: {
     in: 'body',
     name: 'id',
@@ -383,11 +383,13 @@ const swagger = {
           },
         },
       },
-      '/api/auth/verify/:emailToken': {
+      '/api/auth/verify/{emailToken}': {
+        //
         get: {
           description: 'Верификация нового логина',
           tags: ['Auth'],
           produces: ['application/json'],
+          parameters: [params.emailToken],
           responses: {
             200: {
               description: description.request200,
