@@ -15,6 +15,7 @@ const {
   monthYearParamsJoiSchema,
   yearParamsJoiSchema,
   idParamsJoiSchema,
+  setTransactionJoiSchema,
 } = joiSchema;
 const {
   balanceUpdate,
@@ -48,11 +49,14 @@ router.delete(
   paramsValidationMware(idParamsJoiSchema),
   ctrlWrapperMware(removeTransaction),
 );
+
 router.put(
   '/set/:year/:month/:count',
   authMware,
+  paramsValidationMware(setTransactionJoiSchema),
   ctrlWrapperMware(putSetOfTransactionsController),
 );
+
 router.get(
   '/get/:year',
   authMware,
@@ -70,7 +74,7 @@ router.get(
 );
 
 router.get(
-  '/category/:month/:year',
+  '/category/:year/:month/',
   authMware,
   paramsValidationMware(monthYearParamsJoiSchema),
   validationMware(categoryTransactionJoiSchema),
