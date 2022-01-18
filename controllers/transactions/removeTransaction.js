@@ -11,8 +11,8 @@ const transaction = await Transaction.findOneAndRemove({
   owner: userId,
 });
 
-const { amount } =transaction; 
-const newBalance = Number(currentBalance) + Number(amount);
+const { amount, type} =transaction; 
+const newBalance = type.toString() === "expense" ? Number(currentBalance) + Number(amount) : Number(currentBalance) - Number(amount);
 
 const user = await User.findByIdAndUpdate(
   {
