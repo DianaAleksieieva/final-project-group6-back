@@ -29,4 +29,6 @@ router.get(
 
 router.get('/logout', authMware, ctrlWrapperMware(auth.logoutController));
 
+router.get('/current', authMware, ctrlWrapperMware(auth.getCurrentController));
+
 export default router;
