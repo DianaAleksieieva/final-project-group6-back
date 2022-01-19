@@ -1,5 +1,5 @@
 import { register } from '../../models/auth/index.js';
-import httpErrors from 'http-errors';
+// import httpErrors from 'http-errors';
 // import sendEmail from '../../helpers/sendEmail.js';
 import { nanoid } from 'nanoid';
 
