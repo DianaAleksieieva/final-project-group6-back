@@ -544,8 +544,18 @@ const swagger = {
           summary: 'Удаление транзакции',
           tags: ['Transactions'],
           security: [{ Bearer: [] }],
-          parameters: [params.id],
-          produces: ['application/json'],
+          parameters: [
+            {
+              name: 'id',
+              description: description.id,
+              in: 'path',
+              required: true,
+              type: 'string',
+              schema: {
+                type: 'string',
+              },
+            },
+          ],
           responses: {
             200: {
               description: description.request200,
@@ -553,7 +563,7 @@ const swagger = {
                 'application/json': {
                   schema: {
                     type: 'object',
-                    example: examples.response200transactionDeleted,
+                    $ref: '#/components/schemes/RemoveTransaction/Response200',
                   },
                 },
               },
@@ -564,7 +574,7 @@ const swagger = {
                 'application/json': {
                   schema: {
                     type: 'object',
-                    example: examples.response400validator,
+                    $ref: '#/components/schemes/Response400Joi',
                   },
                 },
               },
@@ -575,7 +585,7 @@ const swagger = {
                 'application/json': {
                   schema: {
                     type: 'object',
-                    example: examples.response401unautorized,
+                    $ref: '#/components/schemes/Response401unautorized',
                   },
                 },
               },
@@ -586,7 +596,7 @@ const swagger = {
                 'application/json': {
                   schema: {
                     type: 'object',
-                    example: examples.response404NotFound,
+                    $ref: '#/components/schemes/Response404UserNotFound',
                   },
                 },
               },
@@ -600,7 +610,38 @@ const swagger = {
             'DEV:) Совершает {count} циклов добавления транзакций за {month} месяц {year} года',
           tags: ['Transactions'],
           security: [{ Bearer: [] }],
-          produces: ['application/json'],
+          parameters: [
+            {
+              name: 'count',
+              description: 'количество циклов',
+              in: 'path',
+              required: true,
+              type: 'number',
+              schema: {
+                type: 'number',
+              },
+            },
+            {
+              name: 'year',
+              description: 'Год выписки транзакций',
+              in: 'path',
+              required: true,
+              type: 'number',
+              schema: {
+                type: 'number',
+              },
+            },
+            {
+              name: 'month',
+              description: 'Месяц выписки транзакций',
+              in: 'path',
+              required: true,
+              type: 'number',
+              schema: {
+                type: 'number',
+              },
+            },
+          ],
           responses: {
             200: {
               description: description.request200,
@@ -609,7 +650,7 @@ const swagger = {
                   schema: {
                     type: 'object',
                     properties: {
-                      transactionCounter: {
+                      TotalAddedTransactions: {
                         type: 'number',
                         example: 57,
                       },
@@ -1394,7 +1435,54 @@ const swagger = {
             },
           },
         },
-
+        RemoveTransaction: {
+          Response200: {
+            type: 'object',
+            properties: {
+              message: {
+                type: 'string',
+                example: 'transaction deleted',
+              },
+              oldBalance: {
+                type: 'number',
+                example: 65000,
+              },
+              currentBalance: {
+                type: 'number',
+                example: 100000,
+              },
+              transaction: {
+                type: 'object',
+                properties: {
+                  _id: {
+                    type: 'object',
+                    example: examples.transactionID,
+                  },
+                  type: {
+                    type: 'string',
+                    example: 'expense',
+                  },
+                  date: {
+                    type: 'date',
+                    example: '2021-05-12T08:35:00.000Z',
+                  },
+                  description: {
+                    type: 'string',
+                    example: 'Покупка компьютера',
+                  },
+                  category: {
+                    type: 'string',
+                    example: 'tech',
+                  },
+                  amount: {
+                    type: 'number',
+                    example: 35000,
+                  },
+                },
+              },
+            },
+          },
+        },
         Response400Joi: {
           type: 'object',
           properties: {
