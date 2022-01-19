@@ -128,7 +128,7 @@ const putSetOfTransactionsController = async (req, res) => {
     });
   }
 
-  res.status(200).send({ transactionCounter });
+  res.status(200).send({ totalAddedTransactions: transactionCounter });
 };
 
 export default putSetOfTransactionsController;

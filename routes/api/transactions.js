@@ -10,21 +10,19 @@ import { transactions as joiSchema } from '../../schemas/joi/index.js';
 const {
   currentBallanseJoiSchema,
   addTransactionJoiSchema,
-  categoryTransactionJoiSchema,
-  typeTransactionJoiSchema,
-  monthYearParamsJoiSchema,
-  yearParamsJoiSchema,
-  idParamsJoiSchema,
+  idJoiSchema,
+  yearTypeJoiSchema,
+  categoryMonthYearJoiSchema,
+  typeMonthYearJoiSchema,
   setTransactionJoiSchema,
 } = joiSchema;
 const {
   balanceUpdate,
-  addTransaction,
-  removeTransaction,
+  addTransactionController,
+  removeTransactionController,
   getYearlyByTypeController,
   getMonthlyByTypeController,
   getAllMonthlyByCategoryController,
-  getAllMonthlyByTypeTransactions,
   putSetOfTransactionsController,
 } = controller;
 const router = express.Router();
@@ -40,14 +38,14 @@ router.post(
   '/add',
   authMware,
   validationMware(addTransactionJoiSchema),
-  ctrlWrapperMware(addTransaction),
+  ctrlWrapperMware(addTransactionController),
 );
 
 router.delete(
   '/:id',
   authMware,
-  paramsValidationMware(idParamsJoiSchema),
-  ctrlWrapperMware(removeTransaction),
+  paramsValidationMware(idJoiSchema),
+  ctrlWrapperMware(removeTransactionController),
 );
 
 router.put(
@@ -58,34 +56,24 @@ router.put(
 );
 
 router.get(
-  '/get/:year',
+  '/getByType/:type/:year',
   authMware,
-  paramsValidationMware(yearParamsJoiSchema),
-  validationMware(typeTransactionJoiSchema),
+  paramsValidationMware(yearTypeJoiSchema),
   ctrlWrapperMware(getYearlyByTypeController),
 );
 
 router.get(
-  '/get/:year/:month',
+  '/getByType/:type/:year/:month',
   authMware,
-  validationMware(typeTransactionJoiSchema),
-  paramsValidationMware(monthYearParamsJoiSchema),
+  paramsValidationMware(typeMonthYearJoiSchema),
   ctrlWrapperMware(getMonthlyByTypeController),
 );
 
 router.get(
-  '/category/:year/:month/',
+  '/getByCategory/:category/:year/:month/',
   authMware,
-  paramsValidationMware(monthYearParamsJoiSchema),
-  validationMware(categoryTransactionJoiSchema),
+  paramsValidationMware(categoryMonthYearJoiSchema),
   ctrlWrapperMware(getAllMonthlyByCategoryController),
-);
-router.get(
-  '/type/:month/:year',
-  authMware,
-  paramsValidationMware(monthYearParamsJoiSchema),
-  validationMware(typeTransactionJoiSchema),
-  ctrlWrapperMware(getAllMonthlyByTypeTransactions),
 );
 
 export default router;

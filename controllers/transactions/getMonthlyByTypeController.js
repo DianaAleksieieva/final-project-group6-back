@@ -3,8 +3,8 @@ import httpError from 'http-errors';
 import countMonthlyByTypeHelper from '../../helpers/countMonthlyByTypeHelper.js';
 
 const getMonthlyByTypeController = async (req, res) => {
-  const { params, user, body } = req;
-  const type = body.type;
+  const { params, user } = req;
+  const type = params.type;
   const year = parseInt(params.year);
   const month = parseInt(params.month);
 

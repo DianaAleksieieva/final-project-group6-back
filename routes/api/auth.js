@@ -21,13 +21,13 @@ router.post(
   ctrlWrapperMware(auth.loginController),
 );
 
+router.post('/logout', authMware, ctrlWrapperMware(auth.logoutController));
+
 router.get(
   '/verify/:emailToken',
   paramsValidationMware(users.emailTokenJoiSchema),
   ctrlWrapperMware(auth.verifyEmailTokenController),
 );
-
-router.get('/logout', authMware, ctrlWrapperMware(auth.logoutController));
 
 router.get('/current', authMware, ctrlWrapperMware(auth.getCurrentController));
 
