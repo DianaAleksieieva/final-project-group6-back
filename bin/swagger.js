@@ -1,13 +1,9 @@
+const getCurrentYear = () => new Date().getFullYear();
+
 const description = {
   emailToken: 'Токен для верификации email',
-  authorization: 'JWT Токен для авторизации',
-  bodyRegistration: 'Тело запроса на регистрацию пользователя',
-  password: 'Пароль пользователя',
-  currentBalance: 'Текущий баланс',
   type: 'Тип транзакции доход(income) или расход(expense)',
-  date: 'Дата транзакции',
   category: 'Категория транзакции',
-  amount: 'Значение транзакции',
   id: 'id',
   request200: 'ОК - [Запрос соответствует всем критериями]',
   request201: 'Created - [Запрос соответствует всем критериями]',
@@ -29,89 +25,9 @@ const examples = {
   email: 'test@email.com',
   userName: 'Иванов Иван Иванович',
   type: 'income',
-  date: '21.09.2021',
-  category: 'salary',
-  amount: 25000,
   month: 9,
-  year: 2021,
+  year: getCurrentYear() - 1,
   sum: 205014,
-  response200VerificationSuccessful: {
-    message: 'Verification successful',
-  },
-  response200VerificationSend: {
-    message: 'Verification email sent',
-  },
-  response200transactionDeleted: {
-    message: 'Transaction deleted',
-  },
-  response400validator: {
-    message: '<Ошибка от Joi или другой библиотеки валидации>',
-  },
-  response200avatarSuccess: {
-    avatarURL: 'тут будет ссылка на изображение',
-  },
-  response401wrongLoginPassword: {
-    message: 'Email or password is wrong',
-  },
-  response404NotFound: {
-    message: 'Not found',
-  },
-  response404UserNotFound: {
-    message: 'User not found',
-  },
-  response404TransactionNotFound: {
-    message: 'Transaction not found',
-  },
-  response409EmailInUse: {
-    message: 'Email in use',
-  },
-  response409VerificationPassed: {
-    message: 'Verification has already been passed',
-  },
-  response401unautorized: {
-    message: 'Not authorized',
-  },
-};
-
-const params = {
-  id: {
-    name: 'id',
-    description: description.id,
-    in: 'formData',
-    required: true,
-    type: 'string',
-  },
-
-  idInBody: {
-    in: 'body',
-    name: 'id',
-    description: description.id,
-    in: 'formData',
-    required: true,
-    type: 'string',
-  },
-};
-
-const reqBodys = {
-  mailPasswordBody: {
-    content: {
-      'application/json': {
-        schema: {
-          type: 'object',
-          properties: {
-            email: {
-              type: 'string',
-              example: '@mail.com',
-            },
-            password: {
-              type: 'string',
-              example: '',
-            },
-          },
-        },
-      },
-    },
-  },
 };
 
 const swagger = {
@@ -607,7 +523,7 @@ const swagger = {
       '/api/transactions/set/{year}/{month}/{count}': {
         put: {
           summary:
-            'DEV:) Совершает {count} циклов добавления транзакций за {month} месяц {year} года',
+            '!!для DEV!!. Совершает {count} циклов добавления транзакций за {month} месяц {year} года',
           tags: ['Transactions'],
           security: [{ Bearer: [] }],
           parameters: [
@@ -659,24 +575,24 @@ const swagger = {
                 },
               },
             },
-            401: {
-              description: description.request401,
-              content: {
-                'application/json': {
-                  schema: {
-                    type: 'object',
-                    example: examples.response401unautorized,
-                  },
-                },
-              },
-            },
             400: {
               description: description.request400,
               content: {
                 'application/json': {
                   schema: {
                     type: 'object',
-                    example: examples.response400validator,
+                    $ref: '#/components/schemes/Response400Joi',
+                  },
+                },
+              },
+            },
+            401: {
+              description: description.request401,
+              content: {
+                'application/json': {
+                  schema: {
+                    type: 'object',
+                    $ref: '#/components/schemes/Response401unautorized',
                   },
                 },
               },
@@ -684,13 +600,35 @@ const swagger = {
           },
         },
       },
-      '/api/transactions/get/{year}': {
+      '/api/transactions/getByType/{type}/{year}': {
         get: {
           summary: 'Сбор информации за год по транзакциях доходов или расходов',
           tags: ['Transactions'],
           security: [{ Bearer: [] }],
-          parameters: [params.type],
-          produces: ['application/json'],
+          parameters: [
+            {
+              name: 'type',
+              description: description.type,
+              in: 'path',
+              required: true,
+              type: 'string',
+              schema: {
+                type: 'string',
+                example: 'income',
+              },
+            },
+            {
+              name: 'year',
+              description: description.year,
+              in: 'path',
+              required: true,
+              type: 'number',
+              schema: {
+                type: 'number',
+                example: getCurrentYear(),
+              },
+            },
+          ],
           responses: {
             200: {
               description: description.request200,
@@ -698,84 +636,7 @@ const swagger = {
                 'application/json': {
                   schema: {
                     type: 'object',
-                    properties: {
-                      type: {
-                        type: 'string',
-                        example: examples.type,
-                      },
-                      year: {
-                        type: 'string',
-                        example: examples.year,
-                      },
-                      sum: {
-                        type: 'string',
-                        example: examples.sum,
-                      },
-                      result: {
-                        type: 'object',
-                        properties: {
-                          1: {
-                            type: 'string',
-                            example: 16685,
-                          },
-                          2: {
-                            type: 'string',
-                            example: 16097,
-                          },
-                          3: {
-                            type: 'string',
-                            example: 18022,
-                          },
-                          4: {
-                            type: 'string',
-                            example: 18772,
-                          },
-                          5: {
-                            type: 'string',
-                            example: 15973,
-                          },
-                          6: {
-                            type: 'string',
-                            example: 16348,
-                          },
-                          7: {
-                            type: 'string',
-                            example: 22405,
-                          },
-                          8: {
-                            type: 'string',
-                            example: 17361,
-                          },
-                          9: {
-                            type: 'string',
-                            example: 15741,
-                          },
-                          10: {
-                            type: 'string',
-                            example: 17289,
-                          },
-                          11: {
-                            type: 'string',
-                            example: 13398,
-                          },
-                          12: {
-                            type: 'string',
-                            example: 16923,
-                          },
-                        },
-                      },
-                    },
-                  },
-                },
-              },
-            },
-            401: {
-              description: description.request401,
-              content: {
-                'application/json': {
-                  schema: {
-                    type: 'object',
-                    example: examples.response401unautorized,
+                    $ref: '#/components/schemes/GetYearTransactions/Response200',
                   },
                 },
               },
@@ -786,7 +647,18 @@ const swagger = {
                 'application/json': {
                   schema: {
                     type: 'object',
-                    example: examples.response400validator,
+                    $ref: '#/components/schemes/Response400Joi',
+                  },
+                },
+              },
+            },
+            401: {
+              description: description.request401,
+              content: {
+                'application/json': {
+                  schema: {
+                    type: 'object',
+                    $ref: '#/components/schemes/Response401unautorized',
                   },
                 },
               },
@@ -797,7 +669,7 @@ const swagger = {
                 'application/json': {
                   schema: {
                     type: 'object',
-                    example: examples.response404NotFound,
+                    $ref: '#/components/schemes/Response404NotFound',
                   },
                 },
               },
@@ -805,14 +677,48 @@ const swagger = {
           },
         },
       },
-      '/api/transactions/get/{year}/{month}': {
+      '/api/transactions/getByType/{type}/{year}/{month}': {
         get: {
           summary:
             'Сбор информации за месяц по транзакциях доходов или расходов',
           tags: ['Transactions'],
           security: [{ Bearer: [] }],
-          parameters: [params.type],
-          produces: ['application/json'],
+          parameters: [
+            {
+              name: 'type',
+              description: description.type,
+              in: 'path',
+              required: true,
+              type: 'string',
+              schema: {
+                type: 'string',
+                example: 'income',
+              },
+            },
+            {
+              name: 'year',
+              description: description.year,
+              in: 'path',
+              required: true,
+              type: 'number',
+              schema: {
+                type: 'number',
+                example: getCurrentYear() - 1,
+              },
+            },
+            {
+              name: 'month',
+              description: description.month,
+              in: 'path',
+              required: true,
+              type: 'number',
+              schema: {
+                type: 'number',
+                example: 5,
+              },
+            },
+          ],
+
           responses: {
             200: {
               description: description.request200,
@@ -820,179 +726,7 @@ const swagger = {
                 'application/json': {
                   schema: {
                     type: 'object',
-                    properties: {
-                      type: {
-                        type: 'string',
-                        example: examples.type,
-                      },
-                      year: {
-                        type: 'number',
-                        example: examples.year,
-                      },
-                      month: {
-                        type: 'number',
-                        example: examples.month,
-                      },
-                      total: {
-                        type: 'number',
-                        example: 54,
-                      },
-                      sum: {
-                        type: 'number',
-                        example: 15741,
-                      },
-                      categories: {
-                        type: 'object',
-                        example: {
-                          goods: {
-                            sum: 5326,
-                            count: 16,
-                            descriptions: {
-                              Салаты: 832,
-                              Свинина: 336,
-                              Хлеб: 706,
-                              Выпечка: 433,
-                              Овощи: 431,
-                              Пельмени: 406,
-                              Крупы: 294,
-                              Сыр: 240,
-                              Молоко: 138,
-                              Зелень: 458,
-                              Криветки: 466,
-                              Макароны: 586,
-                            },
-                          },
-                          alco: {
-                            sum: 1431,
-                            count: 5,
-                            descriptions: {
-                              Пиво: 390,
-                              Водка: 48,
-                              'Пиво с водкой': 993,
-                            },
-                          },
-                          health: {
-                            sum: 1221,
-                            count: 4,
-                            descriptions: {
-                              Уколы: 767,
-                              Лекарства: 454,
-                            },
-                          },
-                          house: {
-                            sum: 2085,
-                            count: 5,
-                            descriptions: {
-                              Сантехника: 120,
-                              Клининг: 898,
-                              Ремонт: 1067,
-                            },
-                          },
-                          utilities: {
-                            sum: 1777,
-                            count: 5,
-                            descriptions: {
-                              Вода: 444,
-                              Свет: 1006,
-                              Газ: 327,
-                            },
-                          },
-                          fun: {
-                            sum: 374,
-                            count: 4,
-                            descriptions: {
-                              Пивариум: 225,
-                              Библиотека: 77,
-                              Кинотеатр: 72,
-                            },
-                          },
-                          sport: {
-                            sum: 797,
-                            count: 3,
-                            descriptions: {
-                              Шахматы: 133,
-                              Теннис: 664,
-                            },
-                          },
-                          education: {
-                            sum: 1144,
-                            count: 2,
-                            descriptions: {
-                              Курсы: 1144,
-                            },
-                          },
-                          other: {
-                            sum: 310,
-                            count: 4,
-                            descriptions: {
-                              'Выкуп с ломбарда': 206,
-                              Кража: 24,
-                              'Возврат кредита': 80,
-                            },
-                          },
-                          tech: {
-                            sum: 1180,
-                            count: 5,
-                            descriptions: {
-                              Телефон: 226,
-                              Болгарка: 631,
-                              Велосипед: 323,
-                            },
-                          },
-                          transport: {
-                            sum: 96,
-                            count: 1,
-                            descriptions: {
-                              Такси: 96,
-                            },
-                          },
-                        },
-                      },
-                      transactions: {
-                        type: 'array',
-                        example: [
-                          {
-                            _id: '61e618a9a4fd75592726384b',
-                            date: '2021-09-10T08:54:00.000Z',
-                            description: 'Салаты',
-                            category: 'goods',
-                            amount: 415,
-                          },
-                          {
-                            _id: '61e618a9a4fd75592726384d',
-                            date: '2021-09-09T08:47:00.000Z',
-                            description: 'Пиво',
-                            category: 'alco',
-                            amount: 162,
-                          },
-                          {
-                            _id: '61e618a9a4fd755927263849',
-                            date: '2021-09-21T09:56:00.000Z',
-                            description: 'Свинина',
-                            category: 'goods',
-                            amount: 336,
-                          },
-                          {
-                            _id: '61e618a9a4fd75592726384a',
-                            date: '2021-09-25T12:52:00.000Z',
-                            description: 'Хлеб',
-                            category: 'goods',
-                            amount: 112,
-                          },
-                        ],
-                      },
-                    },
-                  },
-                },
-              },
-            },
-            401: {
-              description: description.request401,
-              content: {
-                'application/json': {
-                  schema: {
-                    type: 'object',
-                    example: examples.response401unautorized,
+                    $ref: '#/components/schemes/GetMonthTransactions/Response200',
                   },
                 },
               },
@@ -1003,7 +737,18 @@ const swagger = {
                 'application/json': {
                   schema: {
                     type: 'object',
-                    example: examples.response400validator,
+                    $ref: '#/components/schemes/Response400Joi',
+                  },
+                },
+              },
+            },
+            401: {
+              description: description.request401,
+              content: {
+                'application/json': {
+                  schema: {
+                    type: 'object',
+                    $ref: '#/components/schemes/Response401unautorized',
                   },
                 },
               },
@@ -1014,7 +759,7 @@ const swagger = {
                 'application/json': {
                   schema: {
                     type: 'object',
-                    example: examples.response404NotFound,
+                    $ref: '#/components/schemes/Response404NotFound',
                   },
                 },
               },
@@ -1022,13 +767,46 @@ const swagger = {
           },
         },
       },
-      '/api/transactions/category/{year}/{month}': {
+      '/api/transactions/getByCategory/{category}/{year}/{month}': {
         get: {
-          summary: 'Сбор информации за месяц по категориях',
+          summary: 'Сбор информации за месяц по одной категории',
           tags: ['Transactions'],
           security: [{ Bearer: [] }],
-          parameters: [params.category],
-          produces: ['application/json'],
+          parameters: [
+            {
+              name: 'category',
+              description: description.category,
+              in: 'path',
+              required: true,
+              type: 'string',
+              schema: {
+                type: 'string',
+                example: 'goods',
+              },
+            },
+            {
+              name: 'year',
+              description: description.year,
+              in: 'path',
+              required: true,
+              type: 'number',
+              schema: {
+                type: 'number',
+                example: getCurrentYear() - 1,
+              },
+            },
+            {
+              name: 'month',
+              description: description.month,
+              in: 'path',
+              required: true,
+              type: 'number',
+              schema: {
+                type: 'number',
+                example: 5,
+              },
+            },
+          ],
           responses: {
             200: {
               description: description.request200,
@@ -1036,137 +814,7 @@ const swagger = {
                 'application/json': {
                   schema: {
                     type: 'object',
-                    properties: {
-                      year: {
-                        type: 'string',
-                        example: examples.year,
-                      },
-                      month: {
-                        type: 'string',
-                        example: examples.month,
-                      },
-                      total: {
-                        type: 'string',
-                        example: 16,
-                      },
-                      sum: {
-                        type: 'string',
-                        example: 5326,
-                      },
-                      category: {
-                        type: 'string',
-                        example: 'goods',
-                      },
-                      description: {
-                        type: 'object',
-                        example: {
-                          Салаты: {
-                            total: 3,
-                            sum: 832,
-                          },
-                          Свинина: {
-                            total: 1,
-                            sum: 336,
-                          },
-                          Хлеб: {
-                            total: 2,
-                            sum: 706,
-                          },
-                          Выпечка: {
-                            total: 2,
-                            sum: 433,
-                          },
-                          Овощи: {
-                            total: 1,
-                            sum: 431,
-                          },
-                          Пельмени: {
-                            total: 1,
-                            sum: 406,
-                          },
-                          Крупы: {
-                            total: 1,
-                            sum: 294,
-                          },
-                          Сыр: {
-                            total: 1,
-                            sum: 240,
-                          },
-                          Молоко: {
-                            total: 1,
-                            sum: 138,
-                          },
-                          Зелень: {
-                            total: 1,
-                            sum: 458,
-                          },
-                          Криветки: {
-                            total: 1,
-                            sum: 466,
-                          },
-                          Макароны: {
-                            total: 1,
-                            sum: 586,
-                          },
-                        },
-                      },
-                      transactions: {
-                        type: 'array',
-                        example: [
-                          {
-                            _id: '61e618a9a4fd75592726384b',
-                            type: 'expense',
-                            date: '2021-09-10T08:54:00.000Z',
-                            description: 'Салаты',
-                            category: 'goods',
-                            amount: 415,
-                          },
-                          {
-                            _id: '61e618a9a4fd755927263849',
-                            type: 'expense',
-                            date: '2021-09-21T09:56:00.000Z',
-                            description: 'Свинина',
-                            category: 'goods',
-                            amount: 336,
-                          },
-                          {
-                            _id: '61e618a9a4fd75592726384a',
-                            type: 'expense',
-                            date: '2021-09-25T12:52:00.000Z',
-                            description: 'Хлеб',
-                            category: 'goods',
-                            amount: 112,
-                          },
-                          {
-                            _id: '61e618a9a4fd75592726385a',
-                            type: 'expense',
-                            date: '2021-09-01T08:41:00.000Z',
-                            description: 'Выпечка',
-                            category: 'goods',
-                            amount: 324,
-                          },
-                          {
-                            _id: '61e618a9a4fd755927263859',
-                            type: 'expense',
-                            date: '2021-09-24T16:09:00.000Z',
-                            description: 'Овощи',
-                            category: 'goods',
-                            amount: 431,
-                          },
-                        ],
-                      },
-                    },
-                  },
-                },
-              },
-            },
-            401: {
-              description: description.request401,
-              content: {
-                'application/json': {
-                  schema: {
-                    type: 'object',
-                    example: examples.response401unautorized,
+                    $ref: '#/components/schemes/GetMonthCategory/Response200',
                   },
                 },
               },
@@ -1177,7 +825,18 @@ const swagger = {
                 'application/json': {
                   schema: {
                     type: 'object',
-                    example: examples.response400validator,
+                    $ref: '#/components/schemes/Response400Joi',
+                  },
+                },
+              },
+            },
+            401: {
+              description: description.request401,
+              content: {
+                'application/json': {
+                  schema: {
+                    type: 'object',
+                    $ref: '#/components/schemes/Response401unautorized',
                   },
                 },
               },
@@ -1188,7 +847,7 @@ const swagger = {
                 'application/json': {
                   schema: {
                     type: 'object',
-                    example: examples.response404NotFound,
+                    $ref: '#/components/schemes/Response404NotFound',
                   },
                 },
               },
@@ -1435,50 +1094,274 @@ const swagger = {
             },
           },
         },
-        RemoveTransaction: {
+        GetYearTransactions: {
           Response200: {
             type: 'object',
             properties: {
-              message: {
+              type: {
                 type: 'string',
-                example: 'transaction deleted',
+                example: examples.type,
               },
-              oldBalance: {
+              year: {
                 type: 'number',
-                example: 65000,
+                example: examples.year,
               },
-              currentBalance: {
+              sum: {
                 type: 'number',
-                example: 100000,
+                example: examples.sum,
               },
-              transaction: {
+              result: {
                 type: 'object',
                 properties: {
-                  _id: {
-                    type: 'object',
-                    example: examples.transactionID,
-                  },
-                  type: {
-                    type: 'string',
-                    example: 'expense',
-                  },
-                  date: {
-                    type: 'date',
-                    example: '2021-05-12T08:35:00.000Z',
-                  },
-                  description: {
-                    type: 'string',
-                    example: 'Покупка компьютера',
-                  },
-                  category: {
-                    type: 'string',
-                    example: 'tech',
-                  },
-                  amount: {
+                  1: {
                     type: 'number',
-                    example: 35000,
+                    example: 16685,
+                  },
+                  2: {
+                    type: 'number',
+                    example: 16097,
+                  },
+                  3: {
+                    type: 'number',
+                    example: 18022,
+                  },
+                  4: {
+                    type: 'number',
+                    example: 18772,
+                  },
+                  5: {
+                    type: 'number',
+                    example: 15973,
+                  },
+                  6: {
+                    type: 'number',
+                    example: 16348,
+                  },
+                  7: {
+                    type: 'number',
+                    example: 22405,
+                  },
+                  8: {
+                    type: 'number',
+                    example: 17361,
+                  },
+                  9: {
+                    type: 'number',
+                    example: 15741,
+                  },
+                  10: {
+                    type: 'number',
+                    example: 17289,
+                  },
+                  11: {
+                    type: 'number',
+                    example: 13398,
+                  },
+                  12: {
+                    type: 'number',
+                    example: 16923,
                   },
                 },
+              },
+            },
+          },
+        },
+        GetMonthTransactions: {
+          Response200: {
+            type: 'object',
+            properties: {
+              type: { type: 'string', example: 'income' },
+              year: { type: 'number', example: getCurrentYear() - 1 },
+              month: { type: 'number', example: 5 },
+              total: { type: 'number', example: 10 },
+              sum: { type: 'number', example: 129824 },
+              categories: {
+                type: 'object',
+                properties: {
+                  salary: {
+                    type: 'object',
+                    properties: {
+                      sum: { type: 'number', example: 55000 },
+                      count: { type: 'number', example: 2 },
+                      descriptions: {
+                        type: 'object',
+                        example: {
+                          'Моя з/п': 40000,
+                          'моя з/п': 15000,
+                        },
+                      },
+                    },
+                  },
+                  freelance: {
+                    type: 'object',
+                    properties: {
+                      sum: { type: 'number', example: 74824 },
+                      count: { type: 'number', example: 8 },
+                      descriptions: {
+                        type: 'object',
+                        example: {
+                          'Сдача в аренду болгарки': 12201,
+                          'Сдача в аренду комнаты': 18797,
+                          Реппетиторство: 21657,
+                          'Подработка таксистом': 20669,
+                          'моя з/п': 1500,
+                        },
+                      },
+                    },
+                  },
+                },
+              },
+              transactions: {
+                type: 'array',
+                example: [
+                  {
+                    _id: '61e6189ca4fd755927263672',
+                    date: '2021-05-05T14:48:00.000Z',
+                    description: 'Моя з/п',
+                    category: 'salary',
+                    amount: 40000,
+                  },
+                  {
+                    _id: '61e6189da4fd7559272636a6',
+                    date: '2021-05-25T11:30:00.000Z',
+                    description: 'Сдача в аренду болгарки',
+                    category: 'freelance',
+                    amount: 12201,
+                  },
+                  {
+                    _id: '61e6189da4fd7559272636a3',
+                    date: '2021-05-16T08:39:00.000Z',
+                    description: 'Сдача в аренду комнаты',
+                    category: 'freelance',
+                    amount: 12706,
+                  },
+                  { '...': '...' },
+                ],
+              },
+            },
+          },
+        },
+        GetMonthCategory: {
+          Response200: {
+            type: 'object',
+            properties: {
+              year: {
+                type: 'number',
+                example: examples.year,
+              },
+              month: {
+                type: 'number',
+                example: examples.month,
+              },
+              total: {
+                type: 'number',
+                example: 16,
+              },
+              sum: {
+                type: 'number',
+                example: 5326,
+              },
+              category: {
+                type: 'string',
+                example: 'goods',
+              },
+              description: {
+                type: 'object',
+                example: {
+                  Салаты: {
+                    total: 3,
+                    sum: 832,
+                  },
+                  Свинина: {
+                    total: 1,
+                    sum: 336,
+                  },
+                  Хлеб: {
+                    total: 2,
+                    sum: 706,
+                  },
+                  Выпечка: {
+                    total: 2,
+                    sum: 433,
+                  },
+                  Овощи: {
+                    total: 1,
+                    sum: 431,
+                  },
+                  Пельмени: {
+                    total: 1,
+                    sum: 406,
+                  },
+                  Крупы: {
+                    total: 1,
+                    sum: 294,
+                  },
+                  Сыр: {
+                    total: 1,
+                    sum: 240,
+                  },
+                  Молоко: {
+                    total: 1,
+                    sum: 138,
+                  },
+                  Зелень: {
+                    total: 1,
+                    sum: 458,
+                  },
+                  Криветки: {
+                    total: 1,
+                    sum: 466,
+                  },
+                  Макароны: {
+                    total: 1,
+                    sum: 586,
+                  },
+                },
+              },
+              transactions: {
+                type: 'array',
+                example: [
+                  {
+                    _id: '61e618a9a4fd75592726384b',
+                    type: 'expense',
+                    date: '2021-09-10T08:54:00.000Z',
+                    description: 'Салаты',
+                    category: 'goods',
+                    amount: 415,
+                  },
+                  {
+                    _id: '61e618a9a4fd755927263849',
+                    type: 'expense',
+                    date: '2021-09-21T09:56:00.000Z',
+                    description: 'Свинина',
+                    category: 'goods',
+                    amount: 336,
+                  },
+                  {
+                    _id: '61e618a9a4fd75592726384a',
+                    type: 'expense',
+                    date: '2021-09-25T12:52:00.000Z',
+                    description: 'Хлеб',
+                    category: 'goods',
+                    amount: 112,
+                  },
+                  {
+                    _id: '61e618a9a4fd75592726385a',
+                    type: 'expense',
+                    date: '2021-09-01T08:41:00.000Z',
+                    description: 'Выпечка',
+                    category: 'goods',
+                    amount: 324,
+                  },
+                  {
+                    _id: '61e618a9a4fd755927263859',
+                    type: 'expense',
+                    date: '2021-09-24T16:09:00.000Z',
+                    description: 'Овощи',
+                    category: 'goods',
+                    amount: 431,
+                  },
+                ],
               },
             },
           },
