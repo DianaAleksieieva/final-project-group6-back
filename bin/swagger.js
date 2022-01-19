@@ -1098,6 +1098,62 @@ const swagger = {
             },
           },
         },
+        RemoveTransaction: {
+          Response200: {
+            type: 'object',
+            properties: {
+              message: {
+                type: 'string',
+                example: 'transaction deleted',
+              },
+              oldBalance: {
+                type: 'number',
+                example: 30679,
+              },
+              currentBalance: {
+                type: 'number',
+                example: 30809,
+              },
+              transaction: {
+                type: 'object',
+                properties: {
+                  _id: {
+                    type: 'object',
+                    example: examples.transactionID,
+                  },
+                  type: {
+                    type: 'string',
+                    example: 'expense',
+                  },
+                  date: {
+                    type: 'date',
+                    example: '2021-01-26T20:57:00.000Z',
+                  },
+                  description: {
+                    type: 'string',
+                    example: 'Макароны',
+                  },
+                  category: {
+                    type: 'string',
+                    example: 'goods',
+                  },
+                  amount: {
+                    type: 'number',
+                    example: 130,
+                  },
+                },
+              },
+              oldBalance: {
+                type: 'number',
+                example: 100000,
+              },
+              currentBalance: {
+                type: 'number',
+                example: 65000,
+              },
+            },
+          },
+        },
         GetYearTransactions: {
           Response200: {
             type: 'object',
