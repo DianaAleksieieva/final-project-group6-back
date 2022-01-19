@@ -22,7 +22,6 @@ const examples = {
   },
   token:
     'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYxZTZkM2U3NmNhY2MwMTVkNzYyODQyMyIsImlhdCI6MTY0MjUxNzQ3OX0.poPWJlV3qZHa1NMLDkSLfxfaI9bEqk_yWfZzowgJBgU',
-  email: 'test@email.com',
   userName: 'Иванов Иван Иванович',
   type: 'income',
   month: 9,
@@ -868,10 +867,11 @@ const swagger = {
         Register: {
           Request: {
             type: 'object',
+            required: ['email', 'password'],
             properties: {
               email: {
                 type: 'string',
-                example: '@mail.com',
+                format: 'email',
               },
               password: {
                 type: 'string',
@@ -899,7 +899,7 @@ const swagger = {
                   },
                   email: {
                     type: 'string',
-                    example: examples.email,
+                    format: 'email',
                   },
                   userName: {
                     type: 'string',
@@ -913,10 +913,11 @@ const swagger = {
         Login: {
           Request: {
             type: 'object',
+            required: ['email', 'password'],
             properties: {
               email: {
                 type: 'string',
-                example: '@mail.com',
+                format: 'email',
               },
               password: {
                 type: 'string',
@@ -940,7 +941,7 @@ const swagger = {
                   },
                   email: {
                     type: 'string',
-                    example: examples.email,
+                    format: 'email',
                   },
                   userName: {
                     type: 'string',
@@ -975,7 +976,7 @@ const swagger = {
                   },
                   email: {
                     type: 'string',
-                    example: examples.email,
+                    format: 'email',
                   },
                   userName: {
                     type: 'string',
@@ -1004,6 +1005,7 @@ const swagger = {
         UserBalance: {
           Request: {
             type: 'object',
+            required: ['currentBalance'],
             properties: {
               currentBalance: {
                 type: 'number',
@@ -1024,6 +1026,7 @@ const swagger = {
         AddTransaction: {
           Request: {
             type: 'object',
+            required: ['type', 'category', 'date', 'amount'],
             properties: {
               type: {
                 type: 'string',
@@ -1068,6 +1071,7 @@ const swagger = {
                   date: {
                     type: 'date',
                     example: '2021-05-12T08:35:00.000Z',
+                    // format: 'date-time',
                   },
                   description: {
                     type: 'string',
