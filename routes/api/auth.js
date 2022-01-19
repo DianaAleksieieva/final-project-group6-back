@@ -29,8 +29,6 @@ router.get(
   ctrlWrapperMware(auth.verifyEmailTokenController),
 );
 
-router.get('/logout', authMware, ctrlWrapperMware(auth.logoutController));
-
 router.get('/current', authMware, ctrlWrapperMware(auth.getCurrentController));
 
 export default router;
