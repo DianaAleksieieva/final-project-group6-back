@@ -7,8 +7,11 @@ import swaggerUi from 'swagger-ui-express';
 import swaggerJSDoc from 'swagger-jsdoc';
 import swagger from './bin/swagger.js';
 
-
-import { authRouter, transactionsRouter } from './routes/api/index.js';
+import {
+  authRouter,
+  usersRouter,
+  transactionsRouter,
+} from './routes/api/index.js';
 import dotenv from 'dotenv';
 const document = swaggerJSDoc(swagger);
 dotenv.config();
@@ -23,6 +26,7 @@ app.use(express.static('public'));
 
 app.use('/api/docs', swaggerUi.serve, swaggerUi.setup(document));
 app.use('/api/auth', authRouter);
+app.use('/api/user', usersRouter);
 app.use('/api/transactions', transactionsRouter);
 
 app.use((req, res) => {
