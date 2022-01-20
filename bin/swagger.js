@@ -187,59 +187,7 @@ const swagger = {
           },
         },
       },
-      '/api/auth/refresh/{refreshToken}': {
-        get: {
-          summary: 'Обновление токена',
-          tags: ['Auth'],
-          parameters: [
-            {
-              name: 'refreshToken',
-              description: description.refreshToken,
-              in: 'path',
-              required: true,
-              type: 'string',
-              schema: {
-                type: 'string',
-              },
-            },
-          ],
-          responses: {
-            200: {
-              description: description.request200,
-              content: {
-                'application/json': {
-                  schema: {
-                    type: 'object',
-                    $ref: '#/components/schemes/RefreshToken/Response200',
-                  },
-                },
-              },
-            },
-            400: {
-              description: description.request400,
-              content: {
-                'application/json': {
-                  schema: {
-                    type: 'object',
-                    $ref: '#/components/schemes/Response400Joi',
-                  },
-                },
-              },
-            },
-            404: {
-              description: description.request404,
-              content: {
-                'application/json': {
-                  schema: {
-                    type: 'object',
-                    $ref: '#/components/schemes/Response404NotFound',
-                  },
-                },
-              },
-            },
-          },
-        },
-      },
+
       '/api/auth/verify/{emailToken}': {
         get: {
           summary: 'Верификация нового email',
@@ -341,6 +289,48 @@ const swagger = {
                   schema: {
                     type: 'object',
                     $ref: '#/components/schemes/Response401unautorized',
+                  },
+                },
+              },
+            },
+          },
+        },
+      },
+      '/api/user/token/refresh/': {
+        get: {
+          summary: 'Обновление токена',
+          tags: ['User'],
+          security: [{ Bearer: [] }],
+          responses: {
+            200: {
+              description: description.request200,
+              content: {
+                'application/json': {
+                  schema: {
+                    type: 'object',
+                    $ref: '#/components/schemes/RefreshToken/Response200',
+                  },
+                },
+              },
+            },
+            400: {
+              description: description.request400,
+              content: {
+                'application/json': {
+                  schema: {
+                    type: 'object',
+                    $ref: '#/components/schemes/Response400Joi',
+                  },
+                },
+              },
+            },
+            404: {
+              description: description.request404,
+              content: {
+                'application/json': {
+                  schema: {
+                    type: 'object',
+                    $ref: '#/components/schemes/Response404NotFound',
                   },
                 },
               },
@@ -970,10 +960,11 @@ const swagger = {
               email: {
                 type: 'string',
                 format: 'email',
+                example: 'grozny@mail.com',
               },
               password: {
                 type: 'string',
-                example: '',
+                example: '123456',
               },
             },
           },
