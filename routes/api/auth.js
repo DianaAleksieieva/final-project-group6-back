@@ -31,4 +31,11 @@ router.get(
 
 router.get('/current', authMware, ctrlWrapperMware(auth.getCurrentController));
 
+router.get('/google', ctrlWrapperMware(auth.google.googleAuthController));
+
+router.get(
+  '/google-redirect',
+  ctrlWrapperMware(auth.google.googleRedirectController),
+);
+
 export default router;
