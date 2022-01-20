@@ -7,17 +7,22 @@ const login = async ({ email, password }) => {
   const user = await User.findOne({ email });
 
   if (!user || !user.comparePassword(password)) {
-    throw new httpError.Unauthorized(
-      'Email or password is wrong or not verify',
-    );
+    throw new httpError.Unauthorized('Email or password is wrong');
   }
   const token = jwt.sign({ id: user._id }, process.env.SECRET_KEY, {
-    expiresIn: '1h',
+    expiresIn: '15m',
   });
-  await User.findByIdAndUpdate(user._id, { token });
+  const refreshToken = jwt.sign({ id: user._id }, process.env.SECRET_KEY, {
+    expiresIn: '72h',
+  });
+  await User.findByIdAndUpdate(user._id, { token, refreshToken });
   return {
-    data: {
-      token,
+    token,
+    refreshToken,
+    user: {
+      _id: user._id,
+      email: user.email,
+      userName: user.userName,
     },
   };
 };

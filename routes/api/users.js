@@ -6,4 +6,6 @@ const router = express.Router();
 
 router.get('/current', authMware, ctrlWrapperMware(users.getCurrentController));
 
+router.get('/token/refresh', ctrlWrapperMware(users.refreshTokenController));
+
 export default router;
