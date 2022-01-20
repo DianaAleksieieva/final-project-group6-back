@@ -42,7 +42,7 @@ router.post(
 );
 
 router.delete(
-  '/:id',
+  '/delete/:id',
   authMware,
   paramsValidationMware(idJoiSchema),
   ctrlWrapperMware(removeTransactionController),

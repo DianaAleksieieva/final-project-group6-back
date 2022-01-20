@@ -450,7 +450,7 @@ const swagger = {
           },
         },
       },
-      '/api/transactions/{id}': {
+      '/api/transactions/delete/{id}': {
         delete: {
           summary: 'Удаление транзакции',
           tags: ['Transactions'],
@@ -990,9 +990,9 @@ const swagger = {
           Response200: {
             type: 'object',
             properties: {
-              message: {
+              avatarUrl: {
                 type: 'string',
-                avatarURL: 'тут будет ссылка на изображение',
+                example: 'тут будет ссылка на изображение',
               },
             },
           },
