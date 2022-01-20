@@ -2,6 +2,7 @@ const getCurrentYear = () => new Date().getFullYear();
 
 const description = {
   emailToken: 'Токен для верификации email',
+  refreshToken: 'Токен для обновления токена',
   type: 'Тип транзакции доход(income) или расход(expense)',
   category: 'Категория транзакции',
   id: 'id',
@@ -18,6 +19,8 @@ const examples = {
   transactionID: '61e45142008a3b98cdbfd355',
   token:
     'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYxZTZkM2U3NmNhY2MwMTVkNzYyODQyMyIsImlhdCI6MTY0MjUxNzQ3OX0.poPWJlV3qZHa1NMLDkSLfxfaI9bEqk_yWfZzowgJBgU',
+  refreshToken:
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYxZTA5ZGM5MDk5MjdjYTMxMDViMzJiNCIsImlhdCI6MTY0MjYzNzAyNywiZXhwIjoxNjQyNjQwNjI3fQ.fAdmQGHqTDx5XX3z7lZ2J5Bi1F2fI3mJbEg-iYWT2JI',
   userName: 'Иванов Иван Иванович',
   type: 'income',
   month: 9,
@@ -30,7 +33,7 @@ const swagger = {
     openapi: '3.0.0',
     info: {
       title: 'Kapusta-API',
-      version: '2.0.1',
+      version: '2.0.2',
       description: 'https://pedantic-engelbart-4b98e1.netlify.app/',
     },
     consumes: ['application/json', 'multipart/form-data'],
@@ -177,6 +180,59 @@ const swagger = {
                   schema: {
                     type: 'object',
                     $ref: '#/components/schemes/Response409EmailInUse',
+                  },
+                },
+              },
+            },
+          },
+        },
+      },
+      '/api/auth/refresh/{refreshToken}': {
+        get: {
+          summary: 'Обновление токена',
+          tags: ['Auth'],
+          parameters: [
+            {
+              name: 'refreshToken',
+              description: description.refreshToken,
+              in: 'path',
+              required: true,
+              type: 'string',
+              schema: {
+                type: 'string',
+              },
+            },
+          ],
+          responses: {
+            200: {
+              description: description.request200,
+              content: {
+                'application/json': {
+                  schema: {
+                    type: 'object',
+                    $ref: '#/components/schemes/RefreshToken/Response200',
+                  },
+                },
+              },
+            },
+            400: {
+              description: description.request400,
+              content: {
+                'application/json': {
+                  schema: {
+                    type: 'object',
+                    $ref: '#/components/schemes/Response400Joi',
+                  },
+                },
+              },
+            },
+            404: {
+              description: description.request404,
+              content: {
+                'application/json': {
+                  schema: {
+                    type: 'object',
+                    $ref: '#/components/schemes/Response404NotFound',
                   },
                 },
               },
@@ -927,6 +983,42 @@ const swagger = {
               token: {
                 type: 'string',
                 example: examples.token,
+              },
+              refreshToken: {
+                type: 'string',
+                example: examples.refreshToken,
+              },
+              user: {
+                type: 'object',
+                properties: {
+                  _id: {
+                    type: 'string',
+                    example: examples.userID,
+                  },
+                  email: {
+                    type: 'string',
+                    format: 'email',
+                  },
+                  userName: {
+                    type: 'string',
+                    example: examples.userName,
+                  },
+                },
+              },
+            },
+          },
+        },
+        RefreshToken: {
+          Response200: {
+            type: 'object',
+            properties: {
+              token: {
+                type: 'string',
+                example: examples.token,
+              },
+              refreshToken: {
+                type: 'string',
+                example: examples.refreshToken,
               },
               user: {
                 type: 'object',
