@@ -71,9 +71,7 @@ const putSetOfTransactionsController = async (req, res) => {
             hour,
             minute,
           );
-          console.log(transaction);
           if (transaction.length) transactionCounter++;
-          console.log(transactionCounter);
         }
       });
     });
@@ -94,9 +92,9 @@ const putSetOfTransactionsController = async (req, res) => {
       hour,
       minute,
     );
-    console.log(transaction);
+
     if (transaction.length) transactionCounter++;
-    console.log(transactionCounter);
+
   }
 
   for (let counter = 0; counter < count / 1; counter++) {
@@ -121,9 +119,9 @@ const putSetOfTransactionsController = async (req, res) => {
           hour,
           minute,
         );
-        console.log(transaction);
+
         if (transaction.length) transactionCounter++;
-        console.log(transactionCounter);
+
       }
     });
   }

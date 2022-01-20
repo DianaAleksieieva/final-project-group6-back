@@ -14,12 +14,8 @@ const description = {
 };
 
 const examples = {
-  userID: {
-    $oid: '61e09dc909927ca3105b32b4',
-  },
-  transactionID: {
-    $oid: '61e45142008a3b98cdbfd355',
-  },
+  userID: '61e09dc909927ca3105b32b4',
+  transactionID: '61e45142008a3b98cdbfd355',
   token:
     'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYxZTZkM2U3NmNhY2MwMTVkNzYyODQyMyIsImlhdCI6MTY0MjUxNzQ3OX0.poPWJlV3qZHa1NMLDkSLfxfaI9bEqk_yWfZzowgJBgU',
   userName: 'Иванов Иван Иванович',
@@ -894,7 +890,7 @@ const swagger = {
                 type: 'object',
                 properties: {
                   _id: {
-                    type: 'object',
+                    type: 'string',
                     example: examples.userID,
                   },
                   email: {
@@ -936,7 +932,7 @@ const swagger = {
                 type: 'object',
                 properties: {
                   _id: {
-                    type: 'object',
+                    type: 'string',
                     example: examples.userID,
                   },
                   email: {
@@ -967,26 +963,25 @@ const swagger = {
           Response200: {
             type: 'object',
             properties: {
-              user: {
-                type: 'object',
-                properties: {
-                  _id: {
-                    type: 'object',
-                    example: examples.userID,
-                  },
-                  email: {
-                    type: 'string',
-                    format: 'email',
-                  },
-                  userName: {
-                    type: 'string',
-                    example: examples.userName,
-                  },
-                },
-              },
-              token: {
+              _id: {
                 type: 'string',
-                example: examples.token,
+                example: examples.userID,
+              },
+              email: {
+                type: 'string',
+                format: 'email',
+              },
+              userName: {
+                type: 'string',
+                example: examples.userName,
+              },
+              currentBalance: {
+                type: 'number',
+                example: 30809,
+              },
+              startBalance: {
+                type: 'number',
+                example: 10000,
               },
             },
           },
@@ -1057,7 +1052,7 @@ const swagger = {
                 type: 'object',
                 properties: {
                   _id: {
-                    type: 'object',
+                    type: 'string',
                     example: examples.transactionID,
                   },
                   owner: {
@@ -1118,7 +1113,7 @@ const swagger = {
                 type: 'object',
                 properties: {
                   _id: {
-                    type: 'object',
+                    type: 'string',
                     example: examples.transactionID,
                   },
                   type: {
