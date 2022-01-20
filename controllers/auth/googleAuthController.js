@@ -70,3 +70,5 @@ const googleRedirectController = async (req, res, next) => {
     `${process.env.FRONTEND_URL}/api/auth?${accessToken}`,
   );
 };
+
+export default { googleAuthController, googleRedirectController };

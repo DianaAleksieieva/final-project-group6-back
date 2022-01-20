@@ -29,10 +29,6 @@ router.get(
   ctrlWrapperMware(auth.verifyEmailTokenController),
 );
 
-router.get('/google', ctrlWrapperMware(auth.googleAuthController));
-
-router.get('/google-redirect', ctrlWrapperMware(auth.googleRedirectController));
-
 router.get('/google', ctrlWrapperMware(auth.google.googleAuthController));
 
 router.get(
