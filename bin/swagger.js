@@ -2,6 +2,7 @@ const getCurrentYear = () => new Date().getFullYear();
 
 const description = {
   emailToken: 'Токен для верификации email',
+  refreshToken: 'Токен для обновления токена',
   type: 'Тип транзакции доход(income) или расход(expense)',
   category: 'Категория транзакции',
   id: 'id',
@@ -14,15 +15,12 @@ const description = {
 };
 
 const examples = {
-  userID: {
-    $oid: '61e09dc909927ca3105b32b4',
-  },
-  transactionID: {
-    $oid: '61e45142008a3b98cdbfd355',
-  },
+  userID: '61e09dc909927ca3105b32b4',
+  transactionID: '61e45142008a3b98cdbfd355',
   token:
     'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYxZTZkM2U3NmNhY2MwMTVkNzYyODQyMyIsImlhdCI6MTY0MjUxNzQ3OX0.poPWJlV3qZHa1NMLDkSLfxfaI9bEqk_yWfZzowgJBgU',
-  email: 'test@email.com',
+  refreshToken:
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYxZTA5ZGM5MDk5MjdjYTMxMDViMzJiNCIsImlhdCI6MTY0MjYzNzAyNywiZXhwIjoxNjQyNjQwNjI3fQ.fAdmQGHqTDx5XX3z7lZ2J5Bi1F2fI3mJbEg-iYWT2JI',
   userName: 'Иванов Иван Иванович',
   type: 'income',
   month: 9,
@@ -35,7 +33,7 @@ const swagger = {
     openapi: '3.0.0',
     info: {
       title: 'Kapusta-API',
-      version: '2.0.1',
+      version: '2.0.2',
       description: 'https://pedantic-engelbart-4b98e1.netlify.app/',
     },
     consumes: ['application/json', 'multipart/form-data'],
@@ -189,6 +187,7 @@ const swagger = {
           },
         },
       },
+
       '/api/auth/verify/{emailToken}': {
         get: {
           summary: 'Верификация нового email',
@@ -290,6 +289,48 @@ const swagger = {
                   schema: {
                     type: 'object',
                     $ref: '#/components/schemes/Response401unautorized',
+                  },
+                },
+              },
+            },
+          },
+        },
+      },
+      '/api/user/token/refresh/': {
+        get: {
+          summary: 'Обновление токена',
+          tags: ['User'],
+          security: [{ Bearer: [] }],
+          responses: {
+            200: {
+              description: description.request200,
+              content: {
+                'application/json': {
+                  schema: {
+                    type: 'object',
+                    $ref: '#/components/schemes/RefreshToken/Response200',
+                  },
+                },
+              },
+            },
+            400: {
+              description: description.request400,
+              content: {
+                'application/json': {
+                  schema: {
+                    type: 'object',
+                    $ref: '#/components/schemes/Response400Joi',
+                  },
+                },
+              },
+            },
+            404: {
+              description: description.request404,
+              content: {
+                'application/json': {
+                  schema: {
+                    type: 'object',
+                    $ref: '#/components/schemes/Response404NotFound',
                   },
                 },
               },
@@ -455,7 +496,7 @@ const swagger = {
           },
         },
       },
-      '/api/transactions/{id}': {
+      '/api/transactions/delete/{id}': {
         delete: {
           summary: 'Удаление транзакции',
           tags: ['Transactions'],
@@ -868,10 +909,11 @@ const swagger = {
         Register: {
           Request: {
             type: 'object',
+            required: ['email', 'password'],
             properties: {
               email: {
                 type: 'string',
-                example: '@mail.com',
+                format: 'email',
               },
               password: {
                 type: 'string',
@@ -894,12 +936,12 @@ const swagger = {
                 type: 'object',
                 properties: {
                   _id: {
-                    type: 'object',
+                    type: 'string',
                     example: examples.userID,
                   },
                   email: {
                     type: 'string',
-                    example: examples.email,
+                    format: 'email',
                   },
                   userName: {
                     type: 'string',
@@ -913,14 +955,16 @@ const swagger = {
         Login: {
           Request: {
             type: 'object',
+            required: ['email', 'password'],
             properties: {
               email: {
                 type: 'string',
-                example: '@mail.com',
+                format: 'email',
+                example: 'grozny@mail.com',
               },
               password: {
                 type: 'string',
-                example: '',
+                example: '123456',
               },
             },
           },
@@ -931,16 +975,52 @@ const swagger = {
                 type: 'string',
                 example: examples.token,
               },
+              refreshToken: {
+                type: 'string',
+                example: examples.refreshToken,
+              },
               user: {
                 type: 'object',
                 properties: {
                   _id: {
-                    type: 'object',
+                    type: 'string',
                     example: examples.userID,
                   },
                   email: {
                     type: 'string',
-                    example: examples.email,
+                    format: 'email',
+                  },
+                  userName: {
+                    type: 'string',
+                    example: examples.userName,
+                  },
+                },
+              },
+            },
+          },
+        },
+        RefreshToken: {
+          Response200: {
+            type: 'object',
+            properties: {
+              token: {
+                type: 'string',
+                example: examples.token,
+              },
+              refreshToken: {
+                type: 'string',
+                example: examples.refreshToken,
+              },
+              user: {
+                type: 'object',
+                properties: {
+                  _id: {
+                    type: 'string',
+                    example: examples.userID,
+                  },
+                  email: {
+                    type: 'string',
+                    format: 'email',
                   },
                   userName: {
                     type: 'string',
@@ -966,26 +1046,25 @@ const swagger = {
           Response200: {
             type: 'object',
             properties: {
-              user: {
-                type: 'object',
-                properties: {
-                  _id: {
-                    type: 'object',
-                    example: examples.userID,
-                  },
-                  email: {
-                    type: 'string',
-                    example: examples.email,
-                  },
-                  userName: {
-                    type: 'string',
-                    example: examples.userName,
-                  },
-                },
-              },
-              token: {
+              _id: {
                 type: 'string',
-                example: examples.token,
+                example: examples.userID,
+              },
+              email: {
+                type: 'string',
+                format: 'email',
+              },
+              userName: {
+                type: 'string',
+                example: examples.userName,
+              },
+              currentBalance: {
+                type: 'number',
+                example: 30809,
+              },
+              startBalance: {
+                type: 'number',
+                example: 10000,
               },
             },
           },
@@ -994,9 +1073,9 @@ const swagger = {
           Response200: {
             type: 'object',
             properties: {
-              message: {
+              avatarUrl: {
                 type: 'string',
-                avatarURL: 'тут будет ссылка на изображение',
+                example: 'тут будет ссылка на изображение',
               },
             },
           },
@@ -1004,6 +1083,7 @@ const swagger = {
         UserBalance: {
           Request: {
             type: 'object',
+            required: ['currentBalance'],
             properties: {
               currentBalance: {
                 type: 'number',
@@ -1024,6 +1104,7 @@ const swagger = {
         AddTransaction: {
           Request: {
             type: 'object',
+            required: ['type', 'category', 'date', 'amount'],
             properties: {
               type: {
                 type: 'string',
@@ -1054,7 +1135,7 @@ const swagger = {
                 type: 'object',
                 properties: {
                   _id: {
-                    type: 'object',
+                    type: 'string',
                     example: examples.transactionID,
                   },
                   owner: {
@@ -1068,6 +1149,7 @@ const swagger = {
                   date: {
                     type: 'date',
                     example: '2021-05-12T08:35:00.000Z',
+                    // format: 'date-time',
                   },
                   description: {
                     type: 'string',
@@ -1080,6 +1162,62 @@ const swagger = {
                   amount: {
                     type: 'number',
                     example: 35000,
+                  },
+                },
+              },
+              oldBalance: {
+                type: 'number',
+                example: 100000,
+              },
+              currentBalance: {
+                type: 'number',
+                example: 65000,
+              },
+            },
+          },
+        },
+        RemoveTransaction: {
+          Response200: {
+            type: 'object',
+            properties: {
+              message: {
+                type: 'string',
+                example: 'transaction deleted',
+              },
+              oldBalance: {
+                type: 'number',
+                example: 30679,
+              },
+              currentBalance: {
+                type: 'number',
+                example: 30809,
+              },
+              transaction: {
+                type: 'object',
+                properties: {
+                  _id: {
+                    type: 'string',
+                    example: examples.transactionID,
+                  },
+                  type: {
+                    type: 'string',
+                    example: 'expense',
+                  },
+                  date: {
+                    type: 'date',
+                    example: '2021-01-26T20:57:00.000Z',
+                  },
+                  description: {
+                    type: 'string',
+                    example: 'Макароны',
+                  },
+                  category: {
+                    type: 'string',
+                    example: 'goods',
+                  },
+                  amount: {
+                    type: 'number',
+                    example: 130,
                   },
                 },
               },

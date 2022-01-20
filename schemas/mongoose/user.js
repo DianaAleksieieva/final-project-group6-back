@@ -22,7 +22,17 @@ const userSchema = Schema(
     token: {
       type: String,
       default: ({ _id }) => {
-        return jwt.sign({ id: _id }, process.env.SECRET_KEY);
+        return jwt.sign({ id: _id }, process.env.SECRET_KEY, {
+          expiresIn: '15m',
+        });
+      },
+    },
+    refreshToken: {
+      type: String,
+      default: ({ _id }) => {
+        return jwt.sign({ id: _id }, process.env.SECRET_KEY, {
+          expiresIn: '10h',
+        });
       },
     },
     avatarURL: {
@@ -52,8 +62,6 @@ const userSchema = Schema(
 
 userSchema.methods.setPassword = function (password) {
   this.password = bcrypt.hashSync(password, bcrypt.genSaltSync(10));
-  console.log('this.password', this.password);
-  console.log('password', password);
 };
 
 userSchema.methods.comparePassword = function (password) {

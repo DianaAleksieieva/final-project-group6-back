@@ -58,15 +58,15 @@ const googleRedirectController = async (req, res, next) => {
   const accessToken = jwt.sign({ id: user._id }, process.env.SECRET_KEY, {
     expiresIn: '1h',
   });
+   console.log(accessToken);
   await User.findByIdAndUpdate(user._id, { token: accessToken });
+ console.log(token);
 
   if (user && user.token === null) {
     await User.findByIdAndUpdate(user._id,{token})
   }
-
+    console.log(token);
   return res.redirect(
     `${process.env.FRONTEND_URL}/api/auth?${accessToken}`,
   );
 };
-
-export default { googleAuthController, googleRedirectController };
