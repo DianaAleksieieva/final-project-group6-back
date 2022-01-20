@@ -1,4 +1,5 @@
 async function getCurrentController(req, res) {
+  console.log(req);
   const { email, _id, userName, avatarURL, currentBalance, startBalance } =
     req.user;
   res
