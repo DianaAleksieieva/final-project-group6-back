@@ -5,7 +5,6 @@ function countYearlyByTypeHelper(transactions) {
   transactions.map(transaction => {
     yearArray[transaction.month - 1] += transaction.amount;
   });
-  console.log(yearArray);
   yearArray.map((sumMonth, index) => {
     result[index + 1] = sumMonth;
     sum += sumMonth;
