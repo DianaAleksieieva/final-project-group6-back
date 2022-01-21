@@ -3,6 +3,8 @@ import jwt from 'jsonwebtoken';
 import { nanoid } from 'nanoid';
 import { User } from '../../schemas/mongoose/index.js';
 import getGoogleDataHelper from '../../helpers/getGoogleDataHelper.js';
+import dotenv from 'dotenv';
+dotenv.config();
 
 const googleRedirectModel = async req => {
   const fullUrl = `${req.protocol}://${req.get('host')}${req.originalUrl}`;
