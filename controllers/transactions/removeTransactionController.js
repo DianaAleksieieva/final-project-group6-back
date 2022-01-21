@@ -1,9 +1,7 @@
 import httpError from 'http-errors';
 import calculateNewBalanceHelper from '../../helpers/calculateNewBalanceHelper.js';
-import {
-  balanceUpdateModel,
-  removeTransactionModel,
-} from '../../models/transactions/index.js';
+import { removeTransactionModel } from '../../models/transactions/index.js';
+import { balanceUpdateModel } from '../../models/users/index.js';
 
 const removeTransactionController = async ({ params, user }, res) => {
   const { _id, type, date, description, category, amount } =

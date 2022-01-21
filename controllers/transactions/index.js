@@ -1,19 +1,7 @@
-import balanceUpdate from './balanceUpdateController.js';
-import addTransactionController from './addTransactionController.js';
-import removeTransactionController from './removeTransactionController.js';
-import removeTransaction from './removeTransaction.js';
-import getYearlyByTypeController from './getYearlyByTypeController.js';
-import getMonthlyByTypeController from './getMonthlyByTypeController.js';
-import getAllMonthlyByCategoryController from './getAllMonthlyByCategoryController.js';
-import putSetOfTransactionsController from './putSetOfTransactionsController.js';
-
-export default {
-  balanceUpdate,
-  addTransactionController,
-  removeTransactionController,
-  removeTransaction,
-  getYearlyByTypeController,
-  getAllMonthlyByCategoryController,
-  getMonthlyByTypeController,
-  putSetOfTransactionsController,
-};
+export { default as addTransactionController } from './addTransactionController.js';
+export { default as removeTransactionController } from './removeTransactionController.js';
+export { default as removeTransaction } from './removeTransaction.js';
+export { default as getYearlyByTypeController } from './getYearlyByTypeController.js';
+export { default as getMonthlyByTypeController } from './getMonthlyByTypeController.js';
+export { default as getAllMonthlyByCategoryController } from './getAllMonthlyByCategoryController.js';
+export { default as putSetOfTransactionsController } from './putSetOfTransactionsController.js';
