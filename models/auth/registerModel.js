@@ -2,7 +2,10 @@ import httpError from 'http-errors';
 import { User } from '../../schemas/mongoose/index.js';
 import gravatar from 'gravatar';
 
-async function register({ email, password, userName }, verificationToken) {
+const registerModel = async (
+  { email, password, userName },
+  verificationToken,
+) => {
   const user = await User.findOne({ email });
   if (user) {
     throw new httpError.Conflict('Email in use');
@@ -20,6 +23,6 @@ async function register({ email, password, userName }, verificationToken) {
       userName,
     },
   };
-}
+};
 
-export default register;
+export default registerModel;

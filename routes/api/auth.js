@@ -10,7 +10,8 @@ import {
   loginController,
   logoutController,
   verifyEmailTokenController,
-  google,
+  googleRedirectController,
+  googleAuthController,
 } from '../../controllers/auth/index.js';
 import {
   joiRegisterSchema,
@@ -39,11 +40,8 @@ router.get(
   ctrlWrapperMware(verifyEmailTokenController),
 );
 
-router.get('/google', ctrlWrapperMware(google.googleAuthController));
+router.get('/google', ctrlWrapperMware(googleAuthController));
 
-router.get(
-  '/google-redirect',
-  ctrlWrapperMware(google.googleRedirectController),
-);
+router.get('/google-redirect', ctrlWrapperMware(googleRedirectController));
 
 export default router;
