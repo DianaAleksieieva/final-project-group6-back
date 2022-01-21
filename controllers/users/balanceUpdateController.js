@@ -1,4 +1,4 @@
-import { balanceUpdateModel } from '../../models/transactions/index.js';
+import { balanceUpdateModel } from '../../models/users/index.js';
 
 const balanceUpdateController = async (req, res) => {
   const { currentBalance } = req.body;

@@ -5,28 +5,38 @@ import {
   ctrlWrapperMware,
   paramsValidationMware,
 } from '../../middlewares/index.js';
-import { auth } from '../../controllers/index.js';
-import { users } from '../../schemas/joi/index.js';
+import {
+  registerController,
+  loginController,
+  logoutController,
+  verifyEmailTokenController,
+  google,
+} from '../../controllers/auth/index.js';
+import {
+  joiRegisterSchema,
+  joiLoginSchema,
+  emailTokenJoiSchema,
+} from '../../schemas/joi/users.js';
 const router = express.Router();
 
 router.post(
   '/register',
-  validationMware(users.joiRegisterSchema),
-  ctrlWrapperMware(auth.registerController),
+  validationMware(joiRegisterSchema),
+  ctrlWrapperMware(registerController),
 );
 
 router.post(
   '/login',
-  validationMware(users.joiLoginSchema),
-  ctrlWrapperMware(auth.loginController),
+  validationMware(joiLoginSchema),
+  ctrlWrapperMware(loginController),
 );
 
-router.post('/logout', authMware, ctrlWrapperMware(auth.logoutController));
+router.post('/logout', authMware, ctrlWrapperMware(logoutController));
 
 router.get(
   '/verify/:emailToken',
-  paramsValidationMware(users.emailTokenJoiSchema),
-  ctrlWrapperMware(auth.verifyEmailTokenController),
+  paramsValidationMware(emailTokenJoiSchema),
+  ctrlWrapperMware(verifyEmailTokenController),
 );
 
 router.get('/google', ctrlWrapperMware(auth.googleAuthController));

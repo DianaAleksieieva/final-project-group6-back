@@ -1,10 +1,8 @@
 import httpError from 'http-errors';
 import getYearMonthHelper from '../../helpers/getYearMonthHelper.js';
 import calculateNewBalanceHelper from '../../helpers/calculateNewBalanceHelper.js';
-import {
-  balanceUpdateModel,
-  addTransactionModel,
-} from '../../models/transactions/index.js';
+import { addTransactionModel } from '../../models/transactions/index.js';
+import { balanceUpdateModel } from '../../models/users/index.js';
 
 const addTransactionController = async ({ body, user }, res) => {
   const { type, amount } = body;
