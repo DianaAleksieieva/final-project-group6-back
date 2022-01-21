@@ -1,14 +1,5 @@
-import registerController from './registerController.js';
-import loginController from './loginController.js';
-import logoutController from './logoutController.js';
-import verifyEmailTokenController from './verifyEmailTokenController.js';
-import google from './googleAuthController.js';
-
-
-export default {
-  registerController,
-  loginController,
-  logoutController,
-  verifyEmailTokenController,
-  google,
-};
+export { default as registerController } from './registerController.js';
+export { default as loginController } from './loginController.js';
+export { default as logoutController } from './logoutController.js';
+export { default as verifyEmailTokenController } from './verifyEmailTokenController.js';
+export { default as google } from './googleAuthController.js';

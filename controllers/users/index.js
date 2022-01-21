@@ -1,7 +1,3 @@
-import getCurrentController from './getCurrentController.js';
-import refreshTokenController from './refreshTokenController.js';
-
-export default {
-  getCurrentController,
-  refreshTokenController,
-};
+export { default as getCurrentController } from './getCurrentController.js';
+export { default as refreshTokenController } from './refreshTokenController.js';
+export { default as balanceUpdateController } from './balanceUpdateController.js';
