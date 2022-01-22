@@ -1,5 +1,4 @@
-async function getCurrentController(req, res) {
-  const user = JSON.parse(JSON.stringify(req.user));
+async function getCurrentController({ user }, res) {
   res.status(200).send({
     _id: user._id,
     email: user.email,
