@@ -15,7 +15,7 @@ const authMiddleware = async (req, res, next) => {
     if (!user || !user.token) {
       throw new httpError.Unauthorized('No authorized');
     }
-    req.user = JSON.parse(JSON.stringify(user)); // костыль для аватарки. иначе передает undefined
+    req.user = user; // костыль для аватарки. иначе передает undefined
     next();
   } catch (error) {
     if (error.massage === 'Invalid sugnature') {

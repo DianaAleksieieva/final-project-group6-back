@@ -14,7 +14,7 @@ import {
 import dotenv from 'dotenv';
 dotenv.config();
 //SWAGGER
-swagger.definition.servers[0].url = 'http://localhost:'+process.env.PORT;
+// swagger.definition.servers[0].url = 'http://localhost:'+process.env.PORT;
 const document = swaggerJSDoc(swagger);
 //EXPRESS
 const app = express();

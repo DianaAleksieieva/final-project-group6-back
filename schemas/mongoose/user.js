@@ -35,7 +35,7 @@ const userSchema = Schema(
         });
       },
     },
-    avatarURL: {
+    avatarUrl: {
       type: String,
       required: true,
     },
