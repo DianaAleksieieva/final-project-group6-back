@@ -1,79 +1,69 @@
 import express from 'express';
-import { transactions as controller } from '../../controllers/index.js';
+import {
+  addTransactionController,
+  removeTransactionController,
+  getYearlyByTypeController,
+  getMonthlyByTypeController,
+  getAllMonthlyByCategoryController,
+  putSetOfTransactionsController,
+} from '../../controllers/transactions/index.js';
 import {
   authMware,
   validationMware,
   paramsValidationMware,
   ctrlWrapperMware,
 } from '../../middlewares/index.js';
-import { transactions as joiSchema } from '../../schemas/joi/index.js';
-const {
-  currentBallanseJoiSchema,
+import {
   addTransactionJoiSchema,
-  categoryTransactionJoiSchema,
-  typeTransactionJoiSchema,
-  monthYearParamsJoiSchema,
-  yearTypeParamsJoiSchema,
-  idParamsJoiSchema,
-} = joiSchema;
-const {
-  balanceUpdate,
-  addTransaction,
-  removeTransaction,
-  getYearlyByTypeController,
-  getAllMonthlyTransactions,
-  getAllMonthlyByCategoryController,
-  getAllMonthlyByTypeTransactions,
-} = controller;
-const router = express.Router();
+  idJoiSchema,
+  yearTypeJoiSchema,
+  categoryMonthYearJoiSchema,
+  typeMonthYearJoiSchema,
+  setTransactionJoiSchema,
+} from '../../schemas/joi/transactions.js';
 
-router.put(
-  '/balance',
-  authMware,
-  validationMware(currentBallanseJoiSchema),
-  ctrlWrapperMware(balanceUpdate),
-);
+const router = express.Router();
 
 router.post(
   '/add',
   authMware,
   validationMware(addTransactionJoiSchema),
-  ctrlWrapperMware(addTransaction),
+  ctrlWrapperMware(addTransactionController),
 );
 
 router.delete(
-  '/:id',
+  '/delete/:id',
   authMware,
-  paramsValidationMware(idParamsJoiSchema),
-  ctrlWrapperMware(removeTransaction),
+  paramsValidationMware(idJoiSchema),
+  ctrlWrapperMware(removeTransactionController),
 );
-router.get(
-  '/year/:year/:type',
+
+router.put(
+  '/set/:year/:month/:count',
   authMware,
-  paramsValidationMware(yearTypeParamsJoiSchema),
+  paramsValidationMware(setTransactionJoiSchema),
+  ctrlWrapperMware(putSetOfTransactionsController),
+);
+
+router.get(
+  '/getByType/:type/:year',
+  authMware,
+  paramsValidationMware(yearTypeJoiSchema),
   ctrlWrapperMware(getYearlyByTypeController),
 );
 
 router.get(
-  '/month/:month/:year',
+  '/getByType/:type/:year/:month',
   authMware,
-  paramsValidationMware(monthYearParamsJoiSchema),
-  ctrlWrapperMware(getAllMonthlyTransactions),
+  paramsValidationMware(typeMonthYearJoiSchema),
+  ctrlWrapperMware(getMonthlyByTypeController),
 );
 
 router.get(
-  '/category/:month/:year',
+  '/getByCategory/:category/:year/:month/',
   authMware,
-  paramsValidationMware(monthYearParamsJoiSchema),
-  validationMware(categoryTransactionJoiSchema),
+  paramsValidationMware(categoryMonthYearJoiSchema),
   ctrlWrapperMware(getAllMonthlyByCategoryController),
-);
-router.get(
-  '/type/:month/:year',
-  authMware,
-  paramsValidationMware(monthYearParamsJoiSchema),
-  validationMware(typeTransactionJoiSchema),
-  ctrlWrapperMware(getAllMonthlyByTypeTransactions),
 );
 
 export default router;

@@ -3,20 +3,31 @@ import logger from 'morgan';
 import cors from 'cors';
 import chalk from 'chalk';
 
-import { authRouter, transactionsRouter } from './routes/api/index.js';
+import swaggerUi from 'swagger-ui-express';
+import swaggerJSDoc from 'swagger-jsdoc';
+import swagger from './bin/swagger.js';
+import {
+  authRouter,
+  usersRouter,
+  transactionsRouter,
+} from './routes/api/index.js';
 import dotenv from 'dotenv';
 dotenv.config();
-
+//SWAGGER
+swagger.definition.servers[0].url = 'http://localhost:'+process.env.PORT;
+const document = swaggerJSDoc(swagger);
+//EXPRESS
 const app = express();
 
 const formatsLogger = app.get('env') === 'development' ? 'dev' : 'short';
-
 app.use(logger(formatsLogger));
 app.use(cors());
 app.use(express.json());
 app.use(express.static('public'));
 
+app.use('/api/docs', swaggerUi.serve, swaggerUi.setup(document));
 app.use('/api/auth', authRouter);
+app.use('/api/user', usersRouter);
 app.use('/api/transactions', transactionsRouter);
 
 app.use((req, res) => {

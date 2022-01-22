@@ -1,6 +1,6 @@
 import { User } from '../../schemas/mongoose/index.js';
 
-const balance = async (currentBalance, id) => {
+const balanceUpdateModel = async (currentBalance, id) => {
   const updateBalance = await User.findByIdAndUpdate(
     id,
     { currentBalance },
@@ -9,4 +9,4 @@ const balance = async (currentBalance, id) => {
   return updateBalance.currentBalance;
 };
 
-export default balance;
+export default balanceUpdateModel;
