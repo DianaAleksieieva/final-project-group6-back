@@ -27,10 +27,10 @@ const googleRedirectModel = async req => {
       verify: true,
     });
     newUser.setPassword(nanoid());
-    await newUser.save();
+    newUser.save();
   }
 
-  const accessToken = jwt.sign({ id: user._id }, process.env.SECRET_KEY, {
+  const accessToken = jwt.sign({ _id: user._id }, process.env.SECRET_KEY, {
     expiresIn: '1h',
   });
 
