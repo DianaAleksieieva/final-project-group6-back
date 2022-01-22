@@ -3,7 +3,7 @@ import jwt from 'jsonwebtoken';
 
 import { User } from '../../schemas/mongoose/index.js';
 
-const login = async ({ email, password }) => {
+const loginModel = async ({ email, password }) => {
   const user = await User.findOne({ email });
 
   if (!user || !user.comparePassword(password)) {
@@ -27,4 +27,4 @@ const login = async ({ email, password }) => {
   };
 };
 
-export default login;
+export default loginModel;
