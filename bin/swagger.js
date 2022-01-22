@@ -108,6 +108,17 @@ const swagger = {
                 },
               },
             },
+            400: {
+              description: description.request400,
+              content: {
+                'application/json': {
+                  schema: {
+                    type: 'object',
+                    $ref: '#/components/schemes/Response400logout',
+                  },
+                },
+              },
+            },
             409: {
               description: description.request409,
               content: {
@@ -1501,6 +1512,15 @@ const swagger = {
                   },
                 ],
               },
+            },
+          },
+        },
+        Response400logout: {
+          type: 'object',
+          properties: {
+            message: {
+              type: 'string',
+              example: 'Please logout',
             },
           },
         },

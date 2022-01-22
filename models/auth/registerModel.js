@@ -6,6 +6,7 @@ const registerModel = async (
   { email, password, userName },
   verificationToken,
 ) => {
+  email = email.toLowerCase();
   const user = await User.findOne({ email });
   if (user) {
     throw new httpError.Conflict('Email in use');
@@ -17,10 +18,11 @@ const registerModel = async (
 
   return {
     token: newUser.token,
+    refreshToken: newUser.refreshToken,
     user: {
       _id: newUser._id,
-      email,
-      userName,
+      email: newUser.email,
+      userName: newUser.userName,
     },
   };
 };
