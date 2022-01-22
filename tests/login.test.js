@@ -34,7 +34,7 @@ describe('Test login controller function', () => {
   test('1.3 email - очень длинный', async () => {
     await expect(() =>
       loginTest(
-        'thisIsVerylong@email.inOurSoStressAndHopeless.World123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890',
+        'email13@eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYxZTA5ZGM5MDk5MjdjYTMxMDViMzJiNCIsImlhdCI6MTY0Mjg3ODE0OCwiZXhwIjoxNjQyODc5MDQ4fQ.9mVXUlOs8aprh-6eqOUTjNdnnDeGpln6k90bLAHNF6I',
         '1234aB',
         '',
       ),
@@ -43,7 +43,7 @@ describe('Test login controller function', () => {
 
   test('1.4 email - без знака "@"', async () => {
     await expect(() =>
-      loginTest('invalid.email.test', '1234aB', ''),
+      loginTest('email14.email.test', '1234aB', ''),
     ).rejects.toThrow('"email" must be a valid email');
   });
 

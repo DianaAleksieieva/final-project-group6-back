@@ -1,10 +1,13 @@
 async function getCurrentController(req, res) {
-  console.log(req);
-  const { email, _id, userName, avatarURL, currentBalance, startBalance } =
-    req.user;
-  res
-    .status(200)
-    .send({ email, _id, userName, avatarURL, currentBalance, startBalance });
+  const user = JSON.parse(JSON.stringify(req.user));
+  res.status(200).send({
+    _id: user._id,
+    email: user.email,
+    userName: user.userName,
+    avatarUrl: user.avatarUrl,
+    currentBalance: user.currentBalance,
+    startBalance: user.startBalance,
+  });
 }
 
 export default getCurrentController;
