@@ -22,6 +22,7 @@ const examples = {
   refreshToken:
     'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYxZTA5ZGM5MDk5MjdjYTMxMDViMzJiNCIsImlhdCI6MTY0MjYzNzAyNywiZXhwIjoxNjQyNjQwNjI3fQ.fAdmQGHqTDx5XX3z7lZ2J5Bi1F2fI3mJbEg-iYWT2JI',
   userName: 'Иванов Иван Иванович',
+  avatarUrl: 'https://cdn.tvc.ru/pictures/o/246/533.jpg',
   type: 'income',
   month: 9,
   year: getCurrentYear() - 1,
@@ -1068,6 +1069,10 @@ const swagger = {
               userName: {
                 type: 'string',
                 example: examples.userName,
+              },
+              avatarUrl: {
+                type: 'string',
+                example: examples.avatarUrl,
               },
               currentBalance: {
                 type: 'number',
