@@ -1,14 +1,5 @@
 import loginController from '../../controllers/auth/loginController.js';
 import { joiLoginSchema } from '../../schemas/joi/users.js';
-import {
-  connect,
-  clearDatabase,
-  closeDatabase,
-} from '../../bin/dbMongoMemory.js';
-
-beforeAll(async () => await connect());
-// afterEach(async () => await clearDatabase())
-afterAll(async () => await closeDatabase());
 
 const loginTest = async (email, password, token) => {
   const authorization = token ? 'Bearer ' + token : '';

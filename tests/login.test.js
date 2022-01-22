@@ -1,3 +1,9 @@
+import { connect, clearDatabase, closeDatabase } from '../bin/dbMongoMemory.js';
+
+beforeAll(async () => await connect());
+// afterEach(async () => await clearDatabase())
+afterAll(async () => await closeDatabase());
+
 function checkSuccess(data, status, inputMail) {
   expect(data.token).not.toBeNull();
   expect(data.refreshToken).not.toBeNull();
@@ -73,10 +79,11 @@ describe('Test login controller function', () => {
   });
 
   // test('2.3 password - длина 6 символов', async () => {
+  //   jest.setTimeout(7000);
   //   const inputMail = 'valid6@email.test';
-  //   await registrationTest(inputMail, '1234aB', '', userName)
-  //   const { data, status } = await loginTest(inputMail, '1234aB', '', userName);
-  //   checkSuccess(data, status, inputMail, userName);
+  //   await registrationTest(inputMail, '1234aB', '');
+  //   const { data, status } = await loginTest(inputMail, '1234aB', '');
+  //   checkSuccess(data, status, inputMail);
   // });
 
   //   test('2.4 password - длина 10 символов', async () => {
@@ -87,12 +94,12 @@ describe('Test login controller function', () => {
   //       '',
   //       userName,
   //     );
-  //     checkSuccess(data, status, inputMail, userName);
+  //     checkSuccess(data, status, inputMail);
   //   });
 
   //   test('2.5 password - длина > 10 ', async () => {
   //     await expect(() =>
-  //       loginTest('valid@email.test', '123456789aB', '', userName),
+  //       loginTest('valid@email.test', '123456789aB', ''),
   //     ).rejects.toThrow(
   //       '"password" length must be less than or equal to 10 characters long',
   //     );
@@ -106,7 +113,7 @@ describe('Test login controller function', () => {
   //       '',
   //       userName,
   //     );
-  //     checkSuccess(data, status, inputMail, userName);
+  //     checkSuccess(data, status, inputMail);
   //   });
 
   //   test('2.7 password - состоит из букв', async () => {
@@ -117,7 +124,7 @@ describe('Test login controller function', () => {
   //       '',
   //       userName,
   //     );
-  //     checkSuccess(data, status, inputMail, userName);
+  //     checkSuccess(data, status, inputMail);
   //   });
 
   //   test('2.8 password - состоит из прописных букв>', async () => {
@@ -128,7 +135,7 @@ describe('Test login controller function', () => {
   //       '',
   //       userName,
   //     );
-  //     checkSuccess(data, status, inputMail, userName);
+  //     checkSuccess(data, status, inputMail);
   //   });
   //   test('2.9 password - состоит из ЗАГЛАВНЫХ букв>', async () => {
   //     const inputMail = 'valid15@email.test';
@@ -138,7 +145,7 @@ describe('Test login controller function', () => {
   //       '',
   //       userName,
   //     );
-  //     checkSuccess(data, status, inputMail, userName);
+  //     checkSuccess(data, status, inputMail);
   //   });
 
   //   // SIGNUP
@@ -157,7 +164,7 @@ describe('Test login controller function', () => {
 
   //   test('3.2 signup - логин существует', async () => {
   //     await expect(() =>
-  //       loginTest('valid10@email.test', '1234aB', '', userName),
+  //       loginTest('valid10@email.test', '1234aB', ''),
   //     ).rejects.toThrow('Email in use');
   //   });
 
@@ -169,8 +176,8 @@ describe('Test login controller function', () => {
 
   //   test('3.4 signup - удачная регистрация', async () => {
   //     const inputMail = 'correct@email.test';
-  //     const { data, status } = await loginTest(inputMail, '1234aB', '', userName);
-  //     checkSuccess(data, status, inputMail, userName);
+  //     const { data, status } = await loginTest(inputMail, '1234aB', '');
+  //     checkSuccess(data, status, inputMail);
   //   });
 });
 

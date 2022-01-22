@@ -1,14 +1,5 @@
 import registerController from '../../controllers/auth/registerController.js';
 import { joiRegisterSchema } from '../../schemas/joi/users.js';
-import {
-  connect,
-  clearDatabase,
-  closeDatabase,
-} from '../../bin/dbMongoMemory.js';
-
-beforeAll(async () => await connect());
-// afterEach(async () => await clearDatabase())
-afterAll(async () => await closeDatabase());
 
 const registrationTest = async (email, password, token, userName) => {
   const authorization = token ? 'Bearer ' + token : '';
