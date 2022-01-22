@@ -157,7 +157,7 @@ describe('Test register controller function', () => {
         registrationTest(
           'valid16@email.test',
           '1234aB',
-          'someValueOrValidToken', 
+          'someValueOrValidToken',
           userName,
         ),
       // ).rejects.toThrow('Email in use');
@@ -170,17 +170,29 @@ describe('Test register controller function', () => {
     ).rejects.toThrow('Email in use');
   });
 
-    test('3.3 signup - удачная регистрация без имени пользователя', async () => {
-      const inputMail = 'valid16@email.test';
-      const { data, status } = await registrationTest(inputMail, '1234aB', '');
-      checkSuccess(data, status, inputMail);
-    });
+  test('3.3 signup - удачная регистрация без имени пользователя', async () => {
+    const inputMail = 'valid16@email.test';
+    const { data, status } = await registrationTest(inputMail, '1234aB', '');
+    checkSuccess(data, status, inputMail);
+  });
 
-    test('3.4 signup - удачная регистрация', async () => {
-      const inputMail = 'correct@email.test';
-      const { data, status } = await registrationTest(inputMail, '1234aB', '', userName);
-      checkSuccess(data, status, inputMail, userName);
-    });
+  test('3.4 signup - удачная регистрация', async () => {
+    const inputMail = 'correct@email.test';
+    const { data, status } = await registrationTest(
+      inputMail,
+      '1234aB',
+      '',
+      userName,
+    );
+    checkSuccess(data, status, inputMail, userName);
+  });
+
+  test('4.1 signup - имя пользователя из цифр', async () => {
+    await expect(
+      () => registrationTest('valid18@email.test', '1234aB', '', 453),
+      // ).rejects.toThrow('Email in use');
+    ).rejects.toThrow('ValidationError: "userName" must be a string');
+  });
 });
 
 // ValidationError: "userName" must be a string
