@@ -6,7 +6,6 @@ const userSchema = Schema(
   {
     userName: {
       type: String,
-      required: true,
       default: 'Unnamed',
     },
     email: {
@@ -35,13 +34,13 @@ const userSchema = Schema(
         });
       },
     },
-    avatarURL: {
+    avatarUrl: {
       type: String,
       required: true,
     },
 
     currentBalance: {
-      type: String,
+      type: Number,
       default: 0,
     },
     startBalance: {

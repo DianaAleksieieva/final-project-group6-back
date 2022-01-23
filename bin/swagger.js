@@ -22,6 +22,7 @@ const examples = {
   refreshToken:
     'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYxZTA5ZGM5MDk5MjdjYTMxMDViMzJiNCIsImlhdCI6MTY0MjYzNzAyNywiZXhwIjoxNjQyNjQwNjI3fQ.fAdmQGHqTDx5XX3z7lZ2J5Bi1F2fI3mJbEg-iYWT2JI',
   userName: 'Иванов Иван Иванович',
+  avatarUrl: 'https://cdn.tvc.ru/pictures/o/246/533.jpg',
   type: 'income',
   month: 9,
   year: getCurrentYear() - 1,
@@ -1069,6 +1070,10 @@ const swagger = {
                 type: 'string',
                 example: examples.userName,
               },
+              avatarUrl: {
+                type: 'string',
+                example: examples.avatarUrl,
+              },
               currentBalance: {
                 type: 'number',
                 example: 30809,
@@ -1105,6 +1110,18 @@ const swagger = {
           Response200: {
             type: 'object',
             properties: {
+              startBalanceOld: {
+                type: 'string',
+                example: 1000,
+              },
+              startBalance: {
+                type: 'string',
+                example: 1000,
+              },
+              currentBalanceOld: {
+                type: 'number',
+                example: 10000,
+              },
               currentBalance: {
                 type: 'number',
                 example: 1000,
@@ -1175,6 +1192,10 @@ const swagger = {
                     example: 35000,
                   },
                 },
+              },
+              message: {
+                type: 'string',
+                example: 'transaction added',
               },
               oldBalance: {
                 type: 'number',
@@ -1260,55 +1281,91 @@ const swagger = {
                 example: examples.sum,
               },
               result: {
-                type: 'object',
+                type: 'array',
                 properties: {
-                  1: {
-                    type: 'number',
-                    example: 16685,
+                  type: 'object',
+                  properties: {
+                    1: {
+                      type: 'number',
+                      example: 16685,
+                    },
                   },
-                  2: {
-                    type: 'number',
-                    example: 16097,
+                  type: 'object',
+                  properties: {
+                    2: {
+                      type: 'number',
+                      example: 16097,
+                    },
                   },
-                  3: {
-                    type: 'number',
-                    example: 18022,
+                  type: 'object',
+                  properties: {
+                    3: {
+                      type: 'number',
+                      example: 18022,
+                    },
                   },
-                  4: {
-                    type: 'number',
-                    example: 18772,
+                  type: 'object',
+                  properties: {
+                    4: {
+                      type: 'number',
+                      example: 18772,
+                    },
                   },
-                  5: {
-                    type: 'number',
-                    example: 15973,
+                  type: 'object',
+                  properties: {
+                    5: {
+                      type: 'number',
+                      example: 15973,
+                    },
                   },
-                  6: {
-                    type: 'number',
-                    example: 16348,
+                  type: 'object',
+                  properties: {
+                    6: {
+                      type: 'number',
+                      example: 16348,
+                    },
                   },
-                  7: {
-                    type: 'number',
-                    example: 22405,
+                  type: 'object',
+                  properties: {
+                    7: {
+                      type: 'number',
+                      example: 22405,
+                    },
                   },
-                  8: {
-                    type: 'number',
-                    example: 17361,
+                  type: 'object',
+                  properties: {
+                    8: {
+                      type: 'number',
+                      example: 17361,
+                    },
                   },
-                  9: {
-                    type: 'number',
-                    example: 15741,
+                  type: 'object',
+                  properties: {
+                    9: {
+                      type: 'number',
+                      example: 15741,
+                    },
                   },
-                  10: {
-                    type: 'number',
-                    example: 17289,
+                  type: 'object',
+                  properties: {
+                    10: {
+                      type: 'number',
+                      example: 17289,
+                    },
                   },
-                  11: {
-                    type: 'number',
-                    example: 13398,
+                  type: 'object',
+                  properties: {
+                    11: {
+                      type: 'number',
+                      example: 13398,
+                    },
                   },
-                  12: {
-                    type: 'number',
-                    example: 16923,
+                  type: 'object',
+                  properties: {
+                    12: {
+                      type: 'number',
+                      example: 16923,
+                    },
                   },
                 },
               },

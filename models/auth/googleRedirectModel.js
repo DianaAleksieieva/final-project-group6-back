@@ -21,7 +21,7 @@ const googleRedirectModel = async req => {
     const newUser = new User({
       email,
       userName: name,
-      avatarURL: picture,
+      avatarUrl: picture,
       token,
       verificationToken: nanoid(),
       verify: true,

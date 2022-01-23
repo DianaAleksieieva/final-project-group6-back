@@ -6,16 +6,17 @@ import chalk from 'chalk';
 import swaggerUi from 'swagger-ui-express';
 import swaggerJSDoc from 'swagger-jsdoc';
 import swagger from './bin/swagger.js';
-
 import {
   authRouter,
   usersRouter,
   transactionsRouter,
 } from './routes/api/index.js';
 import dotenv from 'dotenv';
-const document = swaggerJSDoc(swagger);
 dotenv.config();
-
+//SWAGGER
+// swagger.definition.servers[0].url = 'http://localhost:'+process.env.PORT;
+const document = swaggerJSDoc(swagger);
+//EXPRESS
 const app = express();
 
 const formatsLogger = app.get('env') === 'development' ? 'dev' : 'short';

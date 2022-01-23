@@ -7,7 +7,6 @@ import { User } from '../../schemas/mongoose/index.js';
 
 const refreshTokenModel = async refreshToken => {
   const { id } = jwt.verify(refreshToken, process.env.SECRET_KEY);
-  console.log(id);
   const user = await User.findById(id);
   if (!user || !user.token) {
     throw new httpError.Unauthorized('No authorized');
