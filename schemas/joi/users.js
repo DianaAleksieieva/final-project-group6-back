@@ -1,10 +1,10 @@
 import Joi from 'joi';
 
 export const joiRegisterSchema = Joi.object({
-  userName: Joi.string().min(3).max(35),
   email: Joi.string()
     .email({ minDomainSegments: 2, tlds: { allow: false } })
     .required(),
+  userName: Joi.string().min(3).max(35).allow(''),
   password: Joi.string().min(6).max(10).required(),
 });
 

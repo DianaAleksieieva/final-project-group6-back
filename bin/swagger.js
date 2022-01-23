@@ -1110,6 +1110,18 @@ const swagger = {
           Response200: {
             type: 'object',
             properties: {
+              startBalanceOld: {
+                type: 'string',
+                example: 1000,
+              },
+              startBalance: {
+                type: 'string',
+                example: 1000,
+              },
+              currentBalanceOld: {
+                type: 'number',
+                example: 10000,
+              },
               currentBalance: {
                 type: 'number',
                 example: 1000,
@@ -1180,6 +1192,10 @@ const swagger = {
                     example: 35000,
                   },
                 },
+              },
+              message: {
+                type: 'string',
+                example: 'transaction added',
               },
               oldBalance: {
                 type: 'number',

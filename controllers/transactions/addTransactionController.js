@@ -12,13 +12,14 @@ const addTransactionController = async ({ body, user }, res) => {
   if (!transaction) throw new httpError.BadRequest('some wrong');
 
   const balance = calculateNewBalanceHelper(type, amount, user);
-  const newBalance = await balanceUpdateModel(balance, user._id);
+  const newBalance = await balanceUpdateModel(balance, user, 'transaction');
   if (!newBalance) throw new httpError.BadRequest('some wrong');
 
   res.status(201).json({
     transaction,
+    message: 'transaction added',
     oldBalance: user.currentBalance,
-    currentBalance: newBalance,
+    currentBalance: newBalance.currentBalance,
   });
 };
 export default addTransactionController;

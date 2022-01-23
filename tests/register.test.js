@@ -170,7 +170,7 @@ describe('Test register controller function', () => {
 
   test('3.2 signup - логин существует', async () => {
     await expect(() =>
-      registrationTest('valid10@email.test', '1234aB', '', userName),
+      registrationTest('email29@email.test', '1234aB', '', userName),
     ).rejects.toThrow('Email in use');
   });
 
@@ -201,19 +201,21 @@ describe('Test register controller function', () => {
     await expect(
       () => registrationTest('email42@email.test', '1234aB', '', 'ab'),
       // ).rejects.toThrow('Email in use');
-    ).rejects.toThrow('ValidationError: "userName" must be a string');
+    ).rejects.toThrow(
+      'ValidationError: "userName" length must be at least 3 characters long',
+    );
   });
-  test('4.1 userName - длина 3 символа', async () => {
+  test('4.3 userName - длина 3 символа', async () => {
     const inputMail = 'email43@email.test';
     const { data, status } = await registrationTest(
       inputMail,
       '1234aB',
       '',
-      '',
+      'two',
     );
-    checkSuccess(data, status, inputMail, userName);
+    checkSuccess(data, status, inputMail, 'two');
   });
-  test('4.1 userName - имя пользователя из цифр', async () => {
+  test('4.4 userName - имя пользователя из цифр', async () => {
     await expect(
       () => registrationTest('valid18@email.test', '1234aB', '', 453),
       // ).rejects.toThrow('Email in use');
