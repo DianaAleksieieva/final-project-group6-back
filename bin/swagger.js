@@ -716,17 +716,6 @@ const swagger = {
                 },
               },
             },
-            404: {
-              description: description.request404,
-              content: {
-                'application/json': {
-                  schema: {
-                    type: 'object',
-                    $ref: '#/components/schemes/Response404NotFound',
-                  },
-                },
-              },
-            },
           },
         },
       },
@@ -802,17 +791,6 @@ const swagger = {
                   schema: {
                     type: 'object',
                     $ref: '#/components/schemes/Response401unautorized',
-                  },
-                },
-              },
-            },
-            404: {
-              description: description.request404,
-              content: {
-                'application/json': {
-                  schema: {
-                    type: 'object',
-                    $ref: '#/components/schemes/Response404NotFound',
                   },
                 },
               },
@@ -894,17 +872,6 @@ const swagger = {
                 },
               },
             },
-            404: {
-              description: description.request404,
-              content: {
-                'application/json': {
-                  schema: {
-                    type: 'object',
-                    $ref: '#/components/schemes/Response404NotFound',
-                  },
-                },
-              },
-            },
           },
         },
       },
@@ -957,17 +924,6 @@ const swagger = {
                   schema: {
                     type: 'object',
                     $ref: '#/components/schemes/Response401unautorized',
-                  },
-                },
-              },
-            },
-            404: {
-              description: description.request404,
-              content: {
-                'application/json': {
-                  schema: {
-                    type: 'object',
-                    $ref: '#/components/schemes/Response404NotFound',
                   },
                 },
               },
@@ -1644,38 +1600,44 @@ const swagger = {
             type: 'object',
             properties: {
               type: { type: 'string', example: 'expense' },
-              months: {
+              lastMonthsArray: {
                 type: 'array',
                 example: [
                   {
                     year: 2021,
                     month: 8,
-                    sum: 5682,
-                  },
-                  {
-                    year: 2021,
-                    month: 9,
-                    sum: 4532,
-                  },
-                  {
-                    year: 2021,
-                    month: 10,
+                    count: 0,
                     sum: 0,
                   },
                   {
                     year: 2021,
+                    month: 9,
+                    count: 54,
+                    sum: 15741,
+                  },
+                  {
+                    year: 2021,
+                    month: 10,
+                    count: 50,
+                    sum: 17289,
+                  },
+                  {
+                    year: 2021,
                     month: 11,
-                    sum: 153569,
+                    count: 46,
+                    sum: 13398,
                   },
                   {
                     year: 2021,
                     month: 12,
-                    sum: 5456,
+                    count: 61,
+                    sum: 16923,
                   },
                   {
                     year: 2022,
                     month: 1,
-                    sum: 11744,
+                    count: 89,
+                    sum: 37807,
                   },
                 ],
               },

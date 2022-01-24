@@ -77,7 +77,7 @@ router.get(
 
 router.get(
   '/getLastHalfYearByType/:type/',
-  // authMware,
+  authMware,
   paramsValidationMware(typeJoiSchema),
   ctrlWrapperMware(getLastHalfYearByTypeController),
 );
