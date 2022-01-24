@@ -13,7 +13,7 @@ const googleRedirectModel = async req => {
   const code = urlParams.code;
   const { tokenData, userData } = await getGoogleDataHelper(req, code);
 
-  const { id, name, email, picture } = userData.data;
+  const { name, email, picture } = userData.data;
   const { access_token: token } = tokenData.data;
   const user = await User.findOne({ email });
 
@@ -27,13 +27,14 @@ const googleRedirectModel = async req => {
       verify: true,
     });
     newUser.setPassword(nanoid());
-    await newUser.save();
-  }
 
+    newUser.save();
+  }
+  console.log(`user - ${user._id}`);
   const accessToken = jwt.sign({ id: user._id }, process.env.SECRET_KEY, {
     expiresIn: '1h',
   });
-
+  console.log(`user - ${user}`);
   await User.findByIdAndUpdate(user._id, { token: accessToken });
 
   if (user && user.token === null) {
