@@ -17,6 +17,8 @@ const googleRedirectModel = async req => {
   const { access_token: token } = tokenData.data;
   const user = await User.findOne({ email });
 
+  let googleUser = user;
+
   if (!user) {
     const newUser = new User({
       email,
@@ -28,17 +30,18 @@ const googleRedirectModel = async req => {
     });
     newUser.setPassword(nanoid());
 
-    newUser.save();
+    await newUser.save();
+    googleUser = newUser;
   }
-  console.log(`user - ${user._id}`);
-  const accessToken = jwt.sign({ id: user._id }, process.env.SECRET_KEY, {
+
+  const accessToken = jwt.sign({ id: googleUser._id }, process.env.SECRET_KEY, {
     expiresIn: '1h',
   });
-  console.log(`user - ${user}`);
-  await User.findByIdAndUpdate(user._id, { token: accessToken });
 
-  if (user && user.token === null) {
-    await User.findByIdAndUpdate(user._id, { token });
+  User.findByIdAndUpdate(googleUser._id, { token: accessToken });
+
+  if (googleUser && googleUser.token === null) {
+    await User.findByIdAndUpdate(googleUser._id, { token: accessToken });
   }
 
   return accessToken;
