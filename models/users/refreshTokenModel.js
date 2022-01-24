@@ -15,12 +15,13 @@ const refreshTokenModel = async refreshToken => {
     expiresIn: '15m',
   });
   refreshToken = jwt.sign({ id }, process.env.SECRET_KEY, {
-    expiresIn: '10h',
+    expiresIn: '72h',
   });
   await User.findByIdAndUpdate(id, { token, refreshToken });
   return {
     token,
     refreshToken,
+    expiresIn: parseInt(new Date().getTime()) + 2.2 * 60 * 1000,
     user: {
       _id: user._id,
       email: user.email,
