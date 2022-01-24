@@ -1,6 +1,7 @@
 import httpError from 'http-errors';
 import { User } from '../../schemas/mongoose/index.js';
-import gravatar from 'gravatar';
+// import gravatar from 'gravatar';
+import gravatarUrl from 'gravatar-url';
 const experes1 = '15m';
 
 const registerModel = async (
@@ -12,7 +13,8 @@ const registerModel = async (
   if (user) {
     throw new httpError.Conflict('Email in use');
   }
-  const avatarUrl = gravatar.url(email, { protocol: 'https' });
+  // const avatarUrl = gravatar.url(email, { protocol: 'https' });
+  const avatarUrl = gravatarUrl(`${email}`);
   console.log(avatarUrl);
   const newUser = new User({ email, userName, avatarUrl, verificationToken });
   newUser.setPassword(password);
