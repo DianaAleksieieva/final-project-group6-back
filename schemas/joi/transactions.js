@@ -42,7 +42,7 @@ export const idJoiSchema = Joi.object({
 
 export const yearTypeJoiSchema = Joi.object({
   year: Joi.number().required().min(2015).max(2100),
-  type: Joi.string().required().valid('income', 'expense'),
+  type: joyType,
 });
 
 export const categoryMonthYearJoiSchema = Joi.object({

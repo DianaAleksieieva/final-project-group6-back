@@ -10,7 +10,7 @@ const getMonthlyByTypeController = async (req, res) => {
 
   const transactions = await getMonthlyByTypeModel(year, month, type, user);
   const total = transactions.length;
-  if (!total) throw new httpError.NotFound('Not found');
+  // if (!total) throw new httpError.NotFound('Not found');
 
   const { sum, categories } = countMonthlyByTypeHelper(transactions);
   res

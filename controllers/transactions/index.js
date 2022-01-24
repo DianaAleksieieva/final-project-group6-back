@@ -5,3 +5,4 @@ export { default as getYearlyByTypeController } from './getYearlyByTypeControlle
 export { default as getMonthlyByTypeController } from './getMonthlyByTypeController.js';
 export { default as getAllMonthlyByCategoryController } from './getAllMonthlyByCategoryController.js';
 export { default as putSetOfTransactionsController } from './putSetOfTransactionsController.js';
+export { default as getLastHalfYearByTypeController } from './getLastHalfYearByTypeController.js';
