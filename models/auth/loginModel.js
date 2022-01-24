@@ -1,5 +1,7 @@
 import httpError from 'http-errors';
 import jwt from 'jsonwebtoken';
+const experes1 = '1m';
+const experes2 = '72h';
 
 import { User } from '../../schemas/mongoose/index.js';
 
@@ -19,6 +21,7 @@ const loginModel = async ({ email, password }) => {
   return {
     token,
     refreshToken,
+    expiresIn: parseInt(new Date().getTime()) + 2.1 * 60 * 1000,
     user: {
       _id: user._id,
       email: user.email,
