@@ -4,9 +4,9 @@ import getLastHalfYearArrayHelper from './../../helpers/getLastHalfYearArrayHelp
 async function getLastHalfYearByTypeController(req, res) {
   const user = req.user;
   const { type } = req.params;
-  const { lastMonthsArray, currentYear } = getLastHalfYearArrayHelper();
+  const lastMonthsArray = getLastHalfYearArrayHelper();
   for (let i = 5; i > 0; i--) {
-    const { month, year, count, sum } = lastMonthsArray[i];
+    const { month, year } = lastMonthsArray[i];
     const transactions = await getMonthlyByTypeModel(year, month, type, user);
     if (transactions.length) {
       lastMonthsArray[i].count = transactions.length;

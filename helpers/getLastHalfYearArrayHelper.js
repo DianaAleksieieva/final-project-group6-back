@@ -11,6 +11,6 @@ const getLastHalfYearArrayHelper = () => {
     lastMonthsArray.unshift({ year, month: month--, count: 0, sum: 0 });
   }
 
-  return { lastMonthsArray, currentYear: now.getYear() + 1900 };
+  return lastMonthsArray;
 };
 export default getLastHalfYearArrayHelper;
