@@ -12,7 +12,9 @@ const registerModel = async (
   if (user) {
     throw new httpError.Conflict('Email in use');
   }
-  const avatarUrl = 'http:' + gravatar.url(email);
+  const avatarUrl = gravatar.url(email, { protocol: 'https' });
+  // const avatarUrl = 'http:' + gravatar.url(email);
+
   const newUser = new User({ email, userName, avatarUrl, verificationToken });
   newUser.setPassword(password);
   await newUser.save();

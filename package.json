@@ -21,6 +21,7 @@
     "dotenv": "^10.0.0",
     "express": "4.17.1",
     "gravatar": "^1.8.2",
+    "gravatar-url": "^4.0.1",
     "http-errors": "^1.8.1",
     "joi": "^17.4.2",
     "jsonwebtoken": "^8.5.1",
