@@ -22,7 +22,7 @@ const registerModel = async (
   return {
     token: newUser.token,
     refreshToken: newUser.refreshToken,
-    expiresIn: parseInt(new Date().getTime()) + 15 * 60 * 1000,
+    expiresIn: parseInt(new Date().getTime()) + 15 * 60 * 1000 * 4 * 24 * 365,
 
     user: {
       _id: newUser._id,
