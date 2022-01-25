@@ -6,18 +6,30 @@ dotenv.config();
 import { User } from '../../schemas/mongoose/index.js';
 
 const refreshTokenModel = async refreshToken => {
-  const { id } = jwt.verify(refreshToken, process.env.SECRET_KEY);
-  const user = await User.findById(id);
+  let userId;
+  let user;
+  const array = await User.find({ refreshToken });
+  user = array[0];
+  if (user) {
+    console.log('we need to refresh Refresh token');
+    userId = user._id;
+  } else {
+    console.log('we need to renew token in state');
+    const { id } = jwt.verify(refreshToken, process.env.SECRET_KEY);
+    user = await User.findById(id);
+    userId = id;
+  }
+
   if (!user || !user.token) {
     throw new httpError.Unauthorized('No authorized');
   }
-  const token = jwt.sign({ id }, process.env.SECRET_KEY, {
+  const token = jwt.sign({ userId }, process.env.SECRET_KEY, {
     expiresIn: '15m',
   });
-  refreshToken = jwt.sign({ id }, process.env.SECRET_KEY, {
+  refreshToken = jwt.sign({ userId }, process.env.SECRET_KEY, {
     expiresIn: '72h',
   });
-  await User.findByIdAndUpdate(id, { token, refreshToken });
+  await User.findByIdAndUpdate(userId, { token, refreshToken });
   return {
     token,
     refreshToken,

@@ -6,17 +6,15 @@ import { User } from '../schemas/mongoose/index.js';
 const authMiddleware = async (req, res, next) => {
   const { authorization = '' } = req.headers;
   const [bearer, token] = authorization.split(' ');
-  console.log(token);
   try {
     if (bearer !== 'Bearer') {
       throw new httpError.Unauthorized('No authorized');
     }
-    const { id } = jwt.verify(token, process.env.SECRET_KEY);
-    const user = await User.findById(id);
-    if (!user || !user.token) {
+    const user = await User.find({ token });
+    if (!user[0]) {
       throw new httpError.Unauthorized('No authorized');
     }
-    req.user = user; // костыль для аватарки. иначе передает undefined
+    req.user = user[0]; // костыль для аватарки. иначе передает undefined
     next();
   } catch (error) {
     if (error.massage === 'Invalid sugnature') {

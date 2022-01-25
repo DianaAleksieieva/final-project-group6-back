@@ -38,6 +38,7 @@ const googleRedirectModel = async req => {
     expiresIn: '1h',
   });
 
+
   User.findByIdAndUpdate(googleUser._id, { token: accessToken });
 
   if (googleUser && googleUser.token === null) {
