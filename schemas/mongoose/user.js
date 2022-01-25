@@ -22,7 +22,7 @@ const userSchema = Schema(
       type: String,
       default: ({ _id }) => {
         return jwt.sign({ id: _id }, process.env.SECRET_KEY, {
-          expiresIn: '15m',
+          //  expiresIn: '15m'
         });
       },
     },
@@ -30,7 +30,7 @@ const userSchema = Schema(
       type: String,
       default: ({ _id }) => {
         return jwt.sign({ id: _id }, process.env.SECRET_KEY, {
-          expiresIn: '10h',
+          //  expiresIn: '72h'
         });
       },
     },
