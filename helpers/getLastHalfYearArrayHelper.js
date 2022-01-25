@@ -1,7 +1,7 @@
 const getLastHalfYearArrayHelper = () => {
   const now = new Date();
   let year = now.getYear() + 1900;
-  let month = now.getMonth() + 1;
+  let month = now.getMonth();
   const lastMonthsArray = [];
   for (let i = 0; i < 6; i++) {
     if (month < 1) {
