@@ -14,7 +14,6 @@ async function refreshTokenController(req, res, next) {
     if (error.massage === 'Invalid sugnature') {
       error.status = 401;
     }
-    next(error);
   }
 }
 export default refreshTokenController;

@@ -30,11 +30,9 @@ const googleRedirectModel = async req => {
 
     newUser.save();
   }
-  console.log(`user - ${user._id}`);
   const accessToken = jwt.sign({ id: user._id }, process.env.SECRET_KEY, {
     expiresIn: '1h',
   });
-  console.log(`user - ${user}`);
   await User.findByIdAndUpdate(user._id, { token: accessToken });
 
   if (user && user.token === null) {
