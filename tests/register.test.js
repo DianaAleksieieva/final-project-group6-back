@@ -222,5 +222,3 @@ describe('Test register controller function', () => {
     ).rejects.toThrow('ValidationError: "userName" must be a string');
   });
 });
-
-// ValidationError: "userName" must be a string

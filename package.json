@@ -8,7 +8,8 @@
     "lint": "eslint **/*.js",
     "lint:fix": "eslint --fix **/*.js",
     "1-register.test": "node --experimental-vm-modules node_modules/jest/bin/jest.js register.test",
-    "2-login.test": "node --experimental-vm-modules node_modules/jest/bin/jest.js login.test"
+    "2-login.test": "node --experimental-vm-modules node_modules/jest/bin/jest.js login.test",
+    "3-transactions.test": "node --experimental-vm-modules node_modules/jest/bin/jest.js transactions.test"
   },
   "type": "module",
   "dependencies": {
