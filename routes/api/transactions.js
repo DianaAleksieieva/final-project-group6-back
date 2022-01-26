@@ -16,6 +16,8 @@ import {
 } from '../../middlewares/index.js';
 import {
   addTransactionJoiSchema,
+  addExpenseJoiSchema,
+  addIncomeJoiSchema,
   idJoiSchema,
   yearTypeJoiSchema,
   categoryMonthYearJoiSchema,
@@ -29,7 +31,11 @@ const router = express.Router();
 router.post(
   '/add',
   authMware,
-  validationMware(addTransactionJoiSchema),
+  validationMware(
+    addTransactionJoiSchema,
+    addIncomeJoiSchema,
+    addExpenseJoiSchema,
+  ),
   ctrlWrapperMware(addTransactionController),
 );
 

@@ -16,6 +16,22 @@ const joyCategory = Joi.string()
     'salary',
     'freelance',
   );
+const joyCategoryExpenses = Joi.string()
+  .required()
+  .valid(
+    'transport',
+    'goods',
+    'health',
+    'alco',
+    'fun',
+    'house',
+    'tech',
+    'utilities',
+    'sport',
+    'education',
+    'other',
+  );
+const joyCategoryIncomes = Joi.string().required().valid('salary', 'freelance');
 
 const joyType = Joi.string().required().valid('income', 'expense');
 
@@ -23,6 +39,22 @@ export const addTransactionJoiSchema = Joi.object({
   type: joyType,
   date: Joi.date().required(),
   category: joyCategory,
+  amount: Joi.number().min(1).required(),
+  description: Joi.string(),
+});
+
+export const addIncomeJoiSchema = Joi.object({
+  type: Joi.string().required().valid('income'),
+  date: Joi.date().required(),
+  category: joyCategoryIncomes,
+  amount: Joi.number().min(1).required(),
+  description: Joi.string(),
+});
+
+export const addExpenseJoiSchema = Joi.object({
+  type: Joi.string().required().valid('expense'),
+  date: Joi.date().required(),
+  category: joyCategoryExpenses,
   amount: Joi.number().min(1).required(),
   description: Joi.string(),
 });

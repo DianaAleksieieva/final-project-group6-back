@@ -1,5 +1,9 @@
 import addTransactionController from '../../controllers/transactions/addTransactionController.js';
-import { addTransactionJoiSchema } from '../../schemas/joi/transactions';
+import {
+  addIncomeJoiSchema,
+  addExpenseJoiSchema,
+  addTransactionJoiSchema,
+} from '../../schemas/joi/transactions';
 import authMiddleware from '../auth';
 const next = error => {
   throw Error(error.message);
@@ -21,7 +25,16 @@ const addTransactionTest = async (
   let res = {};
 
   try {
-    const { error } = addTransactionJoiSchema.validate(req.body);
+    let schemaResponse;
+    if (req.body.type === 'income') {
+      schemaResponse = addIncomeJoiSchema.validate(req.body);
+    } else if (req.body.type === 'expense') {
+      schemaResponse = addExpenseJoiSchema.validate(req.body);
+    } else {
+      schemaResponse = addTransactionJoiSchema.validate(req.body);
+    }
+    const { error } = schemaResponse;
+
     if (error) {
       error.status = 400;
       throw new Error(error);
