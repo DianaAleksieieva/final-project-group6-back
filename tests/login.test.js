@@ -1,3 +1,4 @@
+/* eslint-disable no-undef */
 import { connect, closeDatabase } from '../bin/dbMongoMemory.js';
 
 beforeAll(async () => await connect());
@@ -150,4 +151,3 @@ describe('Test login controller function', () => {
     );
   });
 });
-
