@@ -10,7 +10,7 @@ import {
 } from '../../controllers/transactions/index.js';
 import {
   authMware,
-  validationMware,
+  bodyValidationMware,
   paramsValidationMware,
   ctrlWrapperMware,
 } from '../../middlewares/index.js';
@@ -31,7 +31,7 @@ const router = express.Router();
 router.post(
   '/add',
   authMware,
-  validationMware(
+  bodyValidationMware(
     addTransactionJoiSchema,
     addIncomeJoiSchema,
     addExpenseJoiSchema,

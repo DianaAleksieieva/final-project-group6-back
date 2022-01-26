@@ -1,7 +1,7 @@
 import express from 'express';
 import {
   authMware,
-  validationMware,
+  bodyValidationMware,
   ctrlWrapperMware,
   paramsValidationMware,
 } from '../../middlewares/index.js';
@@ -22,13 +22,13 @@ const router = express.Router();
 
 router.post(
   '/register',
-  validationMware(joiRegisterSchema),
+  bodyValidationMware(joiRegisterSchema),
   ctrlWrapperMware(registerController),
 );
 
 router.post(
   '/login',
-  validationMware(joiLoginSchema),
+  bodyValidationMware(joiLoginSchema),
   ctrlWrapperMware(loginController),
 );
 
