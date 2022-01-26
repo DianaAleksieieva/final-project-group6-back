@@ -1,7 +1,6 @@
+/* eslint-disable no-undef */
 import httpError from 'http-errors';
 import jwt from 'jsonwebtoken';
-const experes1 = '1m';
-const experes2 = '72h';
 
 import { User } from '../../schemas/mongoose/index.js';
 
