@@ -1,3 +1,4 @@
+/* eslint-disable no-undef */
 import mongoose from 'mongoose';
 const { Schema } = mongoose;
 import bcrypt from 'bcryptjs';

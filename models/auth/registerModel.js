@@ -1,7 +1,6 @@
 import httpError from 'http-errors';
 import { User } from '../../schemas/mongoose/index.js';
 import gravatar from 'gravatar';
-const experes1 = '15m';
 
 const registerModel = async (
   { email, password, userName },

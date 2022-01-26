@@ -1,5 +1,4 @@
 import httpError from 'http-errors';
-import jwt from 'jsonwebtoken';
 
 import { User } from '../schemas/mongoose/index.js';
 
@@ -15,6 +14,7 @@ const authMiddleware = async (req, res, next) => {
       throw new httpError.Unauthorized('No authorized');
     }
     req.user = user[0]; // костыль для аватарки. иначе передает undefined
+    if (req.testmode) return req.user;
     next();
   } catch (error) {
     if (error.massage === 'Invalid sugnature') {

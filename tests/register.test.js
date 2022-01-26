@@ -1,3 +1,4 @@
+/* eslint-disable no-undef */
 import { connect, closeDatabase } from '../bin/dbMongoMemory.js';
 beforeAll(async () => await connect());
 afterAll(async () => await closeDatabase());
@@ -222,5 +223,3 @@ describe('Test register controller function', () => {
     ).rejects.toThrow('ValidationError: "userName" must be a string');
   });
 });
-
-// ValidationError: "userName" must be a string

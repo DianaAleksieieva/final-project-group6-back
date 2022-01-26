@@ -1,5 +1,4 @@
 import putSetOfTransactionsModel from '../../models/transactions/putSetOfTransactionsModel.js';
-import httpError from 'http-errors';
 
 function getRandom(min, max) {
   min = Math.ceil(min);
