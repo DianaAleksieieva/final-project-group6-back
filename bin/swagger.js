@@ -41,7 +41,7 @@ const swagger = {
     produsces: ['application/json'],
     servers: [
       { url: 'http://localhost:4321' },
-      { url: 'https://final-project-group6-back.herokuapp.com/' },
+      { url: 'https://kapusta-project-aleksa.onrender.com/' },
     ],
     tags: [
       {
