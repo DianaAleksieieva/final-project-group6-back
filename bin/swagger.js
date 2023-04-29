@@ -34,7 +34,7 @@ const swagger = {
     openapi: '3.0.0',
     info: {
       title: 'Kapusta-API',
-      version: '2.0.2',
+      version: '2.0.3',
       description: 'https://pedantic-engelbart-4b98e1.netlify.app/',
     },
     consumes: ['application/json', 'multipart/form-data'],
@@ -716,17 +716,6 @@ const swagger = {
                 },
               },
             },
-            404: {
-              description: description.request404,
-              content: {
-                'application/json': {
-                  schema: {
-                    type: 'object',
-                    $ref: '#/components/schemes/Response404NotFound',
-                  },
-                },
-              },
-            },
           },
         },
       },
@@ -802,17 +791,6 @@ const swagger = {
                   schema: {
                     type: 'object',
                     $ref: '#/components/schemes/Response401unautorized',
-                  },
-                },
-              },
-            },
-            404: {
-              description: description.request404,
-              content: {
-                'application/json': {
-                  schema: {
-                    type: 'object',
-                    $ref: '#/components/schemes/Response404NotFound',
                   },
                 },
               },
@@ -894,13 +872,58 @@ const swagger = {
                 },
               },
             },
-            404: {
-              description: description.request404,
+          },
+        },
+      },
+      '/api/transactions/getLastHalfYearByType/{type}': {
+        get: {
+          summary:
+            'Сбор информации за последние пол года по транзакциях доходов или расходов',
+          tags: ['Transactions'],
+          security: [{ Bearer: [] }],
+          parameters: [
+            {
+              name: 'type',
+              description: description.type,
+              in: 'path',
+              required: true,
+              type: 'string',
+              schema: {
+                type: 'string',
+                example: 'income',
+              },
+            },
+          ],
+          responses: {
+            200: {
+              description: description.request200,
               content: {
                 'application/json': {
                   schema: {
                     type: 'object',
-                    $ref: '#/components/schemes/Response404NotFound',
+                    $ref: '#/components/schemes/GetLastHalfYearByType/Response200',
+                  },
+                },
+              },
+            },
+            400: {
+              description: description.request400,
+              content: {
+                'application/json': {
+                  schema: {
+                    type: 'object',
+                    $ref: '#/components/schemes/Response400Joi',
+                  },
+                },
+              },
+            },
+            401: {
+              description: description.request401,
+              content: {
+                'application/json': {
+                  schema: {
+                    type: 'object',
+                    $ref: '#/components/schemes/Response401unautorized',
                   },
                 },
               },
@@ -1566,6 +1589,55 @@ const swagger = {
                     description: 'Овощи',
                     category: 'goods',
                     amount: 431,
+                  },
+                ],
+              },
+            },
+          },
+        },
+        GetLastHalfYearByType: {
+          Response200: {
+            type: 'object',
+            properties: {
+              type: { type: 'string', example: 'expense' },
+              lastMonthsArray: {
+                type: 'array',
+                example: [
+                  {
+                    year: 2021,
+                    month: 8,
+                    count: 0,
+                    sum: 0,
+                  },
+                  {
+                    year: 2021,
+                    month: 9,
+                    count: 54,
+                    sum: 15741,
+                  },
+                  {
+                    year: 2021,
+                    month: 10,
+                    count: 50,
+                    sum: 17289,
+                  },
+                  {
+                    year: 2021,
+                    month: 11,
+                    count: 46,
+                    sum: 13398,
+                  },
+                  {
+                    year: 2021,
+                    month: 12,
+                    count: 61,
+                    sum: 16923,
+                  },
+                  {
+                    year: 2022,
+                    month: 1,
+                    count: 89,
+                    sum: 37807,
                   },
                 ],
               },

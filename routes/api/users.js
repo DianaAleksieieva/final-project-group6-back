@@ -7,7 +7,7 @@ import {
 import {
   authMware,
   ctrlWrapperMware,
-  validationMware,
+  bodyValidationMware,
 } from '../../middlewares/index.js';
 import { currentBallanseJoiSchema } from '../../schemas/joi/users.js';
 
@@ -20,7 +20,7 @@ router.get('/token/refresh', ctrlWrapperMware(refreshTokenController));
 router.put(
   '/balance',
   authMware,
-  validationMware(currentBallanseJoiSchema),
+  bodyValidationMware(currentBallanseJoiSchema),
   ctrlWrapperMware(balanceUpdateController),
 );
 

@@ -14,7 +14,6 @@ const getAllMonthlyByCategoryController = async (req, res) => {
     category,
     user,
   );
-  if (!transactions.length) throw new httpError.NotFound('Not found');
   const { total, sum } = getAllMonthlyByCategoryHelper(transactions);
   res
     .status(200)

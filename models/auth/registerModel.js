@@ -11,8 +11,9 @@ const registerModel = async (
   if (user) {
     throw new httpError.Conflict('Email in use');
   }
-  const avatarUrl = 'http:' + gravatar.url(email);
-  console.log(avatarUrl);
+  const avatarUrl = gravatar.url(email, { protocol: 'https' });
+  // const avatarUrl = 'http:' + gravatar.url(email);
+
   const newUser = new User({ email, userName, avatarUrl, verificationToken });
   newUser.setPassword(password);
   await newUser.save();
@@ -20,6 +21,8 @@ const registerModel = async (
   return {
     token: newUser.token,
     refreshToken: newUser.refreshToken,
+    expiresIn: parseInt(new Date().getTime()) + 15 * 60 * 1000 * 4 * 24 * 365,
+
     user: {
       _id: newUser._id,
       email: newUser.email,

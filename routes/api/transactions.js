@@ -6,20 +6,24 @@ import {
   getMonthlyByTypeController,
   getAllMonthlyByCategoryController,
   putSetOfTransactionsController,
+  getLastHalfYearByTypeController,
 } from '../../controllers/transactions/index.js';
 import {
   authMware,
-  validationMware,
+  bodyValidationMware,
   paramsValidationMware,
   ctrlWrapperMware,
 } from '../../middlewares/index.js';
 import {
   addTransactionJoiSchema,
+  addExpenseJoiSchema,
+  addIncomeJoiSchema,
   idJoiSchema,
   yearTypeJoiSchema,
   categoryMonthYearJoiSchema,
   typeMonthYearJoiSchema,
   setTransactionJoiSchema,
+  typeJoiSchema,
 } from '../../schemas/joi/transactions.js';
 
 const router = express.Router();
@@ -27,7 +31,11 @@ const router = express.Router();
 router.post(
   '/add',
   authMware,
-  validationMware(addTransactionJoiSchema),
+  bodyValidationMware(
+    addTransactionJoiSchema,
+    addIncomeJoiSchema,
+    addExpenseJoiSchema,
+  ),
   ctrlWrapperMware(addTransactionController),
 );
 
@@ -44,6 +52,13 @@ router.put(
   paramsValidationMware(setTransactionJoiSchema),
   ctrlWrapperMware(putSetOfTransactionsController),
 );
+// TODO
+// router.get(
+//   '/getByType/:type',
+//   authMware,
+//   paramsValidationMware(typeJoiSchema),
+//   ctrlWrapperMware(getByTypeController),
+// );
 
 router.get(
   '/getByType/:type/:year',
@@ -64,6 +79,13 @@ router.get(
   authMware,
   paramsValidationMware(categoryMonthYearJoiSchema),
   ctrlWrapperMware(getAllMonthlyByCategoryController),
+);
+
+router.get(
+  '/getLastHalfYearByType/:type/',
+  authMware,
+  paramsValidationMware(typeJoiSchema),
+  ctrlWrapperMware(getLastHalfYearByTypeController),
 );
 
 export default router;
