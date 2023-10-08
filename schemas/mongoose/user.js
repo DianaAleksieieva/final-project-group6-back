@@ -1,4 +1,3 @@
-/* eslint-disable no-undef */
 import mongoose from 'mongoose';
 const { Schema } = mongoose;
 import bcrypt from 'bcryptjs';
@@ -7,6 +6,7 @@ const userSchema = Schema(
   {
     userName: {
       type: String,
+      required: true,
       default: 'Unnamed',
     },
     email: {
@@ -23,7 +23,7 @@ const userSchema = Schema(
       type: String,
       default: ({ _id }) => {
         return jwt.sign({ id: _id }, process.env.SECRET_KEY, {
-          //  expiresIn: '15m'
+          expiresIn: '15m',
         });
       },
     },
@@ -31,17 +31,17 @@ const userSchema = Schema(
       type: String,
       default: ({ _id }) => {
         return jwt.sign({ id: _id }, process.env.SECRET_KEY, {
-          //  expiresIn: '72h'
+          expiresIn: '10h',
         });
       },
     },
-    avatarUrl: {
+    avatarURL: {
       type: String,
       required: true,
     },
 
     currentBalance: {
-      type: Number,
+      type: String,
       default: 0,
     },
     startBalance: {
@@ -66,9 +66,10 @@ userSchema.methods.setPassword = function (password) {
 
 userSchema.methods.comparePassword = function (password) {
   return bcrypt.compareSync(password, this.password);
+  
 };
 
 const User = mongoose.model('user', userSchema);
-
+mongoose.set('strictQuery', false);
 
 export default User;
