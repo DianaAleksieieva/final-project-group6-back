@@ -11,7 +11,6 @@ export const connect = async () => {
     useNewUrlParser: true,
     useUnifiedTopology: true,
   };
-  await mongoose.set("strictQuery", false);
 
   await mongoose.connect(uri, mongooseOpts);
 };
