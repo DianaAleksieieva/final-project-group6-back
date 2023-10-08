@@ -13,6 +13,8 @@
   },
   "type": "module",
   "dependencies": {
+    "@dicebear/collection": "^7.0.1",
+    "@dicebear/core": "^7.0.1",
     "@fastify/busboy": "^1.2.1",
     "@sendgrid/mail": "^7.6.0",
     "axios": "^0.25.0",
@@ -27,6 +29,7 @@
     "http-errors": "^1.8.1",
     "joi": "^17.4.2",
     "jsonwebtoken": "^9.0.0",
+    "mongodb": "^6.1.0",
     "mongodb-memory-server": "^8.2.0",
     "mongoose": "^6.0.14",
     "morgan": "1.10.0",

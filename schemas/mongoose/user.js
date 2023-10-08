@@ -70,6 +70,5 @@ userSchema.methods.comparePassword = function (password) {
 };
 
 const User = mongoose.model('user', userSchema);
-mongoose.set('strictQuery', false);
 
 export default User;
