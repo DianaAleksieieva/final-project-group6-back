@@ -11,9 +11,11 @@ const registerModel = async (
   if (user) {
     throw new httpError.Conflict('Email in use');
   }
-  const avatarUrl = createAvatar(avataaars, {
+  const createdAvatar = createAvatar(avataaars, {
     seed: "Felix"
   });
+
+  const avatarUrl = createdAvatar.toString();
   // const avatarUrl = gravatar.url(email, { protocol: 'https' });
   // const avatarUrl = 'http:' + gravatar.url(email);
 
