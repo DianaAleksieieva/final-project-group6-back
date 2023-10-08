@@ -1,7 +1,6 @@
 import httpError from 'http-errors';
 import { User } from '../../schemas/mongoose/index.js';
 import { createAvatar } from '@dicebear/core';
-import { Avataaars } from '@dicebear/collection';
 
 const registerModel = async (
   { email, password, userName },
@@ -12,8 +11,10 @@ const registerModel = async (
   if (user) {
     throw new httpError.Conflict('Email in use');
   }
-  
-  const avatarUrl = 'api.dicebear.com/7.x/avataaars/svg?seed=Felix'
+  const avatarUrl = createAvatar(avataaars, {
+    seed: "Felix"
+  });
+  // const avatarUrl = gravatar.url(email, { protocol: 'https' });
   // const avatarUrl = 'http:' + gravatar.url(email);
 
   const newUser = new User({ email, userName, avatarUrl, verificationToken });
