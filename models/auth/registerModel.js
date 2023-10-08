@@ -1,6 +1,7 @@
 import httpError from 'http-errors';
 import { User } from '../../schemas/mongoose/index.js';
 import { createAvatar } from '@dicebear/core';
+import { avataaars } from '@dicebear/collection';
 
 const registerModel = async (
   { email, password, userName },
