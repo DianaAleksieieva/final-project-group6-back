@@ -13,7 +13,7 @@ const registerModel = async (
     throw new httpError.Conflict('Email in use');
   }
   
-  const avatarUrl = 'api.dicebear.com/7.x/avataaars/svg'
+  const avatarUrl = 'api.dicebear.com/7.x/avataaars/svg?seed=Felix'
   // const avatarUrl = 'http:' + gravatar.url(email);
 
   const newUser = new User({ email, userName, avatarUrl, verificationToken });
